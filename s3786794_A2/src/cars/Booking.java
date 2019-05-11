@@ -22,8 +22,7 @@ public class Booking {
 	
 	private final int NAME_MINIMUM_LENGTH = 3;
 
-	public Booking(String firstName, String lastName, DateTime required, int numPassengers, Car car) 
-	{
+	public Booking(String firstName, String lastName, DateTime required, int numPassengers, Car car) {
 		generateId(car.getRegistrationNumber(), firstName, lastName, required);
 		validateAndSetDate(required);
 		validateName(firstName, lastName);
@@ -35,8 +34,7 @@ public class Booking {
 	/*
 	 * Updates the booking record with the kilometers traveled, the booking and trip fee.
 	 */
-	public void completeBooking(double kilometersTravelled, double tripFee, double bookingFee)
-	{
+	public void completeBooking(double kilometersTravelled, double tripFee, double bookingFee) {
 		this.kilometersTravelled = kilometersTravelled;
 		this.tripFee = tripFee;
 		this.bookingFee = bookingFee;
@@ -45,29 +43,22 @@ public class Booking {
 	/*
 	 * Human readable presentation of the state of the car.
 	 */
-	public String getDetails()
-	{
+	public String getDetails() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(String.format("%-16s%-20s\n", " ", getRecordMarker()));
 		sb.append(String.format("%-16s%-20s %s\n", " ", "id:", id));
 		sb.append(String.format("%-16s%-20s $%.2f\n", " ", "Booking Fee:", bookingFee));
-		if(dateBooked != null)
-		{
+		if(dateBooked != null) {
 			sb.append(String.format("%-16s%-20s %s\n", " ", "Pick Up Date:", dateBooked.getFormattedDate()));
-		}
-		else
-		{
+		} else {
 			sb.append(String.format("%-16s%-20s %s\n", " ", "Pick Up Date:", "Invalid"));
 		}
 		sb.append(String.format("%-16s%-20s %s\n", " ", "Name:", firstName + " " + lastName));
 		sb.append(String.format("%-16s%-20s %s\n", " ", "Passengers:", numPassengers));
-		if(kilometersTravelled == 0)
-		{
+		if(kilometersTravelled == 0) {
 		sb.append(String.format("%-16s%-20s %s\n", " ", "Travelled:", "N/A"));
 		sb.append(String.format("%-16s%-20s %s\n", " ", "Trip Fee:", "N/A"));
-		}
-		else
-		{
+		} else {
 			sb.append(String.format("%-16s%-20s %.2f\n", " ", "Travelled:", kilometersTravelled));
 			sb.append(String.format("%-16s%-20s %.2f\n", " ", "Trip Fee:", tripFee));
 		}
@@ -80,17 +71,13 @@ public class Booking {
 	 * Computer readable state of the car
 	 */
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(id);
 		sb.append(":" + bookingFee);
-		if(dateBooked != null)
-		{
+		if(dateBooked != null) {
 			sb.append(":" + dateBooked.getEightDigitDate());
-		}
-		else
-		{
+		} else {
 			sb.append(":" + "Invalid");
 		}
 		sb.append(":" + firstName + " " + lastName);
@@ -103,34 +90,28 @@ public class Booking {
 	}
 	
 	// Required getters
-	public String getFirstName()
-	{
+	public String getFirstName() {
 		return firstName;
 	}
 	
-	public String getLastName()
-	{
+	public String getLastName() {
 		return lastName;
 	}
 	
-	public DateTime getBookingDate()
-	{
+	public DateTime getBookingDate() {
 		return dateBooked;
 	}
 	
-	public String getID()
-	{
+	public String getID() {
 		return id;
 	}
 
 	/*
 	 * A record marker mark the beginning of a record.
 	 */
-	private String getRecordMarker()
-	{
+	private String getRecordMarker() {
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < 40; i++)
-		{
+		for (int i = 0; i < 40; i++) {
 			sb.append("_");
 		}
 		sb.append("\n");
@@ -140,14 +121,10 @@ public class Booking {
 	/*
 	 * Generate an id from regNo, passenger name and the date of the booking.
 	 */
-	private void generateId(String regNo, String firstName, String lastName, DateTime date)
-	{
-		if(firstName.length() < 3 || lastName.length() < 3  || date == null)
-		{
+	private void generateId(String regNo, String firstName, String lastName, DateTime date) {
+		if(firstName.length() < 3 || lastName.length() < 3  || date == null) {
 			id = "Invalid";
-		}
-		else
-		{
+		} else {
 			id = regNo + firstName.substring(0, 3).toUpperCase() + lastName.substring(0, 3).toUpperCase()
 				+ date.getEightDigitDate();
 		}
@@ -156,14 +133,11 @@ public class Booking {
 	/*
 	 * Ensures the name is more than three characters
 	 */
-	private void validateName(String firstName, String lastName)
-	{
-		if(firstName.length() >= NAME_MINIMUM_LENGTH && lastName.length() >= NAME_MINIMUM_LENGTH)
-		{
+	private void validateName(String firstName, String lastName) {
+		if(firstName.length() >= NAME_MINIMUM_LENGTH && lastName.length() >= NAME_MINIMUM_LENGTH) {
 			this.firstName = firstName;
 			this.lastName = lastName;
-		}
-		else {
+		} else {
 			firstName = "Invalid";
 			lastName = "Invalid";
 		}
@@ -172,14 +146,10 @@ public class Booking {
 	/*
 	 * Ensures the date is not in the past.
 	 */
-	private void validateAndSetDate(DateTime date)
-	{
-		if(DateUtilities.dateIsNotInPast(date) && DateUtilities.dateIsNotMoreThan7Days(date))
-		{
+	private void validateAndSetDate(DateTime date) {
+		if(DateUtilities.dateIsNotInPast(date) && DateUtilities.dateIsNotMoreThan7Days(date)) {
 			dateBooked = date;
-		}
-		else
-		{
+		} else {
 			dateBooked = null;
 		}
 	}

@@ -1,6 +1,7 @@
 package app;
 
 import cars.Car;
+import cars.SilverServiceCar;
 import utilities.DateTime;
 import utilities.MiRidesUtilities;
 
@@ -10,22 +11,18 @@ import utilities.MiRidesUtilities;
  *              	collection of data. 
  * Author:			Peter Bui(Originally Rodney Cocker) - s3786794
  */
-public class MiRideApplication
-{
+public class MiRideApplication {
 	private Car[] cars = new Car[15];
 	private int itemCount = 0;
 	private String[] availableCars;
 
-	public MiRideApplication()
-	{
+	public MiRideApplication() {
 		//seedData();
 	}
 	
-	public String createCar(String id, String make, String model, String driverName, int numPassengers) 
-	{
+	public String createCar(String id, String make, String model, String driverName, int numPassengers) {
 		String validId = isValidId(id);
-		if(isValidId(id).contains("Error:"))
-		{
+		if(isValidId(id).contains("Error:")) {
 			return validId;
 		}
 		if(!checkIfCarExists(id)) {
@@ -35,36 +32,43 @@ public class MiRideApplication
 		}
 		return "Error: Already exists in the system.";
 	}
+	
+	public String createCarSilver(String id, String make, String model, String driverName, 
+									int numPassengers, double bookingFee, String refreshments) {
+		String validId = isValidId(id);
+		if(isValidId(id).contains("Error:")) {
+			return validId;
+		}
+		if(!checkIfCarExists(id)) {
+			String[] refreshList = refreshments.split(",");
+			
+			cars[itemCount] = new SilverServiceCar(id, make, model, driverName, numPassengers, bookingFee, refreshList);
+			itemCount++;
+			return "New Car added successfully for registion number: " + cars[itemCount-1].getRegistrationNumber();
+		}
+		return "Error: Already exists in the system.";
+	}
 
-	public String[] book(DateTime dateRequired)
-	{
+	public String[] book(DateTime dateRequired) {
 		int numberOfAvailableCars = 0;
 		// finds number of available cars to determine the size of the array required.
-		for(int i=0; i<cars.length; i++)
-		{
-			if(cars[i] != null)
-			{
-				if(!cars[i].isCarBookedOnDate(dateRequired))
-				{
+		for(int i=0; i<cars.length; i++) {
+			if(cars[i] != null) {
+				if(!cars[i].isCarBookedOnDate(dateRequired)) {
 					numberOfAvailableCars++;
 				}
 			}
 		}
-		if(numberOfAvailableCars == 0)
-		{
+		if(numberOfAvailableCars == 0) {
 			String[] result = new String[0];
 			return result;
 		}
 		availableCars = new String[numberOfAvailableCars];
 		int availableCarsIndex = 0;
 		// Populate available cars with registration numbers
-		for(int i=0; i<cars.length;i++)
-		{
-			
-			if(cars[i] != null)
-			{
-				if(!cars[i].isCarBookedOnDate(dateRequired))
-				{
+		for(int i=0; i<cars.length;i++) {
+			if(cars[i] != null) {
+				if(!cars[i].isCarBookedOnDate(dateRequired)) {
 					availableCars[availableCarsIndex] = availableCarsIndex + 1 + ". " + cars[i].getRegistrationNumber();
 					availableCarsIndex++;
 				}
@@ -76,38 +80,29 @@ public class MiRideApplication
 	public String book(String firstName, String lastName, DateTime required, int numPassengers, String registrationNumber)
 	{
 		Car car = getCarById(registrationNumber);
-		if(car != null)
-        {
-			if(car.book(firstName, lastName, required, numPassengers))
-			{
+		if(car != null)  {
+			if(car.book(firstName, lastName, required, numPassengers)) {
 
 				String message = "Thank you for your booking. \n" + car.getDriverName() 
 		        + " will pick you up on " + required.getFormattedDate() + ". \n"
 				+ "Your booking reference is: " + car.getBookingID(firstName, lastName, required);
 				return message;
-			}
-			else
-			{
+			} else {
 				String message = "Booking could not be completed.";
 				return message;
 			}
-        }
-        else{
+        } else {
             return "Car with registration number: " + registrationNumber + " was not found.";
         }
 	}
 	
-	public String completeBooking(String firstName, String lastName, DateTime dateOfBooking, double kilometers)
-	{
+	public String completeBooking(String firstName, String lastName, DateTime dateOfBooking, double kilometers) {
 		//String result = "";
 		
 		// Search all cars for bookings on a particular date.
-		for(int i = 0; i <cars.length; i++)
-		{
-			if (cars[i] != null)
-			{
-				if(cars[i].isCarBookedOnDate(dateOfBooking))
-				{
+		for(int i = 0; i <cars.length; i++) {
+			if (cars[i] != null) {
+				if(cars[i].isCarBookedOnDate(dateOfBooking)) {
 					return cars[i].completeBooking(firstName, lastName, dateOfBooking, kilometers);
 				}
 //				else
@@ -123,69 +118,54 @@ public class MiRideApplication
 		return "Booking not found.";
 	}
 	
-	public String completeBooking(String firstName, String lastName, String registrationNumber, double kilometers)
-	{
+	public String completeBooking(String firstName, String lastName, String registrationNumber, double kilometers) {
 		String carNotFound = "Car not found";
 		Car car = null;
 		// Search for car with registration number
-		for(int i = 0; i <cars.length; i++)
-		{
-			if (cars[i] != null)
-			{
-				if (cars[i].getRegistrationNumber().equals(registrationNumber))
-				{
+		for(int i = 0; i <cars.length; i++) {
+			if (cars[i] != null) {
+				if (cars[i].getRegistrationNumber().equals(registrationNumber)) {
 					car = cars[i];
 					break;
 				}
 			}
 		}
 
-		if (car == null)
-		{
+		if (car == null) {
 			return carNotFound;
 		}
-		if (car.getBookingByName(firstName, lastName) != -1)
-		{
+		if (car.getBookingByName(firstName, lastName) != -1) {
 			return car.completeBooking(firstName, lastName, kilometers);
 		}
 		return "Error: Booking not found.";
 	}
 	
-	public boolean getBookingByName(String firstName, String lastName, String registrationNumber)
-	{
+	public boolean getBookingByName(String firstName, String lastName, String registrationNumber) {
 		//String bookingNotFound = "Error: Booking not found";
 		Car car = null;
 		// Search for car with registration number
-		for(int i = 0; i <cars.length; i++)
-		{
-			if (cars[i] != null)
-			{
-				if (cars[i].getRegistrationNumber().equals(registrationNumber))
-				{
+		for(int i = 0; i <cars.length; i++) {
+			if (cars[i] != null) {
+				if (cars[i].getRegistrationNumber().equals(registrationNumber)) {
 					car = cars[i];
 					break;
 				}
 			}
 		}
 		
-		if(car == null)
-		{
+		if(car == null) {
 			return false;
 		}
-		if(car.getBookingByName(firstName, lastName) == -1)
-		{
+		if(car.getBookingByName(firstName, lastName) == -1) {
 			return false;
 		}
 		return true;
 	}
-	public String displaySpecificCar(String regNo)
-	{
-		for(int i = 0; i < cars.length; i++)
-		{
-			if(cars[i] != null)
-			{
-				if(cars[i].getRegistrationNumber().equals(regNo.toUpperCase()))
-				{
+	
+	public String displaySpecificCar(String regNo) {
+		for(int i = 0; i < cars.length; i++) {
+			if(cars[i] != null) {
+				if(cars[i].getRegistrationNumber().equals(regNo.toUpperCase())) {
 					return cars[i].getDetails();
 				}
 			}
@@ -193,12 +173,9 @@ public class MiRideApplication
 		return "Error: The car could not be located.";
 	}
 	
-	public boolean seedData()
-	{
-		for(int i = 0; i < cars.length; i++)
-		{
-			if(cars[i] != null)
-			{
+	public boolean seedData() {
+		for(int i = 0; i < cars.length; i++) {
+			if(cars[i] != null) {
 				return false;
 			}
 		}
@@ -248,18 +225,15 @@ public class MiRideApplication
 		return true;
 	}
 
-	public String displayAllBookings()
-	{
-		if(itemCount == 0)
-		{
+	public String displayAllBookings() {
+		if(itemCount == 0) {
 			return "No cars have been added to the system.";
 		}
 		StringBuilder sb = new StringBuilder();
 		sb.append("Summary of all cars: ");
 		sb.append("\n");
 
-		for (int i = 0; i < itemCount; i++)
-		{
+		for (int i = 0; i < itemCount; i++) {
 			sb.append(cars[i].getDetails());
 		}
 		return sb.toString();
@@ -268,51 +242,43 @@ public class MiRideApplication
 	public String displayBooking(String id, String seatId)
 	{
 		Car booking = getCarById(id);
-		if(booking == null)
-		{
+		if(booking == null) {
 			return "Booking not found";
 		}
 		return booking.getDetails();
 	}
 	
-	public String isValidId(String id)
-	{
+	public String isValidId(String id) {
 		return MiRidesUtilities.isRegNoValid(id);
 	}
 	
-	public String isValidPassengerCapacity(int passengerNumber)
-	{
+	public String isValidPassengerCapacity(int passengerNumber) {
 		return MiRidesUtilities.isPassengerCapacityValid(passengerNumber);
 	}
+	
+	public String isValidBookingFee(double bookingFee) {
+		return MiRidesUtilities.isValidBookingFee(bookingFee);
+	}
 
-	public boolean checkIfCarExists(String regNo)
-	{
+	public boolean checkIfCarExists(String regNo) {
 		Car car = null;
-		if (regNo.length() != 6)
-		{
+		if (regNo.length() != 6) {
 			return false;
 		}
 		car = getCarById(regNo);
-		if (car == null)
-		{
+		if (car == null) {
 			return false;
-		}
-		else
-		{
+		} else {
 			return true;
 		}
 	}
 	
-	private Car getCarById(String regNo)
-	{
+	private Car getCarById(String regNo) {
 		Car car = null;
 
-		for (int i = 0; i < cars.length; i++)
-		{
-			if(cars[i] != null)
-			{
-				if (cars[i].getRegistrationNumber().equals(regNo))
-				{
+		for (int i = 0; i < cars.length; i++) {
+			if(cars[i] != null) {
+				if (cars[i].getRegistrationNumber().equals(regNo)) {
 					car = cars[i];
 					return car;
 				}

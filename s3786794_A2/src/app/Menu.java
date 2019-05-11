@@ -9,8 +9,7 @@ import utilities.DateUtilities;
  * Description:	The class a menu and is used to interact with the user. 
  * Author:		Peter Bui(Originally Rodney Cocker) - s3786794
  */
-public class Menu
-{
+public class Menu {
 	private Scanner console = new Scanner(System.in);
 	private MiRideApplication application = new MiRideApplication();
 	// Allows me to turn validation on/off for testing business logic in the
@@ -20,26 +19,21 @@ public class Menu
 	/*
 	 * Runs the menu in a loop until the user decides to exit the system.
 	 */
-	public void run()
-	{
+	public void run() {
 		final int MENU_ITEM_LENGTH = 2;
 		String input;
 		String choice = "";
-		do
-		{
+		do {
 			printMenu();
 
 			input = console.nextLine().toUpperCase();
 
-			if (input.length() != MENU_ITEM_LENGTH)
-			{
+			if (input.length() != MENU_ITEM_LENGTH) {
 				System.out.println("Error - selection must be two characters!");
-			} else
-			{
+			} else {
 				System.out.println();
 
-				switch (input)
-				{
+				switch (input) {
 				case "CC":
 					createCar();
 					break;
@@ -79,15 +73,14 @@ public class Menu
 	/*
 	 * Creates cars for use in the system available or booking.
 	 */
-	private void createCar()
-	{
-		String id = "", make, model, driverName;
+	private void createCar() {
+		String id = "", make, model, driverName, carType = "", refreshments;
 		int numPassengers = 0;
+		double bookingFee = 0;
 
 		System.out.print("Enter registration number: ");
 		id = promptUserForRegNo();
-		if (id.length() != 0)
-		{
+		if (id.length() != 0) {
 			// Get details required for creating a car.
 			System.out.print("Enter Make: ");
 			make = console.nextLine();
@@ -100,25 +93,35 @@ public class Menu
 
 			System.out.print("Enter number of passengers: ");
 			numPassengers = promptForPassengerNumbers();
-
-			boolean result = application.checkIfCarExists(id);
-
-			if (!result)
-			{
-				String carRegistrationNumber = application.createCar(id, make, model, driverName, numPassengers);
-				System.out.println(carRegistrationNumber);
-			} else
-			{
-				System.out.println("Error - Already exists in the system");
+			
+			System.out.print("Enter service type(SD/SS): ");
+			carType = console.nextLine().toUpperCase();
+			
+			if (carType == "SD") {
+				System.out.println(carType);
+			} else if (carType == "SS") {
+				System.out.println(carType);
 			}
+			
+//			if (carType == "SD") {
+//				makeStandard(id, make, model, driverName, numPassengers);
+//			}
+//			if (carType == "SS") {
+//				System.out.println("Enter Standard Fee: ");
+//				bookingFee = promptForBookingFee();
+//				
+//				System.out.println("Enter list of Refreshments: ");
+//				refreshments = console.nextLine();
+//				
+//				makeSilver(id, make, model, driverName, numPassengers, bookingFee, refreshments);
+//			}
 		}
 	}
 
 	/*
 	 * Book a car by finding available cars for a specified date.
 	 */
-	private boolean book()
-	{
+	private boolean book() {
 		System.out.println("Booking date(dd/mm/yyyy): ");
 		String dateEntered = console.nextLine();
 		String[] dateCheckAvailable = dateEntered.split("/");
@@ -128,19 +131,16 @@ public class Menu
 		
 		DateTime dateRequired = new DateTime(day, month, year);
 		
-		if(!DateUtilities.dateIsNotInPast(dateRequired) || !DateUtilities.dateIsNotMoreThan7Days(dateRequired))
-		{
+		if(!DateUtilities.dateIsNotInPast(dateRequired) || !DateUtilities.dateIsNotMoreThan7Days(dateRequired)) {
 			System.out.println("Date is invalid, must be within the coming week.");
 			return false;
 		}
 		
 		String[] availableCars = application.book(dateRequired);
-		for (int i = 0; i < availableCars.length; i++)
-		{
+		for (int i = 0; i < availableCars.length; i++) {
 			System.out.println(availableCars[i]);
 		}
-		if (availableCars.length != 0)
-		{
+		if (availableCars.length != 0) {
 			System.out.println("Please enter a number from the list:");
 			int itemSelected = Integer.parseInt(console.nextLine());
 			
@@ -155,8 +155,7 @@ public class Menu
 			String result = application.book(firstName, lastName, dateRequired, numPassengers, regNo);
 
 			System.out.println(result);
-		} else
-		{
+		} else {
 			System.out.println("There are no available cars on this date.");
 		}
 		return true;
@@ -165,15 +164,13 @@ public class Menu
 	/*
 	 * Complete bookings found by either registration number or booking date.
 	 */
-	private void completeBooking()
-	{
+	private void completeBooking() {
 		System.out.print("Enter Registration or Booking Date:");
 		String response = console.nextLine();
 		
 		String result;
 		// User entered a booking date
-		if (response.contains("/"))
-		{
+		if (response.contains("/")) {
 			System.out.print("Enter First Name:");
 			String firstName = console.nextLine();
 			System.out.print("Enter Last Name:");
@@ -189,51 +186,39 @@ public class Menu
 			DateTime dateOfBooking = new DateTime(day, month, year);
 			result = application.completeBooking(firstName, lastName, dateOfBooking, kilometers);
 			System.out.println(result);
-		} else
-		{
-			
+		} else {
 			System.out.print("Enter First Name:");
 			String firstName = console.nextLine();
 			System.out.print("Enter Last Name:");
 			String lastName = console.nextLine();
-			if(application.getBookingByName(firstName, lastName, response))
-			{
+			if (application.getBookingByName(firstName, lastName, response)) {
 				System.out.print("Enter kilometers:");
 				double kilometers = Double.parseDouble(console.nextLine());
 				result = application.completeBooking(firstName, lastName, response, kilometers);
 				System.out.println(result);
-			}
-			else
-			{
+			} else {
 				System.out.println("Error: Booking not found.");
 			}
 		}
 		
 	}
 	
-	private int promptForPassengerNumbers()
-	{
+	private int promptForPassengerNumbers() {
 		int numPassengers = 0;
 		boolean validPassengerNumbers = false;
 		// By pass user input validation.
-		if (!testingWithValidation)
-		{
+		if (!testingWithValidation) {
 			return Integer.parseInt(console.nextLine());
-		} 
-		else
-		{
-			while (!validPassengerNumbers)
-			{
+		} else {
+			while (!validPassengerNumbers) {
 				numPassengers = Integer.parseInt(console.nextLine());
 
 				String validId = application.isValidPassengerCapacity(numPassengers);
-				if (validId.contains("Error:"))
-				{
+				if (validId.contains("Error:")) {
 					System.out.println(validId);
 					System.out.println("Enter passenger capacity: ");
 					System.out.println("(or hit ENTER to exit)");
-				} else
-				{
+				} else {
 					validPassengerNumbers = true;
 				}
 			}
@@ -246,45 +231,63 @@ public class Menu
 	 * Boolean value for indicating test mode allows by passing validation to test
 	 * program without user input validation.
 	 */
-	private String promptUserForRegNo()
-	{
+	private String promptUserForRegNo() {
 		String regNo = "";
 		boolean validRegistrationNumber = false;
 		// By pass user input validation.
-		if (!testingWithValidation)
-		{
+		if (!testingWithValidation) {
 			return console.nextLine();
-		} 
-		else
-		{
-			while (!validRegistrationNumber)
-			{
+		} else {
+			while (!validRegistrationNumber) {
 				regNo = console.nextLine().toUpperCase();
 				boolean exists = application.checkIfCarExists(regNo);
-				if(exists)
-				{
+				if(exists) {
 					// Empty string means the menu will not try to process
 					// the registration number
 					System.out.println("Error: Reg Number already exists");
 					return "";
 				}
-				if (regNo.length() == 0)
-				{
+				if (regNo.length() == 0) {
 					break;
 				}
 
 				String validId = application.isValidId(regNo);
-				if (validId.contains("Error:"))
-				{
+				if (validId.contains("Error:")) {
 					System.out.println(validId);
 					System.out.println("Enter registration number: ");
 					System.out.println("(or hit ENTER to exit)");
-				} else
-				{
+				} else {
 					validRegistrationNumber = true;
 				}
 			}
 			return regNo;
+		}
+	}
+	
+	/*
+	 * Checks if the booking fee for a silver car is correct
+	 */
+	
+	private double promptForBookingFee() {
+		double bookingFee = 0;
+		boolean validBookingFee = false;
+		// By pass user input validation.
+		if (!testingWithValidation) {
+			return Double.parseDouble(console.nextLine());
+		} else {
+			while (!validBookingFee) {
+				bookingFee = Double.parseDouble(console.nextLine());
+
+				String validId = application.isValidBookingFee(bookingFee);
+				if (validId.contains("Error:")) {
+					System.out.println(validId);
+					System.out.println("Enter passenger capacity: ");
+					System.out.println("(or hit ENTER to exit)");
+				} else {
+					validBookingFee = true;
+				}
+			}
+			return bookingFee;
 		}
 	}
 
@@ -307,5 +310,27 @@ public class Menu
 		System.out.printf("%-30s %s\n", "Print out to strings of cars", "TE");
 		System.out.println("\nEnter your selection: ");
 		System.out.println("(Hit enter to cancel any operation)");
+	}
+	
+	private void makeStandard(String id, String make, String model, String driverName, int numPassengers) {
+		boolean result = application.checkIfCarExists(id);
+
+		if (!result) {
+			String carRegistrationNumber = application.createCar(id, make, model, driverName, numPassengers);
+			System.out.println(carRegistrationNumber);
+		} else {
+			System.out.println("Error - Already exists in the system");
+		}
+	}
+	
+	private void makeSilver(String id, String make, String model, String driverName, int numPassengers, double bookingFee, String refreshments) {
+		boolean result = application.checkIfCarExists(id);
+
+		if (!result) {
+			String carRegistrationNumber = application.createCarSilver(id, make, model, driverName, numPassengers, bookingFee, refreshments);
+			System.out.println(carRegistrationNumber);
+		} else {
+			System.out.println("Error - Already exists in the system");
+		}
 	}
 }

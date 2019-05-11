@@ -9,8 +9,7 @@ import utilities.MiRidesUtilities;
  * Description:	The class represents a car in a ride sharing system. 
  * Author:		Peter Bui(Originally Rodney Cocker) - s3786794
  */
-public class Car
-{
+public class Car {
 	// Car attributes
 	protected String regNo;
 	protected String make;
@@ -30,8 +29,7 @@ public class Car
 	protected final int MAXIUM_PASSENGER_CAPACITY = 10;
 	protected final int MINIMUM_PASSENGER_CAPACITY = 1;
 
-	public Car(String regNo, String make, String model, String driverName, int passengerCapacity)
-	{
+	public Car(String regNo, String make, String model, String driverName, int passengerCapacity) {
 		setRegNo(regNo); // Validates and sets registration number
 		setPassengerCapacity(passengerCapacity); // Validates and sets passenger capacity
 
@@ -64,8 +62,7 @@ public class Car
 	 * Booking six cars
 	 */
 
-	public boolean book(String firstName, String lastName, DateTime required, int numPassengers)
-	{
+	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) {
 		boolean booked = false;
 		// Does car have five bookings
 		available = bookingAvailable();
@@ -76,8 +73,7 @@ public class Car
 		boolean validPassengerNumber = numberOfPassengersIsValid(numPassengers);
 
 		// Booking is permissible
-		if (available && dateAvailable && dateValid && validPassengerNumber)
-		{
+		if (available && dateAvailable && dateValid && validPassengerNumber) {
 			tripFee = STANDARD_BOOKING_FEE;
 			Booking booking = new Booking(firstName, lastName, required, numPassengers, this);
 			currentBookings[bookingSpotAvailable] = booking;
@@ -90,13 +86,11 @@ public class Car
 	/*
 	 * Completes a booking based on the name of the passenger and the booking date.
 	 */
-	public String completeBooking(String firstName, String lastName, DateTime dateOfBooking, double kilometers)
-	{
+	public String completeBooking(String firstName, String lastName, DateTime dateOfBooking, double kilometers) {
 		// Find booking in current bookings by passenger and date
 		int bookingIndex = getBookingByDate(firstName, lastName, dateOfBooking);
 
-		if (bookingIndex == -1)
-		{
+		if (bookingIndex == -1) {
 			return "Booking not found.";
 		}
 
@@ -106,15 +100,12 @@ public class Car
 	/*
 	 * Completes a booking based on the name of the passenger.
 	 */
-	public String completeBooking(String firstName, String lastName, double kilometers)
-	{
+	public String completeBooking(String firstName, String lastName, double kilometers) {
 		int bookingIndex = getBookingByName(firstName, lastName);
 
-		if (bookingIndex == -1)
-		{
+		if (bookingIndex == -1) {
 			return "Booking not found.";
-		} else
-		{
+		} else {
 			return completeBooking(bookingIndex, kilometers);
 		}
 	}
@@ -125,15 +116,11 @@ public class Car
 	 * any booking date Return true ELSE Return false END
 	 * 
 	 */
-	public boolean isCarBookedOnDate(DateTime dateRequired)
-	{
+	public boolean isCarBookedOnDate(DateTime dateRequired) {
 		boolean carIsBookedOnDate = false;
-		for (int i = 0; i < currentBookings.length; i++)
-		{
-			if (currentBookings[i] != null)
-			{
-				if (DateUtilities.datesAreTheSame(dateRequired, currentBookings[i].getBookingDate()))
-				{
+		for (int i = 0; i < currentBookings.length; i++) {
+			if (currentBookings[i] != null) {
+				if (DateUtilities.datesAreTheSame(dateRequired, currentBookings[i].getBookingDate())) {
 					carIsBookedOnDate = true;
 				}
 			}
@@ -144,19 +131,15 @@ public class Car
 	/*
 	 * Retrieves a booking id based on the name and the date of the booking
 	 */
-	public String getBookingID(String firstName, String lastName, DateTime dateOfBooking)
-	{
+	public String getBookingID(String firstName, String lastName, DateTime dateOfBooking) {
 		System.out.println();
-		for (int i = 0; i < currentBookings.length; i++)
-		{
-			if (currentBookings[i] != null)
-			{
+		for (int i = 0; i < currentBookings.length; i++) {
+			if (currentBookings[i] != null) {
 				Booking booking = currentBookings[i];
 				boolean firstNameMatch = booking.getFirstName().toUpperCase().equals(firstName.toUpperCase());
 				boolean lastNameMatch = booking.getLastName().toUpperCase().equals(lastName.toUpperCase());
 				int days = DateTime.diffDays(dateOfBooking, booking.getBookingDate());
-				if (firstNameMatch && lastNameMatch && days == 0)
-				{
+				if (firstNameMatch && lastNameMatch && days == 0) {
 					return booking.getID();
 				}
 			}
@@ -167,8 +150,7 @@ public class Car
 	/*
 	 * Human readable presentation of the state of the car.
 	 */
-	public String getDetails()
-	{
+	public String getDetails() {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(getRecordMarker());
@@ -178,11 +160,9 @@ public class Car
 		sb.append(String.format("%-15s %s\n", "Driver Name:", driverName));
 		sb.append(String.format("%-15s %s\n", "Capacity:", passengerCapacity));
 
-		if (bookingAvailable())
-		{
+		if (bookingAvailable()) {
 			sb.append(String.format("%-15s %s\n", "Available:", "YES"));
-		} else
-		{
+		} else {
 			sb.append(String.format("%-15s %s\n", "Available:", "NO"));
 		}
 		
@@ -203,7 +183,7 @@ public class Car
 				}
 			}
 		}
-
+		
 		return sb.toString();
 	}
 
@@ -211,8 +191,7 @@ public class Car
 	 * Computer readable state of the car
 	 */
 
-	public String toString()
-	{
+	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
 		if (!hasBookings(currentBookings)) {
@@ -241,7 +220,7 @@ public class Car
 			}
 			sb.append("\n");
 		}
-
+		
 		return sb.toString();
 	}
 	
@@ -250,18 +229,15 @@ public class Car
 		StringBuilder sb = new StringBuilder();
 		sb.append(regNo + ":" + make + ":" + model);
 		
-		if (driverName != null)
-		{
+		if (driverName != null) {
 			sb.append(":" + driverName);
 		}
 		
 		sb.append(":" + passengerCapacity);
 		
-		if (bookingAvailable())
-		{
+		if (bookingAvailable()) {
 			sb.append(":" + "YES");
-		} else
-		{
+		} else {
 			sb.append(":" + "NO");
 		}
 		
@@ -269,31 +245,25 @@ public class Car
 	}
 
 	// Required getters
-	public String getRegistrationNumber()
-	{
+	public String getRegistrationNumber() {
 		return regNo;
 	}
 
-	public String getDriverName()
-	{
+	public String getDriverName() {
 		return driverName;
 	}
 
-	public double getTripFee()
-	{
+	public double getTripFee() {
 		return tripFee;
 	}
 
 	/*
 	 * Checks to see if any past bookings have been recorded
 	 */
-	protected boolean hasBookings(Booking[] bookings)
-	{
+	protected boolean hasBookings(Booking[] bookings) {
 		boolean found = false;
-		for (int i = 0; i < bookings.length; i++)
-		{
-			if (bookings[i] != null)
-			{
+		for (int i = 0; i < bookings.length; i++) {
+			if (bookings[i] != null) {
 				found = true;
 			}
 		}
@@ -303,8 +273,7 @@ public class Car
 	/*
 	 * Processes the completion of the booking
 	 */
-	private String completeBooking(int bookingIndex, double kilometers)
-	{
+	private String completeBooking(int bookingIndex, double kilometers) {
 		tripFee = 0;
 		Booking booking = currentBookings[bookingIndex];
 		// Remove booking from current bookings array.
@@ -317,10 +286,8 @@ public class Car
 		tripFee += fee;
 		booking.completeBooking(kilometers, fee, STANDARD_BOOKING_FEE);
 		// add booking to past bookings
-		for (int i = 0; i < pastBookings.length; i++)
-		{
-			if (pastBookings[i] == null)
-			{
+		for (int i = 0; i < pastBookings.length; i++) {
+			if (pastBookings[i] == null) {
 				pastBookings[i] = booking;
 				break;
 			}
@@ -336,19 +303,15 @@ public class Car
 	 * the index of the booking if found. Otherwise it returns -1 to indicate the
 	 * booking was not found.
 	 */
-	private int getBookingByDate(String firstName, String lastName, DateTime dateOfBooking)
-	{
+	private int getBookingByDate(String firstName, String lastName, DateTime dateOfBooking) {
 		System.out.println();
-		for (int i = 0; i < currentBookings.length; i++)
-		{
-			if (currentBookings[i] != null)
-			{
+		for (int i = 0; i < currentBookings.length; i++) {
+			if (currentBookings[i] != null) {
 				Booking booking = currentBookings[i];
 				boolean firstNameMatch = booking.getFirstName().toUpperCase().equals(firstName.toUpperCase());
 				boolean lastNameMatch = booking.getLastName().toUpperCase().equals(lastName.toUpperCase());
 				boolean dateMatch = DateUtilities.datesAreTheSame(dateOfBooking, currentBookings[i].getBookingDate());
-				if (firstNameMatch && lastNameMatch && dateMatch)
-				{
+				if (firstNameMatch && lastNameMatch && dateMatch) {
 					return i;
 				}
 			}
@@ -361,17 +324,13 @@ public class Car
 	 * index of the booking if found. Otherwise it returns -1 to indicate the
 	 * booking was not found.
 	 */
-	public int getBookingByName(String firstName, String lastName)
-	{
-		for (int i = 0; i < currentBookings.length; i++)
-		{
-			if (currentBookings[i] != null)
-			{
+	public int getBookingByName(String firstName, String lastName) {
+		for (int i = 0; i < currentBookings.length; i++) {
+			if (currentBookings[i] != null) {
 				boolean firstNameMatch = currentBookings[i].getFirstName().toUpperCase()
 						.equals(firstName.toUpperCase());
 				boolean lastNameMatch = currentBookings[i].getLastName().toUpperCase().equals(lastName.toUpperCase());
-				if (firstNameMatch && lastNameMatch)
-				{
+				if (firstNameMatch && lastNameMatch) {
 					return i;
 				}
 			}
@@ -382,12 +341,10 @@ public class Car
 	/*
 	 * A record marker mark the beginning of a record.
 	 */
-	protected String getRecordMarker()
-	{
+	protected String getRecordMarker() {
 		final int RECORD_MARKER_WIDTH = 60;
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < RECORD_MARKER_WIDTH; i++)
-		{
+		for (int i = 0; i < RECORD_MARKER_WIDTH; i++) {
 			sb.append("_");
 		}
 		sb.append("\n");
@@ -397,11 +354,9 @@ public class Car
 	/*
 	 * Checks to see if the number of passengers falls within the accepted range.
 	 */
-	protected boolean numberOfPassengersIsValid(int numPassengers)
-	{
+	protected boolean numberOfPassengersIsValid(int numPassengers) {
 		if (numPassengers >= MINIMUM_PASSENGER_CAPACITY && numPassengers < MAXIUM_PASSENGER_CAPACITY
-				&& numPassengers <= passengerCapacity)
-		{
+				&& numPassengers <= passengerCapacity) {
 			return true;
 		}
 		return false;
@@ -410,8 +365,7 @@ public class Car
 	/*
 	 * Checks that the date is not in the past or more than 7 days in the future.
 	 */
-	protected boolean dateIsValid(DateTime date)
-	{
+	protected boolean dateIsValid(DateTime date) {
 		return DateUtilities.dateIsNotInPast(date) && DateUtilities.dateIsNotMoreThan7Days(date);
 	}
 
@@ -419,18 +373,12 @@ public class Car
 	 * Indicates if a booking spot is available. If it is then the index of the
 	 * available spot is assigned to bookingSpotFree.
 	 */
-	protected boolean bookingAvailable()
-	{
-		for (int i = 0; i < currentBookings.length; i++)
-		{
-			if (currentBookings[i] == null)
-			{
-				if(i == currentBookings.length - 1)
-				{
+	protected boolean bookingAvailable() {
+		for (int i = 0; i < currentBookings.length; i++) {
+			if (currentBookings[i] == null) {
+				if(i == currentBookings.length - 1) {
 					available = false;
-				}
-				else
-				{
+				} else {
 					available = true;
 				}
 				bookingSpotAvailable = i;
@@ -443,16 +391,12 @@ public class Car
 	/*
 	 * Checks to see if if the car is currently booked on the date specified.
 	 */
-	protected boolean notCurrentlyBookedOnDate(DateTime date)
-	{
+	protected boolean notCurrentlyBookedOnDate(DateTime date) {
 		boolean foundDate = true;
-		for (int i = 0; i < currentBookings.length; i++)
-		{
-			if (currentBookings[i] != null)
-			{
+		for (int i = 0; i < currentBookings.length; i++) {
+			if (currentBookings[i] != null) {
 				int days = DateTime.diffDays(date, currentBookings[i].getBookingDate());
-				if (days == 0)
-				{
+				if (days == 0) {
 					return false;
 				}
 			}
@@ -463,13 +407,10 @@ public class Car
 	/*
 	 * Validates and sets the registration number
 	 */
-	private void setRegNo(String regNo)
-	{
-		if (!MiRidesUtilities.isRegNoValid(regNo).contains("Error:"))
-		{
+	private void setRegNo(String regNo) {
+		if (!MiRidesUtilities.isRegNoValid(regNo).contains("Error:")) {
 			this.regNo = regNo;
-		} else
-		{
+		} else {
 			this.regNo = "Invalid";
 		}
 	}
@@ -477,16 +418,13 @@ public class Car
 	/*
 	 * Validates and sets the passenger capacity
 	 */
-	private void setPassengerCapacity(int passengerCapacity)
-	{
+	private void setPassengerCapacity(int passengerCapacity) {
 		boolean validPasengerCapcity = passengerCapacity >= MINIMUM_PASSENGER_CAPACITY
 				&& passengerCapacity < MAXIUM_PASSENGER_CAPACITY;
 
-		if (validPasengerCapcity)
-		{
+		if (validPasengerCapcity) {
 			this.passengerCapacity = passengerCapacity;
-		} else
-		{
+		} else {
 			this.passengerCapacity = -1;
 		}
 	}

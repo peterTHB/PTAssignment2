@@ -3,13 +3,13 @@ package cars;
 import utilities.DateTime;
 import utilities.DateUtilities;
 
-public class SilverServiceCar extends Car{
+public class SilverServiceCar extends Car {
 
 	private double bookingFee;
 	private String[] refreshments;
 	
-	public SilverServiceCar(String regNo, String make, String model, String driverName, int passengerCapacity,
-							double bookingFee, String[] refreshments) {
+	public SilverServiceCar(String regNo, String make, String model, String driverName, 
+							int passengerCapacity, double bookingFee, String[] refreshments) {
 		super(regNo, make, model, driverName, passengerCapacity);
 		
 		this.bookingFee = bookingFee;
@@ -23,8 +23,7 @@ public class SilverServiceCar extends Car{
 	}
 	
 	public boolean book(String firstName, String lastName, DateTime required, int numPassengers, 
-						double bookingFee, String[] refreshments)
-	{
+						double bookingFee, String[] refreshments) {
 		boolean booked = false;
 		// Does car have five bookings
 		available = bookingAvailable();
@@ -40,8 +39,8 @@ public class SilverServiceCar extends Car{
 		boolean addRefreshments = checkRefreshments(refreshments);
 
 		// Booking is permissible
-		if (available && dateAvailable && dateValid && validPassengerNumber && validBookingFee && addRefreshments)
-		{
+		if (available && dateAvailable && dateValid && validPassengerNumber && 
+			validBookingFee && addRefreshments) {
 			tripFee = bookingFee * 0.40;
 			Booking booking = new Booking(firstName, lastName, required, numPassengers, this);
 			currentBookings[bookingSpotAvailable] = booking;
@@ -51,8 +50,7 @@ public class SilverServiceCar extends Car{
 		return booked;
 	}
 	
-	public String getDetails()
-	{
+	public String getDetails() {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(getRecordMarker());
@@ -62,11 +60,9 @@ public class SilverServiceCar extends Car{
 		sb.append(String.format("%-15s %s\n", "Driver Name:", driverName));
 		sb.append(String.format("%-15s %s\n", "Capacity:", passengerCapacity));
 
-		if (bookingAvailable())
-		{
+		if (bookingAvailable()) {
 			sb.append(String.format("%-15s %s\n", "Available:", "YES"));
-		} else
-		{
+		} else {
 			sb.append(String.format("%-15s %s\n", "Available:", "NO"));
 		}
 		
@@ -159,8 +155,7 @@ public class SilverServiceCar extends Car{
 	/*
 	 * Checks that the date is not in the past or more than 3 days in the future.
 	 */
-	protected boolean dateIsValid(DateTime date)
-	{
+	protected boolean dateIsValid(DateTime date) {
 		return DateUtilities.dateIsNotInPast(date) && DateUtilities.dateIsNotMoreThan3Days(date);
 	}
 	
