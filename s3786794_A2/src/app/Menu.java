@@ -1,6 +1,7 @@
 package app;
 
-import java.util.Scanner;
+import java.util.*;
+import exceptions.*;
 import utilities.DateTime;
 import utilities.DateUtilities;
 
@@ -12,6 +13,7 @@ import utilities.DateUtilities;
 public class Menu {
 	private Scanner console = new Scanner(System.in);
 	private MiRideApplication application = new MiRideApplication();
+	private ManageExceptions manageExcep = new ManageExceptions();
 	// Allows me to turn validation on/off for testing business logic in the
 	// classes.
 	private boolean testingWithValidation = true;
@@ -35,10 +37,25 @@ public class Menu {
 
 				switch (input) {
 				case "CC":
-					createCar();
+					try {
+						createCar();
+					} catch (NumberFormatException nf) {
+						System.out.println("\nNo numbers inputted.");
+					} catch (InvalidRefreshments ir) {
+						System.out.println("\nInvalid refreshments list.");
+					} catch (InvalidId id) {
+						// TODO Auto-generated catch block
+						System.out.println("\nInvalid registration number input.");
+					}
 					break;
 				case "BC":
-					book();
+					try {
+						book();
+					} catch (NoSuchElementException ns) {
+						System.out.println("No elements detected from input.");
+					} catch (InvalidDate iv) {
+						System.out.println("Invalid date input.");
+					}
 					break;
 				case "CB":
 					completeBooking();
@@ -63,7 +80,6 @@ public class Menu {
 				default:
 					System.out.println("Error, invalid option selected!");
 					System.out.println("Please try Again...");
-					System.out.println("Need some answers?");
 				}
 			}
 
@@ -73,7 +89,7 @@ public class Menu {
 	/*
 	 * Creates cars for use in the system available or booking.
 	 */
-	private void createCar() {
+	private void createCar() throws NumberFormatException, InvalidRefreshments, InvalidId {
 		String id = "", make, model, driverName, refreshments;
 		int carType;
 		int numPassengers = 0;
@@ -110,6 +126,9 @@ public class Menu {
 				System.out.print("Enter list of Refreshments: ");
 				refreshments = console.nextLine();
 				
+				manageExcep.refreshDupCheck(refreshments);
+				manageExcep.refreshLimitCheck(refreshments);
+				
 				makeSilver(id, make, model, driverName, numPassengers, bookingFee, refreshments);
 			}
 		}
@@ -118,9 +137,12 @@ public class Menu {
 	/*
 	 * Book a car by finding available cars for a specified date.
 	 */
-	private boolean book() {
+	private boolean book() throws NoSuchElementException, InvalidDate {
 		System.out.println("Booking date(dd/mm/yyyy): ");
 		String dateEntered = console.nextLine();
+		
+		manageExcep.dateCheck(dateEntered);
+		
 		String[] dateCheckAvailable = dateEntered.split("/");
 		int day = Integer.parseInt(dateCheckAvailable[0]);
 		int month = Integer.parseInt(dateCheckAvailable[1]);
@@ -228,7 +250,7 @@ public class Menu {
 	 * Boolean value for indicating test mode allows by passing validation to test
 	 * program without user input validation.
 	 */
-	private String promptUserForRegNo() {
+	private String promptUserForRegNo() throws InvalidId {
 		String regNo = "";
 		boolean validRegistrationNumber = false;
 		// By pass user input validation.
@@ -237,6 +259,7 @@ public class Menu {
 		} else {
 			while (!validRegistrationNumber) {
 				regNo = console.nextLine().toUpperCase();
+				manageExcep.regNoCheck(regNo);
 				boolean exists = application.checkIfCarExists(regNo);
 				if(exists) {
 					// Empty string means the menu will not try to process
