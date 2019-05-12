@@ -44,11 +44,14 @@ public class Menu {
 					completeBooking();
 					break;
 				case "DA":
-					System.out.println(application.displayAllBookings());
+					displayAllCars();
 					break;
 				case "SS":
 					System.out.print("Enter Registration Number: ");
 					System.out.println(application.displaySpecificCar(console.nextLine()));
+					break;
+				case "SA":
+					displayAvailable();
 					break;
 				case "SD":
 					application.seedData();
@@ -56,9 +59,6 @@ public class Menu {
 				case "EX":
 					choice = "EX";
 					System.out.println("Exiting Program ... Goodbye!");
-					break;
-				case "TE":
-					application.printToString();
 					break;
 				default:
 					System.out.println("Error, invalid option selected!");
@@ -74,7 +74,8 @@ public class Menu {
 	 * Creates cars for use in the system available or booking.
 	 */
 	private void createCar() {
-		String id = "", make, model, driverName, carType = "", refreshments;
+		String id = "", make, model, driverName, refreshments;
+		int carType;
 		int numPassengers = 0;
 		double bookingFee = 0;
 
@@ -94,27 +95,23 @@ public class Menu {
 			System.out.print("Enter number of passengers: ");
 			numPassengers = promptForPassengerNumbers();
 			
-			System.out.print("Enter service type(SD/SS): ");
-			carType = console.nextLine().toUpperCase();
+			// String input was not registering, so int is used instead
+			System.out.println("Enter service type:");
+			System.out.print("(1 for SD/2 for SS): " );
+			carType = Integer.parseInt(console.nextLine());
 			
-			if (carType == "SD") {
-				System.out.println(carType);
-			} else if (carType == "SS") {
-				System.out.println(carType);
+			if (carType == 1) {
+				makeStandard(id, make, model, driverName, numPassengers);
 			}
-			
-//			if (carType == "SD") {
-//				makeStandard(id, make, model, driverName, numPassengers);
-//			}
-//			if (carType == "SS") {
-//				System.out.println("Enter Standard Fee: ");
-//				bookingFee = promptForBookingFee();
-//				
-//				System.out.println("Enter list of Refreshments: ");
-//				refreshments = console.nextLine();
-//				
-//				makeSilver(id, make, model, driverName, numPassengers, bookingFee, refreshments);
-//			}
+			if (carType == 2) {
+				System.out.print("Enter Standard Fee: ");
+				bookingFee = promptForBookingFee();
+				
+				System.out.print("Enter list of Refreshments: ");
+				refreshments = console.nextLine();
+				
+				makeSilver(id, make, model, driverName, numPassengers, bookingFee, refreshments);
+			}
 		}
 	}
 
@@ -166,7 +163,7 @@ public class Menu {
 	 */
 	private void completeBooking() {
 		System.out.print("Enter Registration or Booking Date:");
-		String response = console.nextLine();
+		String response = console.nextLine().toUpperCase();
 		
 		String result;
 		// User entered a booking date
@@ -290,27 +287,6 @@ public class Menu {
 			return bookingFee;
 		}
 	}
-
-	/*
-	 * Prints the menu.
-	 */
-	private void printMenu()
-	{
-		System.out.printf("\n********** MiRide System Menu **********\n\n");
-
-		System.out.printf("%-30s %s\n", "Create Car", "CC");
-		System.out.printf("%-30s %s\n", "Book Car", "BC");
-		System.out.printf("%-30s %s\n", "Complete Booking", "CB");
-		System.out.printf("%-30s %s\n", "Display ALL Cars", "DA");
-		System.out.printf("%-30s %s\n", "Search Specific Car", "SS");
-		System.out.printf("%-30s %s\n", "Search Available Cars", "SA");
-		System.out.printf("%-30s %s\n", "Seed Data", "SD");
-		System.out.printf("%-30s %s\n", "Exit Program", "EX");
-		// Testing purposes
-		System.out.printf("%-30s %s\n", "Print out to strings of cars", "TE");
-		System.out.println("\nEnter your selection: ");
-		System.out.println("(Hit enter to cancel any operation)");
-	}
 	
 	private void makeStandard(String id, String make, String model, String driverName, int numPassengers) {
 		boolean result = application.checkIfCarExists(id);
@@ -332,5 +308,62 @@ public class Menu {
 		} else {
 			System.out.println("Error - Already exists in the system");
 		}
+	}
+	
+	private void displayAvailable() {
+		int type = 0;
+		String dateInput = "";
+		
+		// String input is not registering, so ints used as a substitute
+		System.out.println("Enter Type:");
+		System.out.print("(1 for SD/2 for SS): ");
+		type = Integer.parseInt(console.nextLine());
+		
+		System.out.print("Enter Date: ");
+		dateInput = console.nextLine();
+		
+		String[] dateCheckAvailable = dateInput.split("/");
+		int day = Integer.parseInt(dateCheckAvailable[0]);
+		int month = Integer.parseInt(dateCheckAvailable[1]);
+		int year = Integer.parseInt(dateCheckAvailable[2]);
+		
+		DateTime dateRequired = new DateTime(day, month, year);
+		
+		System.out.println(application.displayAvailable(type, dateRequired));
+	}
+	
+	private void displayAllCars() {
+		int type = 0; 
+		int order = 0;
+		
+		// String input is not registering, so ints used as a substitute
+		System.out.println("Enter Type:");
+		System.out.print("(1 for SD, 2 for SS): ");
+		type = Integer.parseInt(console.nextLine());
+		
+		System.out.println("\nEnter sort order: ");
+		System.out.print("(1 for A, 2 for D): ");
+		order = Integer.parseInt(console.nextLine());
+		
+		System.out.println(application.displayAllBookings(type, order));
+	}
+
+	/*
+	 * Prints the menu.
+	 */
+	private void printMenu()
+	{
+		System.out.printf("\n********** MiRide System Menu **********\n\n");
+
+		System.out.printf("%-30s %s\n", "Create Car", "CC");
+		System.out.printf("%-30s %s\n", "Book Car", "BC");
+		System.out.printf("%-30s %s\n", "Complete Booking", "CB");
+		System.out.printf("%-30s %s\n", "Display ALL Cars", "DA");
+		System.out.printf("%-30s %s\n", "Search Specific Car", "SS");
+		System.out.printf("%-30s %s\n", "Search Available Cars", "SA");
+		System.out.printf("%-30s %s\n", "Seed Data", "SD");
+		System.out.printf("%-30s %s\n", "Exit Program", "EX");
+		System.out.println("\nEnter your selection: ");
+		System.out.println("(Hit enter to cancel any operation)");
 	}
 }

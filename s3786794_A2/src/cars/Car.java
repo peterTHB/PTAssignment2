@@ -16,6 +16,7 @@ public class Car {
 	protected String model;
 	protected String driverName;
 	protected int passengerCapacity;
+	protected String carType;
 
 	// Tracking bookings
 	protected Booking[] currentBookings;
@@ -36,9 +37,10 @@ public class Car {
 		this.make = make;
 		this.model = model;
 		this.driverName = driverName;
+		this.carType = "SD";
 		available = true;
 		currentBookings = new Booking[5];
-		pastBookings = new Booking[10];
+		pastBookings = new Booking[15];
 	}
 
 	/*
@@ -190,7 +192,6 @@ public class Car {
 	/*
 	 * Computer readable state of the car
 	 */
-
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
@@ -245,14 +246,18 @@ public class Car {
 	}
 
 	// Required getters
-	public String getRegistrationNumber() {
+	public String getRegNo() {
 		return regNo;
 	}
 
 	public String getDriverName() {
 		return driverName;
 	}
-
+	
+	public String getCarType() {
+		return carType;
+	}
+	
 	public double getTripFee() {
 		return tripFee;
 	}
@@ -273,7 +278,7 @@ public class Car {
 	/*
 	 * Processes the completion of the booking
 	 */
-	private String completeBooking(int bookingIndex, double kilometers) {
+	protected String completeBooking(int bookingIndex, double kilometers) {
 		tripFee = 0;
 		Booking booking = currentBookings[bookingIndex];
 		// Remove booking from current bookings array.
@@ -281,7 +286,6 @@ public class Car {
 		bookingSpotAvailable = bookingIndex;
 
 		// call complete booking on Booking object
-		// double kilometersTravelled = Math.random()* 100;
 		double fee = kilometers * (STANDARD_BOOKING_FEE * 0.3);
 		tripFee += fee;
 		booking.completeBooking(kilometers, fee, STANDARD_BOOKING_FEE);
@@ -303,7 +307,7 @@ public class Car {
 	 * the index of the booking if found. Otherwise it returns -1 to indicate the
 	 * booking was not found.
 	 */
-	private int getBookingByDate(String firstName, String lastName, DateTime dateOfBooking) {
+	protected int getBookingByDate(String firstName, String lastName, DateTime dateOfBooking) {
 		System.out.println();
 		for (int i = 0; i < currentBookings.length; i++) {
 			if (currentBookings[i] != null) {
@@ -407,7 +411,7 @@ public class Car {
 	/*
 	 * Validates and sets the registration number
 	 */
-	private void setRegNo(String regNo) {
+	protected void setRegNo(String regNo) {
 		if (!MiRidesUtilities.isRegNoValid(regNo).contains("Error:")) {
 			this.regNo = regNo;
 		} else {
@@ -418,7 +422,7 @@ public class Car {
 	/*
 	 * Validates and sets the passenger capacity
 	 */
-	private void setPassengerCapacity(int passengerCapacity) {
+	protected void setPassengerCapacity(int passengerCapacity) {
 		boolean validPasengerCapcity = passengerCapacity >= MINIMUM_PASSENGER_CAPACITY
 				&& passengerCapacity < MAXIUM_PASSENGER_CAPACITY;
 

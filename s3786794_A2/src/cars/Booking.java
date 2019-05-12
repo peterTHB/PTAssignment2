@@ -23,7 +23,7 @@ public class Booking {
 	private final int NAME_MINIMUM_LENGTH = 3;
 
 	public Booking(String firstName, String lastName, DateTime required, int numPassengers, Car car) {
-		generateId(car.getRegistrationNumber(), firstName, lastName, required);
+		generateId(car.getRegNo(), firstName, lastName, required);
 		validateAndSetDate(required);
 		validateName(firstName, lastName);
 		this.numPassengers = numPassengers;
@@ -62,7 +62,7 @@ public class Booking {
 			sb.append(String.format("%-16s%-20s %.2f\n", " ", "Travelled:", kilometersTravelled));
 			sb.append(String.format("%-16s%-20s %.2f\n", " ", "Trip Fee:", tripFee));
 		}
-		sb.append(String.format("%-16s%-20s %s\n", " ", "Car Id:", car.getRegistrationNumber()));
+		sb.append(String.format("%-16s%-20s %s\n", " ", "Car Id:", car.getRegNo()));
 		
 		return sb.toString();
 	}
@@ -84,7 +84,7 @@ public class Booking {
 		sb.append(":" + numPassengers);
 		sb.append(":" + kilometersTravelled);
 		sb.append(":" + tripFee);
-		sb.append(":" + car.getRegistrationNumber());
+		sb.append(":" + car.getRegNo());
 		
 		return sb.toString();
 	}

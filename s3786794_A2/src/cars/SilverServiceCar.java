@@ -12,6 +12,7 @@ public class SilverServiceCar extends Car {
 							int passengerCapacity, double bookingFee, String[] refreshments) {
 		super(regNo, make, model, driverName, passengerCapacity);
 		
+		this.carType = "SS";
 		this.bookingFee = bookingFee;
 		this.refreshments = refreshments;
 	}
@@ -22,14 +23,14 @@ public class SilverServiceCar extends Car {
 		return refreshList;
 	}
 	
-	public boolean book(String firstName, String lastName, DateTime required, int numPassengers, 
-						double bookingFee, String[] refreshments) {
+	@Override
+	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) {
 		boolean booked = false;
 		// Does car have five bookings
 		available = bookingAvailable();
 		// If the car is available to be booked on that date
 		boolean dateAvailable = notCurrentlyBookedOnDate(required);
-		// Date is within range, not in past and within the next week
+		// Date is within range, not in past and within 3 days
 		boolean dateValid = dateIsValid(required);
 		// Number of passengers does not exceed the passenger capacity and is not zero.
 		boolean validPassengerNumber = numberOfPassengersIsValid(numPassengers);
@@ -41,7 +42,7 @@ public class SilverServiceCar extends Car {
 		// Booking is permissible
 		if (available && dateAvailable && dateValid && validPassengerNumber && 
 			validBookingFee && addRefreshments) {
-			tripFee = bookingFee * 0.40;
+			tripFee = bookingFee;
 			Booking booking = new Booking(firstName, lastName, required, numPassengers, this);
 			currentBookings[bookingSpotAvailable] = booking;
 			bookingSpotAvailable++;
@@ -50,6 +51,35 @@ public class SilverServiceCar extends Car {
 		return booked;
 	}
 	
+	/*
+	 * Processes the completion of the booking
+	 */
+	@Override
+	protected String completeBooking(int bookingIndex, double kilometers) {
+		tripFee = 0;
+		Booking booking = currentBookings[bookingIndex];
+		// Remove booking from current bookings array.
+		currentBookings[bookingIndex] = null;
+		bookingSpotAvailable = bookingIndex;
+
+		// call complete booking on Booking object
+		double fee = kilometers * (bookingFee * 0.4);
+		tripFee += fee;
+		booking.completeBooking(kilometers, fee, bookingFee);
+		// add booking to past bookings
+		for (int i = 0; i < pastBookings.length; i++) {
+			if (pastBookings[i] == null) {
+				pastBookings[i] = booking;
+				break;
+			}
+		}
+		String result = String.format("Thank you for riding with MiRide.\nWe hope you enjoyed your trip.\n$"
+				+ "%.2f has been deducted from your account.", tripFee);
+		tripFee = 0;
+		return result;
+	}
+	
+	@Override
 	public String getDetails() {
 		StringBuilder sb = new StringBuilder();
 
@@ -59,6 +89,7 @@ public class SilverServiceCar extends Car {
 
 		sb.append(String.format("%-15s %s\n", "Driver Name:", driverName));
 		sb.append(String.format("%-15s %s\n", "Capacity:", passengerCapacity));
+		sb.append(String.format("%-15s %s\n", "Standard Fee:", "$" + bookingFee));
 
 		if (bookingAvailable()) {
 			sb.append(String.format("%-15s %s\n", "Available:", "YES"));
@@ -67,10 +98,10 @@ public class SilverServiceCar extends Car {
 		}
 		
 		if (checkRefreshments(refreshments) == true) {
-			sb.append("\nRefreshments Available");
+			sb.append("\nRefreshments Available\n");
 			for (int i = 0; i < refreshments.length; i++) {
 				if (refreshments[i] != null) {
-					sb.append(String.format("%-12s %s", "Item " + (i + 1) + ":", refreshments[i]));
+					sb.append(String.format("%-12s %s\n", "Item " + (i + 1) + ":", refreshments[i]));
 				}
 			}
 		}
@@ -96,41 +127,6 @@ public class SilverServiceCar extends Car {
 		return sb.toString();
 	}
 	
-	// Test if this toString method has been overridden or not
-//	public String toString()
-//	{
-//		StringBuilder sb = new StringBuilder();
-//		
-//		if (!hasBookings(currentBookings)) {
-//			sb.append(firstBuilder());
-//			sb.append("\n");
-//		}
-//		
-//		if (hasBookings(currentBookings)) {
-//			sb.append(firstBuilder());
-//			sb.append("|");
-//			for (int i = 0; i < currentBookings.length; i++) {
-//				if (currentBookings[i] != null) {
-//					sb.append(currentBookings[i].toString());
-//				}
-//			}
-//			sb.append("\n");
-//		}
-//		
-//		if (hasBookings(pastBookings)) {
-//			sb.append(firstBuilder());
-//			sb.append("|");
-//			for (int i = 0; i < pastBookings.length; i++) {
-//				if (pastBookings[i] != null) {
-//					sb.append(pastBookings[i].toString());
-//				}
-//			}
-//			sb.append("\n");
-//		}
-//
-//		return sb.toString();
-//	}
-	
 	@Override
 	public String firstBuilder() {
 		StringBuilder sb = new StringBuilder();
@@ -141,10 +137,10 @@ public class SilverServiceCar extends Car {
 		if (refreshments != null) {
 			for (int i = 0; i < refreshments.length; i++) {
 				if (refreshments[i] != null && !(i == refreshments.length - 1)) {
-					sb.append("Item " + (i + 1) + refreshments[i] + ":");
+					sb.append("Item " + (i + 1) + " " + refreshments[i] + ":");
 				}
 				if (i == refreshments.length - 1) {
-					sb.append("Item " + (i + 1) + refreshments[i]);
+					sb.append("Item " + (i + 1) + " " + refreshments[i]);
 				}
 			}
 		}
@@ -155,6 +151,7 @@ public class SilverServiceCar extends Car {
 	/*
 	 * Checks that the date is not in the past or more than 3 days in the future.
 	 */
+	@Override
 	protected boolean dateIsValid(DateTime date) {
 		return DateUtilities.dateIsNotInPast(date) && DateUtilities.dateIsNotMoreThan3Days(date);
 	}
