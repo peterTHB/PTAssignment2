@@ -260,13 +260,13 @@ public class MiRideApplication {
 		cars[itemCount] = mazda;
 		itemCount++;
 
-		String[] refreshment2 = "Pepsi,7Up".split(",");
+		String[] refreshment2 = "Pepsi,7Up,Lollipop".split(",");
 		Car chrysler = new SilverServiceCar("CHR945", "Chrysler", "300 SRT", "Royal Chaos", 5, 3.8, refreshment2);
 		cars[itemCount] = chrysler;
 		itemCount++;
 		
 		// 1 booking
-		String[] refreshment3 = "Coke,Scheweppes".split(",");
+		String[] refreshment3 = "Coke,Scheweppes,Chupa Chups".split(",");
 		Car mitsubishi = new SilverServiceCar("MIT345", "Mitsubishi", "Triton", "Pat Nguyen", 5, 4.6, refreshment3);
 		cars[itemCount] = mitsubishi;
 		itemCount++;
@@ -291,7 +291,7 @@ public class MiRideApplication {
 		holden.completeBooking("Kamina", "Simon", inOneDay, 50);
 		
 		// 1 booked, 1 completed
-		String[] refreshment6 = "Mints,Soda Water".split(",");
+		String[] refreshment6 = "Mints,Soda Water,Water".split(",");
 		Car kia = new SilverServiceCar("KIA047", "Kia", "Cerato", "Pike Johann", 4, 5, refreshment6);
 		cars[itemCount] = kia;
 		itemCount++;
