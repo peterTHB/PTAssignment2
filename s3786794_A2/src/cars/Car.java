@@ -1,5 +1,8 @@
 package cars;
 
+import java.util.InputMismatchException;
+
+import exceptions.*;
 import utilities.DateTime;
 import utilities.DateUtilities;
 import utilities.MiRidesUtilities;
@@ -34,7 +37,10 @@ public class Car {
 	private final int MAXIUM_PASSENGER_CAPACITY = 10;
 	private final int MINIMUM_PASSENGER_CAPACITY = 1;
 
-	public Car(String regNo, String make, String model, String driverName, int passengerCapacity) {
+	public Car(String regNo, String make, String model, String driverName, int passengerCapacity) throws InvalidId, InputMismatchException {
+		
+		checkInputMatch(regNo, make, model, driverName);
+		
 		setRegNo(regNo); // Validates and sets registration number
 		setPassengerCapacity(passengerCapacity); // Validates and sets passenger capacity
 
@@ -76,9 +82,9 @@ public class Car {
 	 * Booking car on a date for which it is already booked
 	 * Booking six cars
 	 */
-
-	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) {
+	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) throws InvalidBooking, InvalidDate {
 		boolean booked = false;
+		
 		// Does car have five bookings
 		available = bookingAvailable();
 		boolean dateAvailable = notCurrentlyBookedOnDate(required);
@@ -93,6 +99,8 @@ public class Car {
 			currentBookings[bookingSpotAvailable] = booking;
 			bookingSpotAvailable++;
 			booked = true;
+		} else {
+			throw new InvalidBooking();
 		}
 		return booked;
 	}
@@ -239,7 +247,7 @@ public class Car {
 
 		sb.append(String.format("%-15s %s\n", "Driver Name:", driverName));
 		sb.append(String.format("%-15s %s\n", "Capacity:", passengerCapacity));
-		sb.append(String.format("%-15s %s\n", "Standard Fee:", "$" + STANDARD_BOOKING_FEE));
+		sb.append(String.format("%-15s %s\n", "Standard Fee:", "$" + tripFee));
 
 		if (bookingAvailable()) {
 			sb.append(String.format("%-15s %s\n", "Available:", "YES"));
@@ -314,16 +322,14 @@ public class Car {
 	 * Processes the completion of the booking
 	 */
 	protected String completeBooking(int bookingIndex, double kilometers) {
-		tripFee = 0;
 		Booking booking = currentBookings[bookingIndex];
 		// Remove booking from current bookings array.
 		currentBookings[bookingIndex] = null;
 		bookingSpotAvailable = bookingIndex;
 
 		// call complete booking on Booking object
-		double fee = kilometers * (STANDARD_BOOKING_FEE * 0.3);
-		tripFee += fee;
-		booking.completeBooking(kilometers, fee, STANDARD_BOOKING_FEE);
+		double fee = kilometers * (tripFee * 0.3);
+		booking.completeBooking(kilometers, fee, tripFee);
 		// add booking to past bookings
 		for (int i = 0; i < pastBookings.length; i++) {
 			if (pastBookings[i] == null) {
@@ -332,8 +338,7 @@ public class Car {
 			}
 		}
 		String result = String.format("Thank you for riding with MiRide.\nWe hope you enjoyed your trip.\n$"
-				+ "%.2f has been deducted from your account.", tripFee);
-		tripFee = 0;
+				+ "%.2f has been deducted from your account.", fee);
 		return result;
 	}
 
@@ -404,8 +409,12 @@ public class Car {
 	/*
 	 * Checks that the date is not in the past or more than 7 days in the future.
 	 */
-	protected boolean dateIsValid(DateTime date) {
-		return DateUtilities.dateIsNotInPast(date) && DateUtilities.dateIsNotMoreThan7Days(date);
+	protected boolean dateIsValid(DateTime date) throws InvalidDate {
+		if (!DateUtilities.dateIsNotInPast(date) || !DateUtilities.dateIsNotMoreThan7Days(date)) {
+			throw new InvalidDate();
+		} else {
+			return true;
+		}
 	}
 
 	/*
@@ -442,15 +451,33 @@ public class Car {
 		}
 		return foundDate;
 	}
+	
+	/*
+	 * Checks if user input is the correct type of input
+	 * i.e: make and model are strings
+	 */
+	protected boolean checkInputMatch(String regNo, String make, String model, String driverName) throws InputMismatchException {
+		boolean checkReg1 = regNo.substring(0, 3).matches("[a-zA-Z]+");
+		boolean checkReg2 = regNo.substring(3, 6).matches("[0-9]+");
+		boolean checkMake = make.matches("[a-zA-Z]+");
+		boolean checkModel = model.matches("[a-zA-Z0-9._-]+ ?[a-zA-Z0-9._-]+");
+		boolean checkDriver = driverName.matches("[a-zA-Z._-]+ ?[a-zA-Z._-]+ ?[a-zA-Z._-]+");
+		
+		if (checkReg1 && checkReg2 && checkMake && checkModel && checkDriver) {
+			return true;
+		} else {
+			throw new InputMismatchException();
+		}
+	}
 
 	/*
 	 * Validates and sets the registration number
 	 */
-	protected void setRegNo(String regNo) {
+	protected void setRegNo(String regNo) throws InvalidId {
 		if (!MiRidesUtilities.isRegNoValid(regNo).contains("Error:")) {
 			this.regNo = regNo;
 		} else {
-			this.regNo = "Invalid";
+			throw new InvalidId();
 		}
 	}
 

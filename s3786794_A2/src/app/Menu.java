@@ -1,9 +1,10 @@
 package app;
 
 import java.util.*;
+
 import exceptions.*;
 import utilities.DateTime;
-import utilities.DateUtilities;
+import messages.ErrorMessages;
 
 /*
  * Class:		Menu
@@ -13,14 +14,15 @@ import utilities.DateUtilities;
 public class Menu {
 	private Scanner console = new Scanner(System.in);
 	private MiRideApplication application = new MiRideApplication();
+	private ErrorMessages errorMessages = new ErrorMessages();
 	// Allows me to turn validation on/off for testing business logic in the
 	// classes.
-	private boolean testingWithValidation = true;
+	// private boolean testingWithValidation = true;
 
 	/*
 	 * Runs the menu in a loop until the user decides to exit the system.
 	 */
-	public void run() {
+	public void run() throws InvalidId, InvalidRefreshments, InvalidBooking, InvalidDate, NumberFormatException, InputMismatchException {
 		final int MENU_ITEM_LENGTH = 2;
 		String input;
 		String choice = "";
@@ -38,23 +40,30 @@ public class Menu {
 				case "CC":
 					try {
 						createCar();
-					} catch (NumberFormatException nf) {
-						System.out.println("\nNo numbers inputted.");
-					} catch (InvalidRefreshments ir) {
-						System.out.println("\nInvalid refreshments list.");
 					} catch (InvalidId id) {
-						// TODO Auto-generated catch block
-						System.out.println("\nInvalid registration number input.");
+						System.out.println(errorMessages.errorId());
+						createCar();
+					} catch (InvalidRefreshments ir) {
+						System.out.println(errorMessages.errorRefreshments());
+						createCar();
+					} catch (InputMismatchException im) {
+						System.out.println(errorMessages.errorMismatch());
+						createCar();
+					} catch (NumberFormatException nf) {
+						System.out.println(errorMessages.errorNumeric());
+						createCar();
 					}
 					break;
 				case "BC":
 					try {
 						book();
-					} catch (NoSuchElementException ns) {
-						System.out.println("No elements detected from input.");
-					} catch (InvalidDate iv) {
-						System.out.println("Invalid date input.");
-					}
+					} catch (InvalidBooking in) {
+						System.out.println(errorMessages.errorBooking());
+						book();
+					} catch (InvalidDate id) {
+						System.out.println(errorMessages.errorDate());
+						book();
+					} 
 					break;
 				case "CB":
 					completeBooking();
@@ -70,7 +79,20 @@ public class Menu {
 					displayAvailable();
 					break;
 				case "SD":
-					application.seedData();
+					try {
+						application.seedData();
+					} catch (InvalidId id) {
+						System.out.println("Data could not be seeded.\n");
+					} catch (InvalidBooking ib) {
+						System.out.println("Data could not be seeded.\n");
+					} catch (InvalidRefreshments ir) {
+						System.out.println("Data could not be seeded.\n");
+					} catch (InvalidDate id) {
+						System.out.println("Data could not be seeded.\n");
+					} catch (InputMismatchException im) {
+						System.out.println("Data could not be seeded.\n");
+					}
+					System.out.println("Data seeded.");
 					break;
 				case "EX":
 					choice = "EX";
@@ -88,13 +110,15 @@ public class Menu {
 	/*
 	 * Creates cars for use in the system available or booking.
 	 */
-	private void createCar() throws NumberFormatException, InvalidRefreshments, InvalidId {
+	private void createCar() throws InvalidId, InvalidRefreshments, InputMismatchException {
 		String id = "", make, model, driverName, refreshments, carType = "";
 		int numPassengers = 0;
 		double bookingFee = 0;
-
+		
 		System.out.print("Enter registration number: ");
-		id = promptUserForRegNo();
+		id = console.nextLine().toUpperCase();
+		//id = promptUserForRegNo();
+		
 		if (id.length() != 0) {
 			// Get details required for creating a car.
 			System.out.print("Enter Make: ");
@@ -107,7 +131,7 @@ public class Menu {
 			driverName = console.nextLine();
 
 			System.out.print("Enter number of passengers: ");
-			numPassengers = promptForPassengerNumbers();
+			numPassengers = Integer.parseInt(console.nextLine());
 
 			System.out.print("Enter service type(SD/SS): ");
 			carType = console.nextLine().toUpperCase();
@@ -117,7 +141,7 @@ public class Menu {
 			}
 			if (carType.contentEquals("SS")) {
 				System.out.print("Enter Standard Fee: ");
-				bookingFee = promptForBookingFee();
+				bookingFee = Integer.parseInt(console.nextLine());
 				
 				System.out.print("Enter list of Refreshments: ");
 				refreshments = console.nextLine();
@@ -130,7 +154,7 @@ public class Menu {
 	/*
 	 * Book a car by finding available cars for a specified date.
 	 */
-	private boolean book() throws NoSuchElementException, InvalidDate {
+	private boolean book() throws InvalidBooking, InvalidDate {
 		System.out.println("Booking date(dd/mm/yyyy): ");
 		String dateEntered = console.nextLine();
 		
@@ -141,10 +165,10 @@ public class Menu {
 		
 		DateTime dateRequired = new DateTime(day, month, year);
 		
-		if(!DateUtilities.dateIsNotInPast(dateRequired) || !DateUtilities.dateIsNotMoreThan7Days(dateRequired)) {
-			System.out.println("Date is invalid, must be within the coming week.");
-			return false;
-		}
+//		if(!DateUtilities.dateIsNotInPast(dateRequired) || !DateUtilities.dateIsNotMoreThan7Days(dateRequired)) {
+//			System.out.println("Date is invalid, must be within the coming week.");
+//			return false;
+//		}
 		
 		String[] availableCars = application.book(dateRequired);
 		for (int i = 0; i < availableCars.length; i++) {
@@ -213,95 +237,7 @@ public class Menu {
 		
 	}
 	
-	private int promptForPassengerNumbers() {
-		int numPassengers = 0;
-		boolean validPassengerNumbers = false;
-		// By pass user input validation.
-		if (!testingWithValidation) {
-			return Integer.parseInt(console.nextLine());
-		} else {
-			while (!validPassengerNumbers) {
-				numPassengers = Integer.parseInt(console.nextLine());
-
-				String validId = application.isValidPassengerCapacity(numPassengers);
-				if (validId.contains("Error:")) {
-					System.out.println(validId);
-					System.out.println("Enter passenger capacity: ");
-					System.out.println("(or hit ENTER to exit)");
-				} else {
-					validPassengerNumbers = true;
-				}
-			}
-			return numPassengers;
-		}
-	}
-
-	/*
-	 * Prompt user for registration number and validate it is in the correct form.
-	 * Boolean value for indicating test mode allows by passing validation to test
-	 * program without user input validation.
-	 */
-	private String promptUserForRegNo() throws InvalidId {
-		String regNo = "";
-		boolean validRegistrationNumber = false;
-		// By pass user input validation.
-		if (!testingWithValidation) {
-			return console.nextLine();
-		} else {
-			while (!validRegistrationNumber) {
-				regNo = console.nextLine().toUpperCase();
-				boolean exists = application.checkIfCarExists(regNo);
-				if(exists) {
-					// Empty string means the menu will not try to process
-					// the registration number
-					System.out.println("Error: Reg Number already exists");
-					return "";
-				}
-				if (regNo.length() == 0) {
-					break;
-				}
-
-				String validId = application.isValidId(regNo);
-				if (validId.contains("Error:")) {
-					System.out.println(validId);
-					System.out.println("Enter registration number: ");
-					System.out.println("(or hit ENTER to exit)");
-				} else {
-					validRegistrationNumber = true;
-				}
-			}
-			return regNo;
-		}
-	}
-	
-	/*
-	 * Checks if the booking fee for a silver car is correct
-	 */
-	
-	private double promptForBookingFee() {
-		double bookingFee = 0;
-		boolean validBookingFee = false;
-		// By pass user input validation.
-		if (!testingWithValidation) {
-			return Double.parseDouble(console.nextLine());
-		} else {
-			while (!validBookingFee) {
-				bookingFee = Double.parseDouble(console.nextLine());
-
-				String validId = application.isValidBookingFee(bookingFee);
-				if (validId.contains("Error:")) {
-					System.out.println(validId);
-					System.out.println("Enter passenger capacity: ");
-					System.out.println("(or hit ENTER to exit)");
-				} else {
-					validBookingFee = true;
-				}
-			}
-			return bookingFee;
-		}
-	}
-	
-	private void makeStandard(String id, String make, String model, String driverName, int numPassengers) {
+	private void makeStandard(String id, String make, String model, String driverName, int numPassengers) throws InvalidId, InputMismatchException {
 		boolean result = application.checkIfCarExists(id);
 
 		if (!result) {
@@ -312,7 +248,7 @@ public class Menu {
 		}
 	}
 	
-	private void makeSilver(String id, String make, String model, String driverName, int numPassengers, double bookingFee, String refreshments) {
+	private void makeSilver(String id, String make, String model, String driverName, int numPassengers, double bookingFee, String refreshments) throws InvalidId, InvalidRefreshments {
 		boolean result = application.checkIfCarExists(id);
 
 		if (!result) {

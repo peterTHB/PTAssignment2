@@ -70,7 +70,7 @@ public class DateTime
 
 	// returns difference in days to help determine if a given date is before or
 	// after another date.
-	public static int diffDays(DateTime endDate, DateTime startDate)
+	public static int diffDays(DateTime endDate, DateTime startDate) throws NullPointerException
 	{
 		final long HOURS_IN_DAY = 24L;
 		final int MINUTES_IN_HOUR = 60;

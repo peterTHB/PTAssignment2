@@ -1,5 +1,8 @@
 package cars;
 
+import java.util.InputMismatchException;
+
+import exceptions.*;
 import utilities.DateTime;
 import utilities.DateUtilities;
 
@@ -10,22 +13,24 @@ import utilities.DateUtilities;
  * Author:		Peter Bui - s3786794
  */
 
-//throw methods here
-//menu handles try and catch
-
 public class SilverServiceCar extends Car {
 
 	private double bookingFee;
 	private String[] refreshments;
 	
 	public SilverServiceCar(String regNo, String make, String model, String driverName, 
-							int passengerCapacity, double bookingFee, String[] refreshments) {
+							int passengerCapacity, double bookingFee, String[] refreshments) throws InvalidId, InvalidRefreshments, InputMismatchException {
 		super(regNo, make, model, driverName, passengerCapacity);
 		
+		this.bookingFee = bookingFee;
 		tripFee = bookingFee;
 		this.carType = "SS";
-		this.bookingFee = bookingFee;
-		this.refreshments = refreshments;
+		
+		if (refreshDupCheck(refreshments) && refreshLimitCheck(refreshments)) {
+			this.refreshments = refreshments;
+		} else {
+			throw new InvalidRefreshments();
+		}
 	}
 	
 	public String[] stringSplit(String stringSplit) {
@@ -35,7 +40,7 @@ public class SilverServiceCar extends Car {
 	}
 	
 	@Override
-	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) {
+	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) throws InvalidBooking, InvalidDate {
 		boolean booked = false;
 		
 		// Booking fee is equal to or greater than 3.00
@@ -53,34 +58,6 @@ public class SilverServiceCar extends Car {
 		}
 		
 		return booked;
-	}
-	
-	/*
-	 * Processes the completion of the booking
-	 */
-	@Override
-	protected String completeBooking(int bookingIndex, double kilometers) {
-		tripFee = 0;
-		Booking booking = currentBookings[bookingIndex];
-		// Remove booking from current bookings array.
-		currentBookings[bookingIndex] = null;
-		bookingSpotAvailable = bookingIndex;
-
-		// call complete booking on Booking object
-		double fee = kilometers * (bookingFee * 0.4);
-		tripFee += fee;
-		booking.completeBooking(kilometers, fee, bookingFee);
-		// add booking to past bookings
-		for (int i = 0; i < pastBookings.length; i++) {
-			if (pastBookings[i] == null) {
-				pastBookings[i] = booking;
-				break;
-			}
-		}
-		String result = String.format("Thank you for riding with MiRide.\nWe hope you enjoyed your trip.\n$"
-				+ "%.2f has been deducted from your account.", tripFee);
-		tripFee = 0;
-		return result;
 	}
 	
 	@Override
@@ -131,11 +108,32 @@ public class SilverServiceCar extends Car {
 	/*
 	 * Checks if there is a list of refreshments to be qualified as a silver car
 	 */
-	private boolean checkRefreshments(String[] refreshments) {
+	private boolean checkRefreshments(String[] refreshments){
 		if (refreshments != null) {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	// Supplying list of refreshments that contain duplicate items
+	private boolean refreshDupCheck(String[] refreshments) {
+		for (int i = 0; i < refreshments.length; i++) {
+			for (int j = i + 1; j < refreshments.length; j++) {
+				if (refreshments[i] == refreshments[j]) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+		
+	// Providing less than 3 items in refreshment list
+	private boolean refreshLimitCheck(String[] refreshments) {
+		if (refreshments.length < 3) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 	

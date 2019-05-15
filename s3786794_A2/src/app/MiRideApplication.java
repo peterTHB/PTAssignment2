@@ -1,7 +1,10 @@
 package app;
 
+import java.util.InputMismatchException;
+
 import cars.Car;
 import cars.SilverServiceCar;
+import exceptions.*;
 import utilities.DateTime;
 import utilities.MiRidesUtilities;
 
@@ -12,20 +15,13 @@ import utilities.MiRidesUtilities;
  * Author:			Peter Bui(Originally Rodney Cocker) - s3786794
  */
 
-//throw methods here
-//menu handles try and catch
-
 public class MiRideApplication {
 	private Car[] cars = new Car[15];
 	private int itemCount = 0;
 	private String[] availableCars;
 	Car[] sortCars;
 	
-	public String createCar(String id, String make, String model, String driverName, int numPassengers) {
-		String validId = isValidId(id);
-		if(isValidId(id).contains("Error:")) {
-			return validId;
-		}
+	public String createCar(String id, String make, String model, String driverName, int numPassengers) throws InvalidId, InputMismatchException {
 		if(!checkIfCarExists(id)) {
 			cars[itemCount] = new Car(id, make, model, driverName, numPassengers);
 			itemCount++;
@@ -35,11 +31,7 @@ public class MiRideApplication {
 	}
 	
 	public String createCarSilver(String id, String make, String model, String driverName, 
-									int numPassengers, double bookingFee, String refreshments) {
-		String validId = isValidId(id);
-		if(isValidId(id).contains("Error:")) {
-			return validId;
-		}
+									int numPassengers, double bookingFee, String refreshments) throws InvalidId, InvalidRefreshments, InputMismatchException {
 		if(!checkIfCarExists(id)) {
 			String[] refreshList = refreshments.split(",");
 			
@@ -53,7 +45,7 @@ public class MiRideApplication {
 	public String[] book(DateTime dateRequired) {
 		int numberOfAvailableCars = 0;
 		// finds number of available cars to determine the size of the array required.
-		for(int i=0; i<cars.length; i++) {
+		for(int i = 0; i < cars.length; i++) {
 			if(cars[i] != null) {
 				if(!cars[i].isCarBookedOnDate(dateRequired)) {
 					numberOfAvailableCars++;
@@ -78,7 +70,7 @@ public class MiRideApplication {
 		return availableCars;
 	}
 	
-	public String book(String firstName, String lastName, DateTime required, int numPassengers, String registrationNumber)
+	public String book(String firstName, String lastName, DateTime required, int numPassengers, String registrationNumber) throws InvalidBooking, InvalidDate
 	{
 		Car car = getCarById(registrationNumber);
 		if(car != null)  {
@@ -201,7 +193,7 @@ public class MiRideApplication {
 		}
 	}
 	
-	public boolean seedData() {
+	public boolean seedData() throws InvalidId, InvalidBooking, InvalidRefreshments, InvalidDate {
 		for(int i = 0; i < cars.length; i++) {
 			if(cars[i] != null) {
 				return false;
@@ -214,7 +206,7 @@ public class MiRideApplication {
 		return true;
 	}
 	
-	public void seedRegular() {
+	public void seedRegular() throws InvalidId, InvalidBooking, InvalidDate {
 		// 2 cars not booked
 		Car honda = new Car("SIM194", "Honda", "Accord Euro", "Henry Cavill", 5);
 		cars[itemCount] = honda;
@@ -257,7 +249,7 @@ public class MiRideApplication {
 		rover.completeBooking("Rodney", "Cocker", inTwoDays, 75);
 	}
 	
-	public void seedSilver() {
+	public void seedSilver() throws InvalidId, InvalidBooking, InvalidRefreshments, InvalidDate{
 		// 2 silver cars not booked
 		String[] refreshment1 = "Cadbury,Lays,Toothpaste".split(",");
 		Car mazda = new SilverServiceCar("MAZ385", "Mazda", "CX-9", "Jason Voorhees", 4, 3.5, refreshment1);
