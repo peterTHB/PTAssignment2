@@ -13,7 +13,6 @@ import utilities.DateUtilities;
 public class Menu {
 	private Scanner console = new Scanner(System.in);
 	private MiRideApplication application = new MiRideApplication();
-	private ManageExceptions manageExcep = new ManageExceptions();
 	// Allows me to turn validation on/off for testing business logic in the
 	// classes.
 	private boolean testingWithValidation = true;
@@ -90,8 +89,7 @@ public class Menu {
 	 * Creates cars for use in the system available or booking.
 	 */
 	private void createCar() throws NumberFormatException, InvalidRefreshments, InvalidId {
-		String id = "", make, model, driverName, refreshments;
-		int carType;
+		String id = "", make, model, driverName, refreshments, carType = "";
 		int numPassengers = 0;
 		double bookingFee = 0;
 
@@ -110,24 +108,19 @@ public class Menu {
 
 			System.out.print("Enter number of passengers: ");
 			numPassengers = promptForPassengerNumbers();
+
+			System.out.print("Enter service type(SD/SS): ");
+			carType = console.nextLine().toUpperCase();
 			
-			// String input was not registering, so int is used instead
-			System.out.println("Enter service type:");
-			System.out.print("(1 for SD/2 for SS): " );
-			carType = Integer.parseInt(console.nextLine());
-			
-			if (carType == 1) {
+			if (carType.equals("SD")) {
 				makeStandard(id, make, model, driverName, numPassengers);
 			}
-			if (carType == 2) {
+			if (carType.contentEquals("SS")) {
 				System.out.print("Enter Standard Fee: ");
 				bookingFee = promptForBookingFee();
 				
 				System.out.print("Enter list of Refreshments: ");
 				refreshments = console.nextLine();
-				
-				manageExcep.refreshDupCheck(refreshments);
-				manageExcep.refreshLimitCheck(refreshments);
 				
 				makeSilver(id, make, model, driverName, numPassengers, bookingFee, refreshments);
 			}
@@ -140,8 +133,6 @@ public class Menu {
 	private boolean book() throws NoSuchElementException, InvalidDate {
 		System.out.println("Booking date(dd/mm/yyyy): ");
 		String dateEntered = console.nextLine();
-		
-		manageExcep.dateCheck(dateEntered);
 		
 		String[] dateCheckAvailable = dateEntered.split("/");
 		int day = Integer.parseInt(dateCheckAvailable[0]);
@@ -259,7 +250,6 @@ public class Menu {
 		} else {
 			while (!validRegistrationNumber) {
 				regNo = console.nextLine().toUpperCase();
-				manageExcep.regNoCheck(regNo);
 				boolean exists = application.checkIfCarExists(regNo);
 				if(exists) {
 					// Empty string means the menu will not try to process
@@ -334,13 +324,10 @@ public class Menu {
 	}
 	
 	private void displayAvailable() {
-		int type = 0;
-		String dateInput = "";
+		String type = "", dateInput = "";
 		
-		// String input is not registering, so ints used as a substitute
-		System.out.println("Enter Type:");
-		System.out.print("(1 for SD/2 for SS): ");
-		type = Integer.parseInt(console.nextLine());
+		System.out.println("Enter Type(SD/SS): ");
+		type = console.nextLine().toUpperCase();
 		
 		System.out.print("Enter Date: ");
 		dateInput = console.nextLine();
@@ -356,17 +343,13 @@ public class Menu {
 	}
 	
 	private void displayAllCars() {
-		int type = 0; 
-		int order = 0;
+		String type, order;
 		
-		// String input is not registering, so ints used as a substitute
-		System.out.println("Enter Type:");
-		System.out.print("(1 for SD, 2 for SS): ");
-		type = Integer.parseInt(console.nextLine());
+		System.out.print("Enter Type(SD/SS): ");
+		type = console.nextLine().toUpperCase();
 		
-		System.out.println("\nEnter sort order: ");
-		System.out.print("(1 for A, 2 for D): ");
-		order = Integer.parseInt(console.nextLine());
+		System.out.print("\nEnter sort order(A/D): ");
+		order = console.nextLine().toUpperCase();
 		
 		System.out.println(application.displayAllBookings(type, order));
 	}

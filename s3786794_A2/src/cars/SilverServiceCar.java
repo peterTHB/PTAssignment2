@@ -3,6 +3,16 @@ package cars;
 import utilities.DateTime;
 import utilities.DateUtilities;
 
+/*
+ * Class:		SilverCarClass
+ * Description:	The class represents a silver service car 
+ * 				in a ride sharing system. 
+ * Author:		Peter Bui - s3786794
+ */
+
+//throw methods here
+//menu handles try and catch
+
 public class SilverServiceCar extends Car {
 
 	private double bookingFee;
@@ -12,6 +22,7 @@ public class SilverServiceCar extends Car {
 							int passengerCapacity, double bookingFee, String[] refreshments) {
 		super(regNo, make, model, driverName, passengerCapacity);
 		
+		tripFee = bookingFee;
 		this.carType = "SS";
 		this.bookingFee = bookingFee;
 		this.refreshments = refreshments;
@@ -26,28 +37,21 @@ public class SilverServiceCar extends Car {
 	@Override
 	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) {
 		boolean booked = false;
-		// Does car have five bookings
-		available = bookingAvailable();
-		// If the car is available to be booked on that date
-		boolean dateAvailable = notCurrentlyBookedOnDate(required);
-		// Date is within range, not in past and within 3 days
-		boolean dateValid = dateIsValid(required);
-		// Number of passengers does not exceed the passenger capacity and is not zero.
-		boolean validPassengerNumber = numberOfPassengersIsValid(numPassengers);
+		
 		// Booking fee is equal to or greater than 3.00
 		boolean validBookingFee = validBookingFee(bookingFee);
 		// Check if there is any refreshments added
 		boolean addRefreshments = checkRefreshments(refreshments);
-
-		// Booking is permissible
-		if (available && dateAvailable && dateValid && validPassengerNumber && 
-			validBookingFee && addRefreshments) {
-			tripFee = bookingFee;
-			Booking booking = new Booking(firstName, lastName, required, numPassengers, this);
-			currentBookings[bookingSpotAvailable] = booking;
-			bookingSpotAvailable++;
+		// Date is within range, not in past and within 3 days
+		boolean dateValid = DateUtilities.dateIsNotMoreThan3Days(required);
+		
+		if (validBookingFee && addRefreshments && dateValid) {
+			super.book(firstName, lastName, required, numPassengers);
 			booked = true;
+		} else {
+			booked = false;
 		}
+		
 		return booked;
 	}
 	
@@ -82,49 +86,14 @@ public class SilverServiceCar extends Car {
 	@Override
 	public String getDetails() {
 		StringBuilder sb = new StringBuilder();
-
-		sb.append(getRecordMarker());
-		sb.append(String.format("%-15s %s\n", "Reg No:", regNo));
-		sb.append(String.format("%-15s %s\n", "Make & Model:", make + " " + model));
-
-		sb.append(String.format("%-15s %s\n", "Driver Name:", driverName));
-		sb.append(String.format("%-15s %s\n", "Capacity:", passengerCapacity));
-		sb.append(String.format("%-15s %s\n", "Standard Fee:", "$" + bookingFee));
-
-		if (bookingAvailable()) {
-			sb.append(String.format("%-15s %s\n", "Available:", "YES"));
-		} else {
-			sb.append(String.format("%-15s %s\n", "Available:", "NO"));
-		}
 		
-		if (checkRefreshments(refreshments) == true) {
-			sb.append("\nRefreshments Available\n");
-			for (int i = 0; i < refreshments.length; i++) {
-				if (refreshments[i] != null) {
-					sb.append(String.format("%-12s %s\n", "Item " + (i + 1) + ":", refreshments[i]));
-				}
-			}
-		}
+		sb.append(super.printDetails());
+		sb.append(printRefresh());
+		sb.append(super.printCurrentBook());
+		sb.append(super.printPastBook());
 		
-		if (hasBookings(currentBookings)) {
-			sb.append("\nCURRENT BOOKINGS");
-			for (int i = 0; i < currentBookings.length; i++) {
-				if (currentBookings[i] != null) {
-					sb.append("\n" + currentBookings[i].getDetails());
-				}
-			}
-		}
-
-		if (hasBookings(pastBookings)) {
-			sb.append("\nPAST BOOKINGS");
-			for (int i = 0; i < pastBookings.length; i++) {
-				if (pastBookings[i] != null) {
-					sb.append("\n" + pastBookings[i].getDetails());
-				}
-			}
-		}
-
 		return sb.toString();
+		
 	}
 	
 	@Override
@@ -149,17 +118,9 @@ public class SilverServiceCar extends Car {
 	}
 	
 	/*
-	 * Checks that the date is not in the past or more than 3 days in the future.
-	 */
-	@Override
-	protected boolean dateIsValid(DateTime date) {
-		return DateUtilities.dateIsNotInPast(date) && DateUtilities.dateIsNotMoreThan3Days(date);
-	}
-	
-	/*
 	 * Checks if the booking fee is the required amount of $3.00
 	 */
-	protected boolean validBookingFee(double bookingFee) {
+	private boolean validBookingFee(double bookingFee) {
 		if (bookingFee >= 3.00) {
 			return true;
 		} else {
@@ -170,12 +131,27 @@ public class SilverServiceCar extends Car {
 	/*
 	 * Checks if there is a list of refreshments to be qualified as a silver car
 	 */
-	protected boolean checkRefreshments(String[] refreshments) {
+	private boolean checkRefreshments(String[] refreshments) {
 		if (refreshments != null) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	private String printRefresh() {
+		StringBuilder sb = new StringBuilder();
+		
+		if (checkRefreshments(refreshments) == true) {
+			sb.append("\nRefreshments Available\n");
+			for (int i = 0; i < refreshments.length; i++) {
+				if (refreshments[i] != null) {
+					sb.append(String.format("%-12s %s\n", "Item " + (i + 1) + ":", refreshments[i]));
+				}
+			}
+		}
+		
+		return sb.toString();
 	}
 	
 }

@@ -9,6 +9,10 @@ import utilities.MiRidesUtilities;
  * Description:	The class represents a car in a ride sharing system. 
  * Author:		Peter Bui(Originally Rodney Cocker) - s3786794
  */
+
+// throw methods here
+// menu handles try and catch
+
 public class Car {
 	// Car attributes
 	protected String regNo;
@@ -26,9 +30,9 @@ public class Car {
 	protected double tripFee = 0;
 
 	// Constants
-	protected final double STANDARD_BOOKING_FEE = 1.5;
-	protected final int MAXIUM_PASSENGER_CAPACITY = 10;
-	protected final int MINIMUM_PASSENGER_CAPACITY = 1;
+	private final double STANDARD_BOOKING_FEE = 1.5;
+	private final int MAXIUM_PASSENGER_CAPACITY = 10;
+	private final int MINIMUM_PASSENGER_CAPACITY = 1;
 
 	public Car(String regNo, String make, String model, String driverName, int passengerCapacity) {
 		setRegNo(regNo); // Validates and sets registration number
@@ -37,6 +41,7 @@ public class Car {
 		this.make = make;
 		this.model = model;
 		this.driverName = driverName;
+		this.tripFee = STANDARD_BOOKING_FEE;
 		this.carType = "SD";
 		available = true;
 		currentBookings = new Booking[5];
@@ -50,17 +55,25 @@ public class Car {
 	 */
 
 	/*
-	 * ALGORITHM BEGIN CHECK if car has five booking CHECK if car has a booking on
-	 * date requested CHECK if the date requested is in the past. CHECK if the
-	 * number of passengers requested exceeds the capacity of the car. IF any checks
-	 * fail return false to indicate the booking operation failed ELSE CREATE the
-	 * booking ADD the booking to the current booking array UPDATE the available
-	 * status if there are now five current bookings. RETURN true to indicate the
-	 * success of the booking. END
+	 * ALGORITHM 
+	 * BEGIN 
+	 * 
+	 * CHECK if car has five booking 
+	 * CHECK if car has a booking on date requested 
+	 * CHECK if the date requested is in the past. 
+	 * CHECK if the number of passengers requested exceeds the capacity of the car. 
+	 * IF any checks fail return false to indicate the booking operation failed 
+	 * ELSE CREATE the booking 
+	 * ADD the booking to the current booking array 
+	 * UPDATE the available status if there are now five current bookings. 
+	 * RETURN true to indicate the success of the booking. 
+	 * 
+	 * END
 	 * 
 	 * TEST Booking a car to carry 0, 10, & within/without passenger capacity.
-	 * Booking car on date prior to today Booking a car on a date that is more than
-	 * 7 days in advance. Booking car on a date for which it is already booked
+	 * Booking car on date prior to today 
+	 * Booking a car on a date that is more than 7 days in advance. 
+	 * Booking car on a date for which it is already booked
 	 * Booking six cars
 	 */
 
@@ -76,7 +89,6 @@ public class Car {
 
 		// Booking is permissible
 		if (available && dateAvailable && dateValid && validPassengerNumber) {
-			tripFee = STANDARD_BOOKING_FEE;
 			Booking booking = new Booking(firstName, lastName, required, numPassengers, this);
 			currentBookings[bookingSpotAvailable] = booking;
 			bookingSpotAvailable++;
@@ -155,36 +167,9 @@ public class Car {
 	public String getDetails() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(getRecordMarker());
-		sb.append(String.format("%-15s %s\n", "Reg No:", regNo));
-		sb.append(String.format("%-15s %s\n", "Make & Model:", make + " " + model));
-
-		sb.append(String.format("%-15s %s\n", "Driver Name:", driverName));
-		sb.append(String.format("%-15s %s\n", "Capacity:", passengerCapacity));
-
-		if (bookingAvailable()) {
-			sb.append(String.format("%-15s %s\n", "Available:", "YES"));
-		} else {
-			sb.append(String.format("%-15s %s\n", "Available:", "NO"));
-		}
-		
-		if (hasBookings(currentBookings)) {
-			sb.append("\nCURRENT BOOKINGS");
-			for (int i = 0; i < currentBookings.length; i++) {
-				if (currentBookings[i] != null) {
-					sb.append("\n" + currentBookings[i].getDetails());
-				}
-			}
-		}
-
-		if (hasBookings(pastBookings)) {
-			sb.append("\nPAST BOOKINGS");
-			for (int i = 0; i < pastBookings.length; i++) {
-				if (pastBookings[i] != null) {
-					sb.append("\n" + pastBookings[i].getDetails());
-				}
-			}
-		}
+		sb.append(printDetails());
+		sb.append(printCurrentBook());
+		sb.append(printPastBook());
 		
 		return sb.toString();
 	}
@@ -240,6 +225,56 @@ public class Car {
 			sb.append(":" + "YES");
 		} else {
 			sb.append(":" + "NO");
+		}
+		
+		return sb.toString();
+	}
+	
+	protected String printDetails() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(getRecordMarker());
+		sb.append(String.format("%-15s %s\n", "Reg No:", regNo));
+		sb.append(String.format("%-15s %s\n", "Make & Model:", make + " " + model));
+
+		sb.append(String.format("%-15s %s\n", "Driver Name:", driverName));
+		sb.append(String.format("%-15s %s\n", "Capacity:", passengerCapacity));
+		sb.append(String.format("%-15s %s\n", "Standard Fee:", "$" + STANDARD_BOOKING_FEE));
+
+		if (bookingAvailable()) {
+			sb.append(String.format("%-15s %s\n", "Available:", "YES"));
+		} else {
+			sb.append(String.format("%-15s %s\n", "Available:", "NO"));
+		}
+		
+		return sb.toString();
+	}
+	
+	protected String printCurrentBook() {
+		StringBuilder sb = new StringBuilder();
+		
+		if (hasBookings(currentBookings)) {
+			sb.append("\nCURRENT BOOKINGS");
+			for (int i = 0; i < currentBookings.length; i++) {
+				if (currentBookings[i] != null) {
+					sb.append("\n" + currentBookings[i].getDetails());
+				}
+			}
+		}
+		
+		return sb.toString();
+	}
+	
+	protected String printPastBook() {
+		StringBuilder sb = new StringBuilder();
+		
+		if (hasBookings(pastBookings)) {
+			sb.append("\nPAST BOOKINGS");
+			for (int i = 0; i < pastBookings.length; i++) {
+				if (pastBookings[i] != null) {
+					sb.append("\n" + pastBookings[i].getDetails());
+				}
+			}
 		}
 		
 		return sb.toString();

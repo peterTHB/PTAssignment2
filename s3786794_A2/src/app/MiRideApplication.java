@@ -2,7 +2,6 @@ package app;
 
 import cars.Car;
 import cars.SilverServiceCar;
-import exceptions.*;
 import utilities.DateTime;
 import utilities.MiRidesUtilities;
 
@@ -12,6 +11,10 @@ import utilities.MiRidesUtilities;
  *              	collection of data. 
  * Author:			Peter Bui(Originally Rodney Cocker) - s3786794
  */
+
+//throw methods here
+//menu handles try and catch
+
 public class MiRideApplication {
 	private Car[] cars = new Car[15];
 	private int itemCount = 0;
@@ -170,8 +173,8 @@ public class MiRideApplication {
 	 * 		If no available cars, return error message
 	 * Wrong input returns error message
 	 */
-	public String displayAvailable(int type, DateTime dateInput) {
-		if (type == 1) {
+	public String displayAvailable(String type, DateTime dateInput) {
+		if (type.equals("SD")) {
 			for (int i = 0; i < cars.length; i++) {
 				if (cars[i] != null) {
 					if (cars[i].getCarType() == "SD") {
@@ -182,7 +185,7 @@ public class MiRideApplication {
 				}
 			}
 			return "Error - No cars found on this date";
-		} else if (type == 2) {
+		} else if (type.equals("SS")) {
 			for (int i = 0; i < cars.length; i++) {
 				if (cars[i] != null) {
 					if (cars[i].getCarType() == "SS") {
@@ -305,7 +308,7 @@ public class MiRideApplication {
 	/*
 	 * Store all of one car type in another array
 	 */
-	public String displayAllBookings(int type, int order) {
+	public String displayAllBookings(String type, String order) {
 		if(itemCount == 0) {
 			return "No cars have been added to the system.";
 		}
@@ -330,11 +333,11 @@ public class MiRideApplication {
 	}
 	
 	// Placing one type of car into another array for sorting
-	private void changeArray(int type, int order) {
+	private void changeArray(String type, String order) {
 		int sortArray = 0;
 		sortCars = new Car[15];
 		
-		if (type == 1) {
+		if (type.equals("SD")) {
 			for (int m = 0; m < cars.length; m++) {
 				if (cars[m] != null) {
 					if (cars[m].getCarType() == "SD") {
@@ -344,7 +347,7 @@ public class MiRideApplication {
 				}
 			}
 			sortMethod(order);
-		} else if (type == 2) {
+		} else if (type.equals("SS")) {
 			for (int m = 0; m < cars.length; m++) {
 				if (cars[m] != null) {
 					if (cars[m].getCarType() == "SS") {
@@ -358,10 +361,10 @@ public class MiRideApplication {
 	}
 	
 	// Sort method depending on order chosen
-	private void sortMethod(int order) {
+	private void sortMethod(String order) {
 		Car temp = null;
 		
-		if (order == 1) {
+		if (order.equals("A")) {
 			for (int i = 0; i < sortCars.length; i++) {
 				for (int j = 1; j < (sortCars.length - i); j++) {
 					if (sortCars[j] != null) {
@@ -373,7 +376,7 @@ public class MiRideApplication {
 					}
 				}
 			}
-		} else if (order == 2) {
+		} else if (order.equals("D")) {
 			for (int i = 0; i < sortCars.length; i++) {
 				for (int j = 1; j < (sortCars.length - i); j++) {
 					if (sortCars[j] != null) {
@@ -388,8 +391,8 @@ public class MiRideApplication {
 		}
 	}
 
-	private boolean checkExist(int type) {
-		if (type == 1) {
+	private boolean checkExist(String type) {
+		if (type.equals("SD")) {
 			for (int i = 0; i < cars.length; i++) {
 				if (cars[i] != null) {
 					if (cars[i].getCarType() == "SD") {
@@ -399,7 +402,7 @@ public class MiRideApplication {
 					}
 				}
 			}
-		} else if (type == 2) {
+		} else if (type.equals("SS")) {
 			for (int j = 0; j < cars.length; j++) {
 				if (cars[j] != null) {
 					if (cars[j].getCarType() == "SS") {
