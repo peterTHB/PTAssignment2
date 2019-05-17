@@ -21,21 +21,16 @@ public class MiRideApplication {
 	private String[] availableCars;
 	Car[] sortCars;
 	
-	public String createCar(String id, String make, String model, String driverName, int numPassengers) throws InvalidId, InputMismatchException {
+	public String createCar(String carType, String id, String make, String model, String driverName, 
+							int numPassengers, double bookingFee, String refreshments) 
+							throws InvalidId, InvalidRefreshments, InputMismatchException {
 		if(!checkIfCarExists(id)) {
-			cars[itemCount] = new Car(id, make, model, driverName, numPassengers);
-			itemCount++;
-			return "New Car added successfully for registion number: " + cars[itemCount-1].getRegNo();
-		}
-		return "Error: Already exists in the system.";
-	}
-	
-	public String createCarSilver(String id, String make, String model, String driverName, 
-									int numPassengers, double bookingFee, String refreshments) throws InvalidId, InvalidRefreshments, InputMismatchException {
-		if(!checkIfCarExists(id)) {
-			String[] refreshList = refreshments.split(",");
-			
-			cars[itemCount] = new SilverServiceCar(id, make, model, driverName, numPassengers, bookingFee, refreshList);
+			if (carType.equals("SD")) {
+				cars[itemCount] = new Car(id, make, model, driverName, numPassengers);
+			} else if (carType.equals("SS")) {
+				String[] refreshList = refreshments.split(",");
+				cars[itemCount] = new SilverServiceCar(id, make, model, driverName, numPassengers, bookingFee, refreshList);
+			}
 			itemCount++;
 			return "New Car added successfully for registion number: " + cars[itemCount-1].getRegNo();
 		}
@@ -118,7 +113,7 @@ public class MiRideApplication {
 			return carNotFound;
 		}
 		if (car.getBookingByName(firstName, lastName) != -1) {
-			return car.completeBooking(firstName, lastName, kilometers);
+			return car.completeBooking(firstName, lastName, null, kilometers);
 		}
 		return "Error: Booking not found.";
 	}
@@ -445,5 +440,26 @@ public class MiRideApplication {
 			}
 		}
 		return car;
+	}
+	
+	// For testing purposes
+	public void printToString(String type) {
+		if (type.equals("SD")) {
+			for (int i = 0; i < cars.length; i++) {
+				if (cars[i] != null) {
+					if (cars[i].getCarType().equals("SD")) {
+						System.out.println(cars[i].toString());
+					}
+				}
+			}
+		} else if (type.equals("SS")) {
+			for (int i = 0; i < cars.length; i++) {
+				if (cars[i] != null) {
+					if (cars[i].getCarType().equals("SS")) {
+						System.out.println(cars[i].toString());
+					}
+				}
+			}
+		}
 	}
 }

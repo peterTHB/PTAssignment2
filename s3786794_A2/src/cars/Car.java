@@ -106,30 +106,25 @@ public class Car {
 	}
 
 	/*
-	 * Completes a booking based on the name of the passenger and the booking date.
+	 * Completes a booking based on either the name of the passenger only,
+	 * or the name of the passenger and the booking date together.
 	 */
 	public String completeBooking(String firstName, String lastName, DateTime dateOfBooking, double kilometers) {
-		// Find booking in current bookings by passenger and date
-		int bookingIndex = getBookingByDate(firstName, lastName, dateOfBooking);
+		int bookingIndex;
+		
+		if (dateOfBooking == null) {
+			// Find booking in current bookings by name of passenger
+			bookingIndex = getBookingByName(firstName, lastName);
+		} else {
+			// Find booking in current bookings by passenger and date
+			bookingIndex = getBookingByDate(firstName, lastName, dateOfBooking);
+		}
 
 		if (bookingIndex == -1) {
 			return "Booking not found.";
 		}
 
 		return completeBooking(bookingIndex, kilometers);
-	}
-
-	/*
-	 * Completes a booking based on the name of the passenger.
-	 */
-	public String completeBooking(String firstName, String lastName, double kilometers) {
-		int bookingIndex = getBookingByName(firstName, lastName);
-
-		if (bookingIndex == -1) {
-			return "Booking not found.";
-		} else {
-			return completeBooking(bookingIndex, kilometers);
-		}
 	}
 
 	/*
@@ -234,6 +229,8 @@ public class Car {
 		} else {
 			sb.append(":" + "NO");
 		}
+		
+		sb.append(tripFee);
 		
 		return sb.toString();
 	}
@@ -484,14 +481,14 @@ public class Car {
 	/*
 	 * Validates and sets the passenger capacity
 	 */
-	protected void setPassengerCapacity(int passengerCapacity) {
+	protected void setPassengerCapacity(int passengerCapacity) throws InputMismatchException {
 		boolean validPasengerCapcity = passengerCapacity >= MINIMUM_PASSENGER_CAPACITY
 				&& passengerCapacity < MAXIUM_PASSENGER_CAPACITY;
-
 		if (validPasengerCapcity) {
 			this.passengerCapacity = passengerCapacity;
 		} else {
 			this.passengerCapacity = -1;
+			throw new InputMismatchException();
 		}
 	}
 }

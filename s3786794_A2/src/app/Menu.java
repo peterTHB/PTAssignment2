@@ -98,6 +98,9 @@ public class Menu {
 					choice = "EX";
 					System.out.println("Exiting Program ... Goodbye!");
 					break;
+				case "TE":
+					application.printToString("SD");
+				break;
 				default:
 					System.out.println("Error, invalid option selected!");
 					System.out.println("Please try Again...");
@@ -137,16 +140,16 @@ public class Menu {
 			carType = console.nextLine().toUpperCase();
 			
 			if (carType.equals("SD")) {
-				makeStandard(id, make, model, driverName, numPassengers);
+				makeCar(carType, id, make, model, driverName, numPassengers, 0, null);
 			}
-			if (carType.contentEquals("SS")) {
+			if (carType.equals("SS")) {
 				System.out.print("Enter Standard Fee: ");
 				bookingFee = Integer.parseInt(console.nextLine());
 				
 				System.out.print("Enter list of Refreshments: ");
 				refreshments = console.nextLine();
 				
-				makeSilver(id, make, model, driverName, numPassengers, bookingFee, refreshments);
+				makeCar(carType, id, make, model, driverName, numPassengers, bookingFee, refreshments);
 			}
 		}
 	}
@@ -237,22 +240,11 @@ public class Menu {
 		
 	}
 	
-	private void makeStandard(String id, String make, String model, String driverName, int numPassengers) throws InvalidId, InputMismatchException {
+	private void makeCar(String carType, String id, String make, String model, String driverName, int numPassengers, double bookingFee, String refreshments) throws InvalidId, InputMismatchException, InvalidRefreshments {
 		boolean result = application.checkIfCarExists(id);
 
 		if (!result) {
-			String carRegistrationNumber = application.createCar(id, make, model, driverName, numPassengers);
-			System.out.println(carRegistrationNumber);
-		} else {
-			System.out.println("Error - Already exists in the system");
-		}
-	}
-	
-	private void makeSilver(String id, String make, String model, String driverName, int numPassengers, double bookingFee, String refreshments) throws InvalidId, InvalidRefreshments {
-		boolean result = application.checkIfCarExists(id);
-
-		if (!result) {
-			String carRegistrationNumber = application.createCarSilver(id, make, model, driverName, numPassengers, bookingFee, refreshments);
+			String carRegistrationNumber = application.createCar(carType, id, make, model, driverName, numPassengers, bookingFee, refreshments);
 			System.out.println(carRegistrationNumber);
 		} else {
 			System.out.println("Error - Already exists in the system");
