@@ -78,7 +78,7 @@ public class MainPersistence {
 		String driverName = tokenReader.nextToken();
 		int passengerNum = Integer.parseInt(tokenReader.nextToken());
 		String available = tokenReader.nextToken();
-		double tripFee = Integer.parseInt(tokenReader.nextToken());
+		double tripFee = Double.parseDouble(tokenReader.nextToken());
 		String[] refreshment = new String[10];
 		
 		for (int i = 0; i < refreshment.length; i++) {

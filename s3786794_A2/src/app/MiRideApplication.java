@@ -1,10 +1,13 @@
 package app;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.InputMismatchException;
 
 import cars.Car;
 import cars.SilverServiceCar;
 import exceptions.*;
+import persistence.MainPersistence;
 import utilities.DateTime;
 import utilities.MiRidesUtilities;
 
@@ -441,6 +444,26 @@ public class MiRideApplication {
 		}
 		return car;
 	}
+	
+	public void printDataExists() throws InputMismatchException, FileNotFoundException, IOException, InvalidId, InvalidRefreshments, CorruptedFiles {
+		MainPersistence mainPersist = new MainPersistence();
+		Car[] carList = mainPersist.readData("MainData.txt");
+		
+		if (carList == null) {
+			System.out.println("Data not found.");
+			System.out.println("Starting up program.");
+		} else {
+			System.out.println("Data found, entering into system.");
+			System.out.println("Starting up program.");
+		}
+	}
+	
+	public void saveCars() throws IOException {
+		MainPersistence mainPersist = new MainPersistence();
+		mainPersist.saveCars(cars);
+		System.out.println("Data being saved...");
+	}
+	
 	
 	// For testing purposes
 	public void printToString(String type) {

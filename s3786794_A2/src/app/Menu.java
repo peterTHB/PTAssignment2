@@ -1,7 +1,7 @@
 package app;
 
+import java.io.*;
 import java.util.*;
-
 import exceptions.*;
 import utilities.DateTime;
 import messages.ErrorMessages;
@@ -22,10 +22,24 @@ public class Menu {
 	/*
 	 * Runs the menu in a loop until the user decides to exit the system.
 	 */
-	public void run() throws InvalidId, InvalidRefreshments, InvalidBooking, InvalidDate, NumberFormatException, InputMismatchException {
+	public void run() throws InvalidId, InvalidRefreshments, InvalidBooking, InvalidDate, NumberFormatException, InputMismatchException, FileNotFoundException, IOException, CorruptedFiles {
 		final int MENU_ITEM_LENGTH = 2;
 		String input;
 		String choice = "";
+		
+		try {
+			System.out.println("Accessing data from file...");
+			application.printDataExists();
+		} catch (FileNotFoundException fn) {
+			System.out.println("File not found.");
+		} 
+		catch (NoSuchElementException ns) {
+			System.out.println("Null element found/No data in file.");
+		} 
+//		catch (NumberFormatException nf) {
+//			System.out.println("Number could not be inputted");
+//		}
+		
 		do {
 			printMenu();
 
@@ -96,6 +110,11 @@ public class Menu {
 					break;
 				case "EX":
 					choice = "EX";
+					try {
+						application.saveCars();
+					} catch (IOException io) {
+						System.out.println("Cars could not be saved.");
+					}
 					System.out.println("Exiting Program ... Goodbye!");
 					break;
 				case "TE":

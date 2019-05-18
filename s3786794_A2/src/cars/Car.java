@@ -230,7 +230,7 @@ public class Car {
 			sb.append(":" + "NO");
 		}
 		
-		sb.append(tripFee);
+		sb.append(":" + tripFee);
 		
 		return sb.toString();
 	}
