@@ -1,6 +1,10 @@
 package messages;
 
 public class ErrorMessages {
+	/*
+	 * Provides a list of error messages for custom exceptions
+	 */ 
+	
 	public String errorBooking() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\nInvalid booking input.");

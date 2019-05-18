@@ -9,7 +9,9 @@ import exceptions.*;
 
 public class Driver {
 
-	public static void main(String[] args) throws InvalidId, InvalidRefreshments, InvalidBooking, InvalidDate, NumberFormatException, InputMismatchException, FileNotFoundException, IOException, CorruptedFiles {
+	public static void main(String[] args) throws InvalidId, InvalidRefreshments, InvalidBooking, 
+													InvalidDate, NumberFormatException, InputMismatchException, 
+													FileNotFoundException, IOException, CorruptedFiles, NullFile {
 		Menu menu = new Menu();
 		menu.run();
 	}

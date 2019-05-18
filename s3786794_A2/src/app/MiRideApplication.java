@@ -3,6 +3,7 @@ package app;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 
 import cars.Car;
 import cars.SilverServiceCar;
@@ -24,6 +25,9 @@ public class MiRideApplication {
 	private String[] availableCars;
 	Car[] sortCars;
 	
+	/*
+	 * 
+	 */
 	public String createCar(String carType, String id, String make, String model, String driverName, 
 							int numPassengers, double bookingFee, String refreshments) 
 							throws InvalidId, InvalidRefreshments, InputMismatchException {
@@ -35,11 +39,14 @@ public class MiRideApplication {
 				cars[itemCount] = new SilverServiceCar(id, make, model, driverName, numPassengers, bookingFee, refreshList);
 			}
 			itemCount++;
-			return "New Car added successfully for registion number: " + cars[itemCount-1].getRegNo();
+			return "New Car added successfully for registration number: " + cars[itemCount-1].getRegNo();
 		}
 		return "Error: Already exists in the system.";
 	}
 
+	/*
+	 * 
+	 */
 	public String[] book(DateTime dateRequired) {
 		int numberOfAvailableCars = 0;
 		// finds number of available cars to determine the size of the array required.
@@ -68,6 +75,9 @@ public class MiRideApplication {
 		return availableCars;
 	}
 	
+	/*
+	 * 
+	 */
 	public String book(String firstName, String lastName, DateTime required, int numPassengers, String registrationNumber) throws InvalidBooking, InvalidDate
 	{
 		Car car = getCarById(registrationNumber);
@@ -87,6 +97,9 @@ public class MiRideApplication {
         }
 	}
 	
+	/*
+	 * 
+	 */
 	public String completeBooking(String firstName, String lastName, DateTime dateOfBooking, double kilometers) {
 		// Search all cars for bookings on a particular date.
 		for(int i = 0; i <cars.length; i++) {
@@ -99,6 +112,9 @@ public class MiRideApplication {
 		return "Booking not found.";
 	}
 	
+	/*
+	 * 
+	 */
 	public String completeBooking(String firstName, String lastName, String registrationNumber, double kilometers) {
 		String carNotFound = "Car not found";
 		Car car = null;
@@ -121,8 +137,10 @@ public class MiRideApplication {
 		return "Error: Booking not found.";
 	}
 	
+	/*
+	 * 
+	 */
 	public boolean getBookingByName(String firstName, String lastName, String registrationNumber) {
-		//String bookingNotFound = "Error: Booking not found";
 		Car car = null;
 		// Search for car with registration number
 		for(int i = 0; i <cars.length; i++) {
@@ -143,6 +161,9 @@ public class MiRideApplication {
 		return true;
 	}
 	
+	/*
+	 * 
+	 */
 	public String displaySpecificCar(String regNo) {
 		for(int i = 0; i < cars.length; i++) {
 			if(cars[i] != null) {
@@ -191,12 +212,16 @@ public class MiRideApplication {
 		}
 	}
 	
+	/*
+	 * 
+	 */
 	public boolean seedData() throws InvalidId, InvalidBooking, InvalidRefreshments, InvalidDate {
 		for(int i = 0; i < cars.length; i++) {
 			if(cars[i] != null) {
 				return false;
 			}
 		}
+		
 		// Seed both regular and silver cars individually
 		seedRegular();
 		seedSilver();
@@ -204,6 +229,9 @@ public class MiRideApplication {
 		return true;
 	}
 	
+	/*
+	 * 
+	 */
 	public void seedRegular() throws InvalidId, InvalidBooking, InvalidDate {
 		// 2 cars not booked
 		Car honda = new Car("SIM194", "Honda", "Accord Euro", "Henry Cavill", 5);
@@ -247,6 +275,9 @@ public class MiRideApplication {
 		rover.completeBooking("Rodney", "Cocker", inTwoDays, 75);
 	}
 	
+	/*
+	 * 
+	 */
 	public void seedSilver() throws InvalidId, InvalidBooking, InvalidRefreshments, InvalidDate{
 		// 2 silver cars not booked
 		String[] refreshment1 = "Cadbury,Lays,Toothpaste".split(",");
@@ -322,7 +353,9 @@ public class MiRideApplication {
 		return sb.toString();
 	}
 	
-	// Placing one type of car into another array for sorting
+	/*
+	 * 
+	 */
 	private void changeArray(String type, String order) {
 		int sortArray = 0;
 		sortCars = new Car[15];
@@ -350,7 +383,9 @@ public class MiRideApplication {
 		}
 	}
 	
-	// Sort method depending on order chosen
+	/*
+	 * 
+	 */
 	private void sortMethod(String order) {
 		Car temp = null;
 		
@@ -381,6 +416,9 @@ public class MiRideApplication {
 		}
 	}
 
+	/*
+	 * 
+	 */
 	private boolean checkExist(String type) {
 		if (type.equals("SD")) {
 			for (int i = 0; i < cars.length; i++) {
@@ -418,6 +456,9 @@ public class MiRideApplication {
 		return MiRidesUtilities.isValidBookingFee(bookingFee);
 	}
 
+	/*
+	 * 
+	 */
 	public boolean checkIfCarExists(String regNo) {
 		Car car = null;
 		if (regNo.length() != 6) {
@@ -431,6 +472,9 @@ public class MiRideApplication {
 		}
 	}
 	
+	/*
+	 * 
+	 */
 	private Car getCarById(String regNo) {
 		Car car = null;
 
@@ -445,25 +489,61 @@ public class MiRideApplication {
 		return car;
 	}
 	
-	public void printDataExists() throws InputMismatchException, FileNotFoundException, IOException, InvalidId, InvalidRefreshments, CorruptedFiles {
+	/*
+	 * 
+	 */
+	public void printDataExists() throws InputMismatchException, FileNotFoundException, IOException, 
+											InvalidId, InvalidRefreshments, CorruptedFiles, NullFile {
 		MainPersistence mainPersist = new MainPersistence();
 		Car[] carList = mainPersist.readData("MainData.txt");
 		
-		if (carList == null) {
+		if (carList[0] == null) {
 			System.out.println("Data not found.");
 			System.out.println("Starting up program.");
 		} else {
+			for (int i = 0; i < carList.length; i++) {
+				if (carList[i] != null) {
+					cars[i] = carList[i];
+					itemCount++;
+				}
+			}
 			System.out.println("Data found, entering into system.");
 			System.out.println("Starting up program.");
 		}
 	}
 	
+	/*
+	 * 
+	 */
 	public void saveCars() throws IOException {
 		MainPersistence mainPersist = new MainPersistence();
 		mainPersist.saveCars(cars);
 		System.out.println("Data being saved...");
 	}
 	
+	/*
+	 * 
+	 */
+	public void loadData() throws IOException, InvalidId, CorruptedFiles, NullFile {
+		try {
+			System.out.println("Accessing data from file...");
+			printDataExists();
+		} catch (FileNotFoundException fn) {
+			System.out.println("File not found.");
+		} catch (NoSuchElementException ns) {
+			System.out.println("No data in file.");
+		} catch (NumberFormatException nf) {
+			System.out.println("Number could not be inputted");
+		} catch (CorruptedFiles cf) {
+			System.out.println("File has been corrupted");
+		} catch (NullFile nf) {
+			System.out.println("File has no data");
+		} catch (InvalidRefreshments ir) {
+			System.out.println("Refreshments list is invalid");
+		} catch (InvalidId id) {
+			System.out.println("regNo input is invalid");
+		}
+	}
 	
 	// For testing purposes
 	public void printToString(String type) {
@@ -482,6 +562,14 @@ public class MiRideApplication {
 						System.out.println(cars[i].toString());
 					}
 				}
+			}
+		}
+	}
+	
+	public void printCarList() {
+		for (int i = 0; i < cars.length; i++) {
+			if (cars[i] != null) {
+				System.out.println(cars[i].toString() + " " + i);
 			}
 		}
 	}

@@ -18,6 +18,9 @@ public class SilverServiceCar extends Car {
 	private double bookingFee;
 	private String[] refreshments;
 	
+	/*
+	 * 
+	 */
 	public SilverServiceCar(String regNo, String make, String model, String driverName, 
 							int passengerCapacity, double bookingFee, String[] refreshments) throws InvalidId, InvalidRefreshments, InputMismatchException {
 		super(regNo, make, model, driverName, passengerCapacity);
@@ -33,12 +36,18 @@ public class SilverServiceCar extends Car {
 		}
 	}
 	
+	/*
+	 * 
+	 */
 	public String[] stringSplit(String stringSplit) {
 		String[] refreshList = stringSplit.split(",");
 		
 		return refreshList;
 	}
 	
+	/*
+	 * 
+	 */
 	@Override
 	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) throws InvalidBooking, InvalidDate {
 		boolean booked = false;
@@ -60,6 +69,9 @@ public class SilverServiceCar extends Car {
 		return booked;
 	}
 	
+	/*
+	 * 
+	 */
 	@Override
 	public String getDetails() {
 		StringBuilder sb = new StringBuilder();
@@ -73,6 +85,9 @@ public class SilverServiceCar extends Car {
 		
 	}
 	
+	/*
+	 * 
+	 */
 	@Override
 	public String firstBuilder() {
 		StringBuilder sb = new StringBuilder();
@@ -108,7 +123,7 @@ public class SilverServiceCar extends Car {
 	/*
 	 * Checks if there is a list of refreshments to be qualified as a silver car
 	 */
-	private boolean checkRefreshments(String[] refreshments){
+	private boolean checkRefreshments(String[] refreshments) {
 		if (refreshments != null) {
 			return true;
 		} else {
@@ -116,10 +131,13 @@ public class SilverServiceCar extends Car {
 		}
 	}
 	
-	// Supplying list of refreshments that contain duplicate items
+	/*
+	 * Checks if list of refreshments contains duplicate items
+	 */ 
 	private boolean refreshDupCheck(String[] refreshments) {
 		for (int i = 0; i < refreshments.length; i++) {
 			for (int j = i + 1; j < refreshments.length; j++) {
+				if (refreshments[i] != null && refreshments[j] != null)
 				if (refreshments[i] == refreshments[j]) {
 					return false;
 				}
@@ -128,7 +146,9 @@ public class SilverServiceCar extends Car {
 		return true;
 	}
 		
-	// Providing less than 3 items in refreshment list
+	/*
+	 * Checks if list of refreshments is 3 or less
+	 */ 
 	private boolean refreshLimitCheck(String[] refreshments) {
 		if (refreshments.length < 3) {
 			return false;
@@ -137,6 +157,9 @@ public class SilverServiceCar extends Car {
 		}
 	}
 	
+	/*
+	 * 
+	 */ 
 	private String printRefresh() {
 		StringBuilder sb = new StringBuilder();
 		

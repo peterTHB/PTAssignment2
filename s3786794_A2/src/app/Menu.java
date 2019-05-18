@@ -22,23 +22,14 @@ public class Menu {
 	/*
 	 * Runs the menu in a loop until the user decides to exit the system.
 	 */
-	public void run() throws InvalidId, InvalidRefreshments, InvalidBooking, InvalidDate, NumberFormatException, InputMismatchException, FileNotFoundException, IOException, CorruptedFiles {
+	public void run() throws InvalidId, InvalidRefreshments, InvalidBooking, InvalidDate, 
+								NumberFormatException, InputMismatchException, FileNotFoundException, 
+								IOException, CorruptedFiles, NullFile {
 		final int MENU_ITEM_LENGTH = 2;
 		String input;
 		String choice = "";
 		
-		try {
-			System.out.println("Accessing data from file...");
-			application.printDataExists();
-		} catch (FileNotFoundException fn) {
-			System.out.println("File not found.");
-		} 
-		catch (NoSuchElementException ns) {
-			System.out.println("Null element found/No data in file.");
-		} 
-//		catch (NumberFormatException nf) {
-//			System.out.println("Number could not be inputted");
-//		}
+		application.loadData();
 		
 		do {
 			printMenu();
@@ -66,6 +57,9 @@ public class Menu {
 					} catch (NumberFormatException nf) {
 						System.out.println(errorMessages.errorNumeric());
 						createCar();
+					} catch (ArrayIndexOutOfBoundsException ai) {
+						System.out.println("\nNot enough memory to create car.");
+						System.out.println("Returning to menu.");
 					}
 					break;
 				case "BC":
@@ -77,7 +71,10 @@ public class Menu {
 					} catch (InvalidDate id) {
 						System.out.println(errorMessages.errorDate());
 						book();
-					} 
+					} catch (ArrayIndexOutOfBoundsException ai) {
+						System.out.println("\nCar is currently fully booked.");
+						System.out.println("Returning to menu.");
+					}
 					break;
 				case "CB":
 					completeBooking();
@@ -118,7 +115,8 @@ public class Menu {
 					System.out.println("Exiting Program ... Goodbye!");
 					break;
 				case "TE":
-					application.printToString("SD");
+//					application.printToString("SD");
+//					application.printCarList();
 				break;
 				default:
 					System.out.println("Error, invalid option selected!");
@@ -139,7 +137,6 @@ public class Menu {
 		
 		System.out.print("Enter registration number: ");
 		id = console.nextLine().toUpperCase();
-		//id = promptUserForRegNo();
 		
 		if (id.length() != 0) {
 			// Get details required for creating a car.
@@ -165,7 +162,7 @@ public class Menu {
 				System.out.print("Enter Standard Fee: ");
 				bookingFee = Integer.parseInt(console.nextLine());
 				
-				System.out.print("Enter list of Refreshments: ");
+				System.out.print("Enter list of Refreshments(3 or More): ");
 				refreshments = console.nextLine();
 				
 				makeCar(carType, id, make, model, driverName, numPassengers, bookingFee, refreshments);
@@ -187,10 +184,6 @@ public class Menu {
 		
 		DateTime dateRequired = new DateTime(day, month, year);
 		
-//		if(!DateUtilities.dateIsNotInPast(dateRequired) || !DateUtilities.dateIsNotMoreThan7Days(dateRequired)) {
-//			System.out.println("Date is invalid, must be within the coming week.");
-//			return false;
-//		}
 		
 		String[] availableCars = application.book(dateRequired);
 		for (int i = 0; i < availableCars.length; i++) {
@@ -259,6 +252,9 @@ public class Menu {
 		
 	}
 	
+	/*
+	 * 
+	 */
 	private void makeCar(String carType, String id, String make, String model, String driverName, int numPassengers, double bookingFee, String refreshments) throws InvalidId, InputMismatchException, InvalidRefreshments {
 		boolean result = application.checkIfCarExists(id);
 
@@ -270,6 +266,9 @@ public class Menu {
 		}
 	}
 	
+	/*
+	 * 
+	 */
 	private void displayAvailable() {
 		String type = "", dateInput = "";
 		
@@ -289,6 +288,9 @@ public class Menu {
 		System.out.println(application.displayAvailable(type, dateRequired));
 	}
 	
+	/*
+	 * 
+	 */
 	private void displayAllCars() {
 		String type, order;
 		

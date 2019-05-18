@@ -213,7 +213,9 @@ public class Car {
 		return sb.toString();
 	}
 	
-	// Returns first formatted part of toString()
+	/*
+	 * 
+	 */
 	public String firstBuilder() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(regNo + ":" + make + ":" + model);
@@ -235,6 +237,9 @@ public class Car {
 		return sb.toString();
 	}
 	
+	/*
+	 * 
+	 */
 	protected String printDetails() {
 		StringBuilder sb = new StringBuilder();
 		
@@ -255,6 +260,9 @@ public class Car {
 		return sb.toString();
 	}
 	
+	/*
+	 * 
+	 */
 	protected String printCurrentBook() {
 		StringBuilder sb = new StringBuilder();
 		
@@ -270,6 +278,9 @@ public class Car {
 		return sb.toString();
 	}
 	
+	/*
+	 * 
+	 */
 	protected String printPastBook() {
 		StringBuilder sb = new StringBuilder();
 		
