@@ -13,8 +13,13 @@ import utilities.MiRidesUtilities;
  * Author:		Peter Bui(Originally Rodney Cocker) - s3786794
  */
 
-// throw methods here
-// menu handles try and catch
+/**
+ * Car is the class responsible for creating a new Car object
+ * and ensuring the required parameters are correct.
+ * 
+ * @author Peter Bui : s3786794
+ * @version 1.0
+ */
 
 public class Car {
 	// Car attributes
@@ -37,6 +42,21 @@ public class Car {
 	private final int MAXIUM_PASSENGER_CAPACITY = 10;
 	private final int MINIMUM_PASSENGER_CAPACITY = 1;
 
+	/**
+	 * Class constructor.
+	 * 
+	 * @param regNo						registration number. Takes 
+	 * 									string input
+	 * @param make						car make. Takes string input
+	 * @param model						car model. Takes string input
+	 * @param driverName				driver's name. Takes string input
+	 * @param passengerCapacity			passenger capacity. Takes numeric
+	 * 									input
+	 * @throws InvalidId				If an invalid id exception has
+	 * 									occurred
+	 * @throws InputMismatchException	If an input mismatch exception has
+	 * 									occurred
+	 */
 	public Car(String regNo, String make, String model, String driverName, int passengerCapacity) throws InvalidId, InputMismatchException {
 		
 		checkInputMatch(regNo, make, model, driverName);
@@ -82,7 +102,31 @@ public class Car {
 	 * Booking car on a date for which it is already booked
 	 * Booking six cars
 	 */
-	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) throws InvalidBooking, InvalidDate {
+	
+	/**
+	 * Method is responsible for allowing a <Booking> object
+	 * to be associated with this car object.
+	 * 
+	 * @param firstName			user's first name. Takes string
+	 * 							input
+	 * @param lastName			user's last name. Takes string
+	 * 							input
+	 * @param required			date required. Takes custom 
+	 * 							DateTime input
+	 * @param numPassengers		number of passengers. Takes 
+	 * 							numeric input
+	 * @return					Returns true if booking can be 
+	 * 							placed in memory with association 
+	 * 							to this car object, or false if 
+	 * 							booking parameters do not fit 
+	 * 							requirements.
+	 * @throws InvalidBooking	If an invalid booking exception has 
+	 * 							occurred
+	 * @throws InvalidDate		If an invalid date exception has 
+	 * 							occurred
+	 */
+	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) 
+						throws InvalidBooking, InvalidDate {
 		boolean booked = false;
 		
 		// Does car have five bookings
@@ -105,9 +149,21 @@ public class Car {
 		return booked;
 	}
 
-	/*
-	 * Completes a booking based on either the name of the passenger only,
-	 * or the name of the passenger and the booking date together.
+	/**
+	 * Method is responsible for ensuring a booking is completed
+	 * based on the name of the passenger only, or the name and the
+	 * booking date together.
+	 * 
+	 * @param firstName			user's first name. Takes string input
+	 * @param lastName			user's last name. Takes string input
+	 * @param dateOfBooking		date required. Takes custom DateTime
+	 * 							input
+	 * @param kilometers		kilometers traveled. Takes numeric
+	 * 							input
+	 * @return					Returns string if booking could be 
+	 * 							completed, otherwise returns an error
+	 * 							message that booking could not be
+	 * 							completed.
 	 */
 	public String completeBooking(String firstName, String lastName, DateTime dateOfBooking, double kilometers) {
 		int bookingIndex;
@@ -126,12 +182,17 @@ public class Car {
 
 		return completeBooking(bookingIndex, kilometers);
 	}
-
-	/*
-	 * Checks the current bookings to see if any of the bookings are for the current
-	 * date. ALGORITHM BEGIN CHECK All bookings IF date supplied matches date for
-	 * any booking date Return true ELSE Return false END
+	
+	/**
+	 * Method is responsible if car is booked on a specific date
+	 * or not.
 	 * 
+	 * @param dateRequired		date required. Takes custom
+	 * 							DateTime input
+	 * @return 					Returns true if car is already 
+	 * 							booked on that date, or false if 
+	 * 							car is not booked on that date 
+	 * 							at all.
 	 */
 	public boolean isCarBookedOnDate(DateTime dateRequired) {
 		boolean carIsBookedOnDate = false;
@@ -144,9 +205,21 @@ public class Car {
 		}
 		return carIsBookedOnDate;
 	}
-
-	/*
-	 * Retrieves a booking id based on the name and the date of the booking
+	
+	/**
+	 * Method is responsible for generating a booking ID 
+	 * based upon the parameters.
+	 * 
+	 * @param firstName			user's first name. Takes 
+	 * 							string input
+	 * @param lastName			user's last name. Takes
+	 * 							string input
+	 * @param dateOfBooking		date required. Takes custom
+	 * 							DateTime input
+	 * @return					Returns a generated booking ID
+	 * 							if successful, otherwise returns
+	 * 							an error message if parameters do
+	 * 							not match requirements.
 	 */
 	public String getBookingID(String firstName, String lastName, DateTime dateOfBooking) {
 		System.out.println();
@@ -163,9 +236,15 @@ public class Car {
 		}
 		return "Booking not found";
 	}
-
-	/*
-	 * Human readable presentation of the state of the car.
+	
+	/**
+	 * Method is responsible for returning a formatted
+	 * string of this car's details, current bookings
+	 * and past bookings.
+	 * 
+	 * @return 		Returns a formatted string of details
+	 * 				about this car and it's associated
+	 * 				bookings.
 	 */
 	public String getDetails() {
 		StringBuilder sb = new StringBuilder();
@@ -177,8 +256,13 @@ public class Car {
 		return sb.toString();
 	}
 
-	/*
-	 * Computer readable state of the car
+	/**
+	 * Method is responsible for returning a computer
+	 * readable string.
+	 * 
+	 * @return 		Returns a formatted, computer readable
+	 * 				string of this car and it's associated
+	 * 				details and bookings.
 	 */
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -213,8 +297,12 @@ public class Car {
 		return sb.toString();
 	}
 	
-	/*
+	/**
+	 * Method is responsible for building the first
+	 * part of this car's computer readable string.
 	 * 
+	 * @return 		Returns formatted string of this
+	 * 				car's details.
 	 */
 	public String firstBuilder() {
 		StringBuilder sb = new StringBuilder();
@@ -237,8 +325,12 @@ public class Car {
 		return sb.toString();
 	}
 	
-	/*
+	/**
+	 * Method is responsible for returning this car's
+	 * details as a formatted string.
 	 * 
+	 * @return		Returns this car's details as a 
+	 * 				formatted string.
 	 */
 	protected String printDetails() {
 		StringBuilder sb = new StringBuilder();
@@ -260,8 +352,12 @@ public class Car {
 		return sb.toString();
 	}
 	
-	/*
+	/**
+	 * Method is responsible for returning a formatted
+	 * string of current bookings this car has.
 	 * 
+	 * @return		Returns a formatted string of this
+	 * 				car's associated current bookings.
 	 */
 	protected String printCurrentBook() {
 		StringBuilder sb = new StringBuilder();
@@ -278,8 +374,12 @@ public class Car {
 		return sb.toString();
 	}
 	
-	/*
+	/**
+	 * Method is responsible for returning a formatted
+	 * string of past bookings this car has.
 	 * 
+	 * @return		Returns a formatted string of this
+	 * 				car's associated past bookings.
 	 */
 	protected String printPastBook() {
 		StringBuilder sb = new StringBuilder();
@@ -312,9 +412,37 @@ public class Car {
 	public double getTripFee() {
 		return tripFee;
 	}
+	
+	// Required setters
+	protected void setRegNo(String regNo) throws InvalidId {
+		if (!MiRidesUtilities.isRegNoValid(regNo).contains("Error:")) {
+			this.regNo = regNo;
+		} else {
+			throw new InvalidId();
+		}
+	}
+	
+	protected void setPassengerCapacity(int passengerCapacity) throws InputMismatchException {
+		boolean validPasengerCapcity = passengerCapacity >= MINIMUM_PASSENGER_CAPACITY
+				&& passengerCapacity < MAXIUM_PASSENGER_CAPACITY;
+		if (validPasengerCapcity) {
+			this.passengerCapacity = passengerCapacity;
+		} else {
+			this.passengerCapacity = -1;
+			throw new InputMismatchException();
+		}
+	}
 
-	/*
-	 * Checks to see if any past bookings have been recorded
+	/**
+	 * Method is responsible if this car has any 
+	 * associated bookings in memory.
+	 * 
+	 * @param bookings		list of bookings. Takes
+	 * 						Booking array object
+	 * @return 				Returns true if this car
+	 * 						has bookings, or false if 
+	 * 						this car does not have any
+	 * 						in memory.
 	 */
 	protected boolean hasBookings(Booking[] bookings) {
 		boolean found = false;
@@ -326,8 +454,17 @@ public class Car {
 		return found;
 	}
 
-	/*
-	 * Processes the completion of the booking
+	/**
+	 * Method is responsible for finishing a booking associated
+	 * with this car, and storing the finished booking into past
+	 * bookings.
+	 * 
+	 * @param bookingIndex		booking index. Takes numeric input
+	 * @param kilometers		kilometers traveled. Takes numeric
+	 * 							input
+	 * @return					Returns a string if booking was 
+	 * 							successfully completed, or returns
+	 * 							an error message 
 	 */
 	protected String completeBooking(int bookingIndex, double kilometers) {
 		Booking booking = currentBookings[bookingIndex];
@@ -335,10 +472,11 @@ public class Car {
 		currentBookings[bookingIndex] = null;
 		bookingSpotAvailable = bookingIndex;
 
-		// call complete booking on Booking object
+		// Call complete booking on Booking object
 		double fee = kilometers * (tripFee * 0.3);
 		booking.completeBooking(kilometers, fee, tripFee);
-		// add booking to past bookings
+		
+		// Add booking to past bookings
 		for (int i = 0; i < pastBookings.length; i++) {
 			if (pastBookings[i] == null) {
 				pastBookings[i] = booking;
@@ -350,10 +488,16 @@ public class Car {
 		return result;
 	}
 
-	/*
-	 * Gets the position in the array of a booking based on a name and date. Returns
-	 * the index of the booking if found. Otherwise it returns -1 to indicate the
-	 * booking was not found.
+	/**
+	 * Methods is responsible for getting a specific <Booking> object by its
+	 * date as required by the user from this car's associated bookings. 
+	 * 
+	 * @param firstName			user's first name. Takes string input
+	 * @param lastName			user's last name. Takes string input
+	 * @param dateOfBooking		date required. Takes custom DateTime input
+	 * @return					Returns an integer index that shows the 
+	 * 							position of the booking in memory, or returns
+	 * 							-1 if booking could not be found.
 	 */
 	protected int getBookingByDate(String firstName, String lastName, DateTime dateOfBooking) {
 		System.out.println();
@@ -376,6 +520,17 @@ public class Car {
 	 * index of the booking if found. Otherwise it returns -1 to indicate the
 	 * booking was not found.
 	 */
+	/**
+	 * Methods is responsible for getting a specific <Booking> object
+	 * as required by the user's name only from this car's associated bookings. 
+	 * 
+	 * @param firstName			user's first name. Takes string input
+	 * @param lastName			user's last name. Takes string input
+	 * @param dateOfBooking		date required. Takes custom DateTime input
+	 * @return					Returns an integer index that shows the 
+	 * 							position of the booking in memory, or returns
+	 * 							-1 if booking could not be found.
+	 */
 	public int getBookingByName(String firstName, String lastName) {
 		for (int i = 0; i < currentBookings.length; i++) {
 			if (currentBookings[i] != null) {
@@ -390,8 +545,11 @@ public class Car {
 		return -1;
 	}
 
-	/*
-	 * A record marker mark the beginning of a record.
+	/**
+	 * Method is responsible for making a new record marker
+	 * to differentiate between different booking objects.
+	 * 
+	 * @return 		Returns a formatted string of underscores.
 	 */
 	protected String getRecordMarker() {
 		final int RECORD_MARKER_WIDTH = 60;
@@ -403,8 +561,15 @@ public class Car {
 		return sb.toString();
 	}
 
-	/*
-	 * Checks to see if the number of passengers falls within the accepted range.
+	/**
+	 * Method is responsible for checking if integer parameter 
+	 * meets requirements for a new <Car> object.
+	 * 
+	 * @param numPassengers		number of passengers. takes
+	 * 							numeric input
+	 * @return					Returns true if parameters
+	 * 							meets requirements, otherwise
+	 * 							false.
 	 */
 	protected boolean numberOfPassengersIsValid(int numPassengers) {
 		if (numPassengers >= MINIMUM_PASSENGER_CAPACITY && numPassengers < MAXIUM_PASSENGER_CAPACITY
@@ -414,8 +579,15 @@ public class Car {
 		return false;
 	}
 
-	/*
-	 * Checks that the date is not in the past or more than 7 days in the future.
+	/**
+	 * Method is responsible for checking if date parameter 
+	 * meets requirements for a new <Car> object. 
+	 * 
+	 * @param date			date required. Takes custom DateTime
+	 * 						input
+	 * @return				Returns true if parameter meets requirements,
+	 * 						otherwise false.
+	 * @throws InvalidDate	If an invalid date exception has occurred
 	 */
 	protected boolean dateIsValid(DateTime date) throws InvalidDate {
 		if (!DateUtilities.dateIsNotInPast(date) || !DateUtilities.dateIsNotMoreThan7Days(date)) {
@@ -424,10 +596,13 @@ public class Car {
 			return true;
 		}
 	}
-
-	/*
-	 * Indicates if a booking spot is available. If it is then the index of the
-	 * available spot is assigned to bookingSpotFree.
+	
+	/**
+	 * Method is responsible if car can still be booked based
+	 * on memory available.
+	 * 
+	 * @return		Returns true if car is available, 
+	 * 				otherwise false.
 	 */
 	protected boolean bookingAvailable() {
 		for (int i = 0; i < currentBookings.length; i++) {
@@ -444,8 +619,13 @@ public class Car {
 		return false;
 	}
 
-	/*
-	 * Checks to see if if the car is currently booked on the date specified.
+	/**
+	 * Method is responsible if car is not booked on a specific
+	 * date as requested by the user.
+	 * 
+	 * @param date		date required. Takes custom DateTime input
+	 * @return			Returns true if car is not booked based on
+	 * 					parameter specified, otherwise false. 
 	 */
 	protected boolean notCurrentlyBookedOnDate(DateTime date) {
 		boolean foundDate = true;
@@ -460,9 +640,22 @@ public class Car {
 		return foundDate;
 	}
 	
-	/*
-	 * Checks if user input is the correct type of input
-	 * i.e: make and model are strings
+	/**
+	 * Method is responsible for checking this car object's details
+	 * matches requirements.
+	 * 
+	 * @param regNo						registration number. Takes
+	 * 									string input
+	 * @param make						car make. Takes string input
+	 * @param model						car model. Takes string input
+	 * @param driverName				driver's name. Takes string 
+	 * 									input
+	 * @return							Returns true if parameters 
+	 * 									specified matches requirements,
+	 * 									otherwise throws new input
+	 * 									mismatch exception.
+	 * @throws InputMismatchException	If an input mismatch exception
+	 * 									has occurred
 	 */
 	protected boolean checkInputMatch(String regNo, String make, String model, String driverName) throws InputMismatchException {
 		boolean checkReg1 = regNo.substring(0, 3).matches("[a-zA-Z]+");
@@ -474,31 +667,6 @@ public class Car {
 		if (checkReg1 && checkReg2 && checkMake && checkModel && checkDriver) {
 			return true;
 		} else {
-			throw new InputMismatchException();
-		}
-	}
-
-	/*
-	 * Validates and sets the registration number
-	 */
-	protected void setRegNo(String regNo) throws InvalidId {
-		if (!MiRidesUtilities.isRegNoValid(regNo).contains("Error:")) {
-			this.regNo = regNo;
-		} else {
-			throw new InvalidId();
-		}
-	}
-
-	/*
-	 * Validates and sets the passenger capacity
-	 */
-	protected void setPassengerCapacity(int passengerCapacity) throws InputMismatchException {
-		boolean validPasengerCapcity = passengerCapacity >= MINIMUM_PASSENGER_CAPACITY
-				&& passengerCapacity < MAXIUM_PASSENGER_CAPACITY;
-		if (validPasengerCapcity) {
-			this.passengerCapacity = passengerCapacity;
-		} else {
-			this.passengerCapacity = -1;
 			throw new InputMismatchException();
 		}
 	}

@@ -8,6 +8,14 @@ import utilities.DateUtilities;
  * This class can be used by other objects not just cars.
  * Author: Peter Bui(Originally Rodney Cocker) - s3786794
  */
+
+/**
+ * Booking is the class responsible for creating a new Booking
+ * object and ensuring all required details are correct.
+ * 
+ * @author Peter Bui : s3786794
+ * @version 1.0
+ */
 public class Booking {
 	
 	private String id;
@@ -22,6 +30,21 @@ public class Booking {
 	
 	private final int NAME_MINIMUM_LENGTH = 3;
 
+	
+	/**
+	 * Class constructor.
+	 * 
+	 * @param firstName			user's first name. Takes 
+	 * 							string input
+	 * @param lastName			user's last name. Takes
+	 * 							string input
+	 * @param required			date required. Takes custom
+	 * 							DateTime input
+	 * @param numPassengers		number of passengers. Takes
+	 * 							numeric input
+	 * @param car				car object. Takes custom Car
+	 * 							object 
+	 */
 	public Booking(String firstName, String lastName, DateTime required, int numPassengers, Car car) {
 		generateId(car.getRegNo(), firstName, lastName, required);
 		validateAndSetDate(required);
@@ -31,8 +54,13 @@ public class Booking {
 		this.bookingFee = car.getTripFee();
 	}
 	
-	/*
-	 * Updates the booking record with the kilometers traveled, the booking and trip fee.
+	/**
+	 * Method is responsible for associating user's parameters with
+	 * objects' parameters
+	 * 
+	 * @param kilometersTravelled	kilometers traveled. Takes numeric input
+	 * @param tripFee				trip fee. Takes numeric input
+	 * @param bookingFee			booking fee. Takes numeric input
 	 */
 	public void completeBooking(double kilometersTravelled, double tripFee, double bookingFee) {
 		this.kilometersTravelled = kilometersTravelled;
@@ -40,8 +68,12 @@ public class Booking {
 		this.bookingFee = bookingFee;
 	}
 	
-	/*
-	 * Human readable presentation of the state of the car.
+	/**
+	 * Method is responsible for returning all of this <Booking> 
+	 * object's parameters.
+	 * 
+	 * @return 		Returns a formatted string of details of
+	 * 				this booking object.
 	 */
 	public String getDetails() {
 		StringBuilder sb = new StringBuilder();
@@ -67,8 +99,12 @@ public class Booking {
 		return sb.toString();
 	}
 	
-	/*
-	 * Computer readable state of the car
+	/**
+	 * Method is responsible for providing a computer readable
+	 * version of this <Booking> object's parameters.
+	 * 
+	 * @return		Returns a formatted string of details
+	 * 				of this booking object.
 	 */
 	@Override
 	public String toString() {
@@ -106,8 +142,11 @@ public class Booking {
 		return id;
 	}
 
-	/*
-	 * A record marker mark the beginning of a record.
+	/**
+	 * Method is responsible for making a new record marker
+	 * to differentiate between different booking objects.
+	 * 
+	 * @return 		Returns a formatted string of underscores.
 	 */
 	private String getRecordMarker() {
 		StringBuilder sb = new StringBuilder();
@@ -117,9 +156,17 @@ public class Booking {
 		sb.append("\n");
 		return sb.toString();
 	}
-	
-	/*
-	 * Generate an id from regNo, passenger name and the date of the booking.
+
+	/**
+	 * Method is responsible for generating an id from user's input.
+	 * 
+	 * @param regNo			registration number. Takes string input
+	 * @param firstName		user's first name. Takes string input
+	 * @param lastName		user's last name. Takes string input
+	 * @param date			date required. Takes custom DateTime input
+	 * @return 				Returns a formatted string containing required
+	 * 						parameters, or an error message if parameters
+	 * 						do not meet requirements.
 	 */
 	private void generateId(String regNo, String firstName, String lastName, DateTime date) {
 		if(firstName.length() < 3 || lastName.length() < 3  || date == null) {
@@ -129,9 +176,13 @@ public class Booking {
 				+ date.getEightDigitDate();
 		}
 	}
-	
-	/*
-	 * Ensures the name is more than three characters
+
+	/**
+	 * Method is responsible for validating if user's name fits
+	 * the requirements for an id.
+	 * 
+	 * @param firstName		user's first name. Takes string input
+	 * @param lastName		user's last name. Takes string input
 	 */
 	private void validateName(String firstName, String lastName) {
 		if(firstName.length() >= NAME_MINIMUM_LENGTH && lastName.length() >= NAME_MINIMUM_LENGTH) {
@@ -143,8 +194,12 @@ public class Booking {
 		}
 	}
 	
-	/*
-	 * Ensures the date is not in the past.
+	/**
+	 * Method is responsible if date parameter fits
+	 * requirements for a valid date
+	 * 
+	 * @param date		date required. Takes custom 
+	 * 					DateTime input
 	 */
 	private void validateAndSetDate(DateTime date) {
 		if(DateUtilities.dateIsNotInPast(date) && DateUtilities.dateIsNotMoreThan7Days(date)) {

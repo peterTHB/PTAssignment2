@@ -1,23 +1,37 @@
 package persistence;
 
-//import app.MiRideApplication;
 import cars.*;
 import exceptions.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.InputMismatchException;
 
-// class name is a placeholder
-
+/**
+ * MainPersistence is the class responsible for dealing with
+ * external data and save files states, saving upon exiting 
+ * and reading upon starting to and from a main file so that 
+ * the program will return to its original state.
+ * A backup file is also created in case the main file has
+ * been corrupted.
+ * 
+ * @author Peter Bui : s3786794
+ * @version 1.0
+ */
 public class MainPersistence {
-	/*
+	/**
+	 * Method is responsible for saving <Car> objects to an external file,
+	 * writing to the file if it exists, or creating a new file if file 
+	 * does not exist. 
+	 * A backup file is also created to ensure that if the main files does
+	 * not exist, the backup file is used instead.
 	 * 
+	 * @param cars
+	 * @throws IOException
 	 */
 	public void saveCars(Car[] cars) throws IOException {
 		PrintWriter wrMain = new PrintWriter(new BufferedWriter(new FileWriter("MainData.txt")));
@@ -40,12 +54,31 @@ public class MainPersistence {
 		wrBackUp.close();
 	}
 	
-	/*
+	/**
+	 * Method is responsible for reading data from an external 
+	 * file into the system to create new <Car> objects. 
 	 * 
+	 * @param fileName					file name. Takes string 
+	 * 									input
+	 * @return							Returns a list of <Car>
+	 * 									objects from an external
+	 * 									file while the file still
+	 * 									has lines to be read.
+	 * @throws CorruptedFiles			If a corrupted files exception
+	 * 									has occurred
+	 * @throws InputMismatchException	If an input mismatch exception
+	 * 									has occurred
+	 * @throws InvalidId				If an invalid id exception has
+	 * 									occurred
+	 * @throws InvalidRefreshments		If an invalid refreshments
+	 * 									exception has occurred	
+	 * @throws IOException				If an input or output exception
+	 * 									has occurred
+	 * @throws NullFile					If a null file exception has 
+	 * 									occurred
 	 */
-	public Car[] readData(String fileName) throws FileNotFoundException, IOException, InputMismatchException, 
-													InvalidId, InvalidRefreshments, CorruptedFiles, NullFile {
-		// Use scanner instead?
+	public Car[] readData(String fileName) throws CorruptedFiles, InputMismatchException, InvalidId, 
+											InvalidRefreshments, IOException, NullFile {
 		BufferedReader br = new BufferedReader(new FileReader(fileName));
 		String line = null;
 		
@@ -67,8 +100,15 @@ public class MainPersistence {
 		return newCarList;
 	}
 	
-	/*
+	/**
+	 * Method is responsible for ensuring that an external file
+	 * has the correct amount of items to be read into the system
+	 * to create a fully functioning Car object.
 	 * 
+	 * @param splitCar			list of car details. Takes string 
+	 * 							array
+	 * @throws CorruptedFiles	If an corrupted files exception 
+	 * 							has occurred
 	 */
 	public void checkFile(String[] splitCar) throws CorruptedFiles {
 		if (splitCar.length < 7) {
@@ -76,8 +116,23 @@ public class MainPersistence {
 		}
 	}
 	
-	/*
+	/**
+	 * Method is responsible for splitting a string array of car
+	 * details into their respective components so that a new <Car>
+	 * object could be created.
 	 * 
+	 * @param splitCar 					list of car details. Takes
+	 * 									string array
+	 * @return							Returns a fully created <Car>
+	 * 									object of either the parent Car
+	 * 									or the child SilverServiceCar
+	 * 									if successful.
+	 * @throws InputMismatchException	If an input mismatch exception
+	 * 									has occurred
+	 * @throws InvalidId				If an invalid id exception has 
+	 * 									occurred
+	 * @throws InvalidRefreshments		If an invalid refreshments 
+	 * 									exception has occurred
 	 */
 	private Car provideCars(String[] splitCar) throws InputMismatchException, InvalidId, InvalidRefreshments {
 		Car car;

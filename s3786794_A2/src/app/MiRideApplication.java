@@ -1,5 +1,6 @@
 package app;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;
@@ -12,11 +13,14 @@ import persistence.MainPersistence;
 import utilities.DateTime;
 import utilities.MiRidesUtilities;
 
-/*
- * Class:			MiRideApplication
- * Description:		The system manager the manages the 
- *              	collection of data. 
- * Author:			Peter Bui(Originally Rodney Cocker) - s3786794
+/**
+ * MiRideApplication is the class responsible for managing all
+ * the data that is stored within the system.
+ * Most importantly, this class stores <Car> and <Booking> objects
+ * to be utilized by the program and the user's input.
+ * 
+ * @author Peter Bui : s3786794
+ * @version 1.0
  */
 
 public class MiRideApplication {
@@ -25,12 +29,29 @@ public class MiRideApplication {
 	private String[] availableCars;
 	Car[] sortCars;
 	
-	/*
+	/**
+	 * Method is responsible for fully creating a <Car> object 
+	 * to be used by the user within the program.
 	 * 
+	 * @param carType					the type that a car is. Takes string input
+	 * @param id						registration number. Takes string input of 
+	 * 									chars and numbers
+	 * @param make						car manufacturer. Takes string input
+	 * @param model						version of car. Takes string input
+	 * @param driverName				name of driver. Takes string input
+	 * @param numPassengers 			number of passengers. Takes numeric input
+	 * @param bookingFee				booking fee of car. Takes numeric input
+	 * @param refreshments				list of refreshments. Takes string input
+	 * @return string					returns string if either successful or 
+	 * 									failed.
+	 * @throws InputMismatchException	If an input mismatch exception has occurred
+	 * @throws InvalidId				If an invalid id exception has occurred
+	 * @throws InvalidRefreshments		If an invalid refreshments exception has
+	 * 									occurred
 	 */
 	public String createCar(String carType, String id, String make, String model, String driverName, 
 							int numPassengers, double bookingFee, String refreshments) 
-							throws InvalidId, InvalidRefreshments, InputMismatchException {
+							throws InputMismatchException, InvalidId, InvalidRefreshments {
 		if(!checkIfCarExists(id)) {
 			if (carType.equals("SD")) {
 				cars[itemCount] = new Car(id, make, model, driverName, numPassengers);
@@ -44,12 +65,18 @@ public class MiRideApplication {
 		return "Error: Already exists in the system.";
 	}
 
-	/*
+	/**
+	 * Method is responsible for checking which cars are available
+	 * based on the date that is required by the user.
 	 * 
+	 * @param dateRequired		date required. Takes in a custom
+	 * 							DateTime object
+	 * @return availableCars	returns an array of cars that are 
+	 * 							available for booking.
 	 */
 	public String[] book(DateTime dateRequired) {
 		int numberOfAvailableCars = 0;
-		// finds number of available cars to determine the size of the array required.
+		// Finds number of available cars to determine the size of the array required.
 		for(int i = 0; i < cars.length; i++) {
 			if(cars[i] != null) {
 				if(!cars[i].isCarBookedOnDate(dateRequired)) {
@@ -75,8 +102,23 @@ public class MiRideApplication {
 		return availableCars;
 	}
 	
-	/*
+	/**
+	 * Method is responsible for creating a string that shows a
+	 * <Booking> object has been successfully created.
 	 * 
+	 * @param firstName				user's first name. Takes string input
+	 * @param lastName				user's last name. Takes string input
+	 * @param required				date required. Takes DateTime input
+	 * @param numPassengers			number of passengers. Takes numeric 
+	 * 								input
+	 * @param registrationNumber	car registration number. Takes string 
+	 * 								input
+	 * @return message				Returns a string if booking object is 
+	 * 								successful or not.
+	 * @throws InvalidBooking		If an invalid booking exception has 
+	 * 								occurred
+	 * @throws InvalidDate			If an invalid date exception has
+	 * 								occurred
 	 */
 	public String book(String firstName, String lastName, DateTime required, int numPassengers, String registrationNumber) throws InvalidBooking, InvalidDate
 	{
@@ -97,7 +139,7 @@ public class MiRideApplication {
         }
 	}
 	
-	/*
+	/**
 	 * 
 	 */
 	public String completeBooking(String firstName, String lastName, DateTime dateOfBooking, double kilometers) {
@@ -112,8 +154,19 @@ public class MiRideApplication {
 		return "Booking not found.";
 	}
 	
-	/*
+	/**
+	 * Method is responsible for ensuring a <Booking> object has been
+	 * completed by user's name, registration number and kilometers
+	 * traveled.
 	 * 
+	 * @param firstName				user's first name. Takes string input
+	 * @param lastName				user's last name. Takes string input
+	 * @param registrationNumber	car registration number. Takes string
+	 * 								input
+	 * @param kilometers			kilometers traveled. Takes numeric input
+	 * @return carNotFound			Returns string if car could not be found,
+	 * 								booking is completed, or booking does not
+	 * 								exist.
 	 */
 	public String completeBooking(String firstName, String lastName, String registrationNumber, double kilometers) {
 		String carNotFound = "Car not found";
@@ -137,8 +190,18 @@ public class MiRideApplication {
 		return "Error: Booking not found.";
 	}
 	
-	/*
+	/**
+	 * Method is responsible for getting a <Booking> object from memory 
+	 * given the user's input of their full name and provided registration 
+	 * number.
 	 * 
+	 * @param firstName				user's first name. Takes string input
+	 * @param lastName				user's last name. Takes string input
+	 * @param registrationNumber	car registration number. Takes string
+	 * 								input
+	 * @return 						Returns boolean if car could not be found,
+	 * 								booking is completed, or booking does not
+	 * 								exist.
 	 */
 	public boolean getBookingByName(String firstName, String lastName, String registrationNumber) {
 		Car car = null;
@@ -161,7 +224,7 @@ public class MiRideApplication {
 		return true;
 	}
 	
-	/*
+	/**
 	 * 
 	 */
 	public String displaySpecificCar(String regNo) {
@@ -183,6 +246,17 @@ public class MiRideApplication {
 	 * 			If not, don't do anything
 	 * 		If no available cars, return error message
 	 * Wrong input returns error message
+	 */
+	
+	/**
+	 * Method is responsible for displaying available cars based 
+	 * on car type and date inputs.
+	 * 
+	 * @param type			car type. Takes in string input
+	 * @param dateInput		date required. Takes in custom 
+	 * 						DateTime input
+	 * @return 				Returns the details of all available
+	 * 						cars, or errors if car does not exist.
 	 */
 	public String displayAvailable(String type, DateTime dateInput) {
 		if (type.equals("SD")) {
@@ -212,10 +286,23 @@ public class MiRideApplication {
 		}
 	}
 	
-	/*
+	/**
+	 * Method is responsible for seeding both regular and silver service
+	 * cars into memory for usage by the user.
 	 * 
+	 * @return 						Returns true if cars could be seeded,
+	 * 								or false if there's no more memory 
+	 * 								left for cars to be seeded.
+	 * @throws InvalidBooking		If an invalid booking exception has
+	 * 								occurred
+	 * @throws InvalidDate			If an invalid date exception has
+	 * 								occurred
+	 * @throws InvalidId			If an invalid id exception has
+	 * 								occurred
+	 * @throws InvalidRefreshments	If an invalid refreshments exception 
+	 * 								has occurred
 	 */
-	public boolean seedData() throws InvalidId, InvalidBooking, InvalidRefreshments, InvalidDate {
+	public boolean seedData() throws InvalidBooking, InvalidDate, InvalidId, InvalidRefreshments {
 		for(int i = 0; i < cars.length; i++) {
 			if(cars[i] != null) {
 				return false;
@@ -229,10 +316,17 @@ public class MiRideApplication {
 		return true;
 	}
 	
-	/*
+	/**
+	 * Method is responsible for seeding regular cars into memory.
 	 * 
+	 * @throws InvalidBooking		If an invalid booking exception has
+	 * 								occurred
+	 * @throws InvalidDate			If an invalid date exception has
+	 * 								occurred
+	 * @throws InvalidId			If an invalid id exception has
+	 * 								occurred
 	 */
-	public void seedRegular() throws InvalidId, InvalidBooking, InvalidDate {
+	public void seedRegular() throws InvalidBooking, InvalidDate, InvalidId {
 		// 2 cars not booked
 		Car honda = new Car("SIM194", "Honda", "Accord Euro", "Henry Cavill", 5);
 		cars[itemCount] = honda;
@@ -275,10 +369,19 @@ public class MiRideApplication {
 		rover.completeBooking("Rodney", "Cocker", inTwoDays, 75);
 	}
 	
-	/*
+	/**
+	 * Method is responsible for seeding silver service cars into memory
 	 * 
+	 * @throws InvalidBooking		If an invalid booking exception has
+	 * 								occurred
+	 * @throws InvalidDate			If an invalid date exception has
+	 * 								occurred
+	 * @throws InvalidId			If an invalid id exception has
+	 * 								occurred
+	 * @throws InvalidRefreshments	If an invalid refreshments exception 
+	 * 								has occurred
 	 */
-	public void seedSilver() throws InvalidId, InvalidBooking, InvalidRefreshments, InvalidDate{
+	public void seedSilver() throws InvalidBooking, InvalidDate, InvalidId, InvalidRefreshments{
 		// 2 silver cars not booked
 		String[] refreshment1 = "Cadbury,Lays,Toothpaste".split(",");
 		Car mazda = new SilverServiceCar("MAZ385", "Mazda", "CX-9", "Jason Voorhees", 4, 3.5, refreshment1);
@@ -326,10 +429,18 @@ public class MiRideApplication {
 		kia.completeBooking("Evan", "Noss", inTwoDays, 23);
 	}
 
-	/*
-	 * Store all of one car type in another array
+	/**
+	 * Method is responsible for displaying the details of cars
+	 * currently in the system as determined by user input.
+	 * 
+	 * @param type		car type. Takes string input
+	 * @param order		car order. Takes string input
+	 * @return 			Returns string details of all
+	 * 					required car objects, or error
+	 * 					messages if car objects do not 
+	 * 					exist.
 	 */
-	public String displayAllBookings(String type, String order) {
+	public String displayAllCars(String type, String order) {
 		if(itemCount == 0) {
 			return "No cars have been added to the system.";
 		}
@@ -353,8 +464,13 @@ public class MiRideApplication {
 		return sb.toString();
 	}
 	
-	/*
+	/**
+	 * Method responsible for selecting cars based on 
+	 * car type, and storing them within another array
+	 * for sorting.
 	 * 
+	 * @param type		car type. Takes string input
+	 * @param order		car order. Takes string input
 	 */
 	private void changeArray(String type, String order) {
 		int sortArray = 0;
@@ -383,8 +499,13 @@ public class MiRideApplication {
 		}
 	}
 	
-	/*
+	/**
+	 * Method is responsible for sorting required cars
+	 * based on ascending or descending order.
+	 * Implementation of sorting method is based around
+	 * bubble sorting.
 	 * 
+	 * @param order 	car order. Takes string input
 	 */
 	private void sortMethod(String order) {
 		Car temp = null;
@@ -416,8 +537,14 @@ public class MiRideApplication {
 		}
 	}
 
-	/*
+	/**
+	 * Method is responsible of required car type
+	 * exists in memory.
 	 * 
+	 * @param type		car type. Takes string input
+	 * @return 			Returns true if car type is 
+	 * 					found within memory, or false
+	 * 					if none of that car type could.
 	 */
 	private boolean checkExist(String type) {
 		if (type.equals("SD")) {
@@ -444,6 +571,7 @@ public class MiRideApplication {
 		return false;
 	}
 	
+	// Required getters
 	public String isValidId(String id) {
 		return MiRidesUtilities.isRegNoValid(id);
 	}
@@ -456,8 +584,15 @@ public class MiRideApplication {
 		return MiRidesUtilities.isValidBookingFee(bookingFee);
 	}
 
-	/*
+	/**
+	 * Method is responsible for checking if car exists 
+	 * within memory.
 	 * 
+	 * @param regNo		registration number. Takes in
+	 * 					string input
+	 * @return 			Returns true if car exists, or
+	 * 					false if car does not exist 
+	 * 					within memory.
 	 */
 	public boolean checkIfCarExists(String regNo) {
 		Car car = null;
@@ -472,7 +607,7 @@ public class MiRideApplication {
 		}
 	}
 	
-	/*
+	/**
 	 * 
 	 */
 	private Car getCarById(String regNo) {
@@ -489,31 +624,73 @@ public class MiRideApplication {
 		return car;
 	}
 	
-	/*
+	/**
+	 * Method is responsible for ensuring placing old <Car> objects
+	 * that is already read from an external file into memory.
 	 * 
+	 * @throws CorruptedFiles			If a corrupted files exception has
+	 * 									occurred
+	 * @throws InvalidId				If an invalid id exception has 
+	 * 									occurred
+	 * @throws InvalidRefreshments		If an invalid refreshments exception
+	 * 									has occurred
+	 * @throws InputMismatchException 	If an input mismatch exception has 
+	 * 									occurred
+	 * @throws IOException 				If an input or output exception has
+	 * 									occurred
+	 * @throws NullFile					If a null file exception has occurred
 	 */
-	public void printDataExists() throws InputMismatchException, FileNotFoundException, IOException, 
-											InvalidId, InvalidRefreshments, CorruptedFiles, NullFile {
+	public void printDataExists() throws CorruptedFiles, InvalidId, InvalidRefreshments, 
+										InputMismatchException, IOException, NullFile {
 		MainPersistence mainPersist = new MainPersistence();
-		Car[] carList = mainPersist.readData("MainData.txt");
+		File mainFile = new File("MainData.txt");
+		File backUpFile = new File("BackUpData.txt");
 		
-		if (carList[0] == null) {
-			System.out.println("Data not found.");
-			System.out.println("Starting up program.");
-		} else {
-			for (int i = 0; i < carList.length; i++) {
-				if (carList[i] != null) {
-					cars[i] = carList[i];
-					itemCount++;
+		if (mainFile.exists()) {
+			Car[] carList = mainPersist.readData("MainData.txt");
+			
+			if (carList[0] == null) {
+				System.out.println("Main data not found.");
+				System.out.println("Starting up program.");
+			} else {
+				for (int i = 0; i < carList.length; i++) {
+					if (carList[i] != null) {
+						cars[i] = carList[i];
+						itemCount++;
+					}
 				}
+				System.out.println("Main data found, entering into system.");
+				System.out.println("Starting up program...");
 			}
-			System.out.println("Data found, entering into system.");
-			System.out.println("Starting up program.");
+		} else if (backUpFile.exists()) {
+			Car[] carList = mainPersist.readData("BackUpData.txt");
+			
+			if (carList[0] == null) {
+				System.out.println("Backup data not found.");
+				System.out.println("Starting up program...");
+			} else {
+				for (int i = 0; i < carList.length; i++) {
+					if (carList[i] != null) {
+						cars[i] = carList[i];
+						itemCount++;
+					}
+				}
+				System.out.println("Back up data found, entering into system.");
+				System.out.println("Starting up program....");
+			}
+		} else {
+			System.out.println("Data not found.");
+			System.out.println("Starting up program...");
 		}
 	}
 	
-	/*
+	/**
+	 * Method is responsible for sending all <Car> objects
+	 * to another class and saving them for future uses of
+	 * the program.
 	 * 
+	 * @throws IOException	If an input or output exception 
+	 * 						has occurred
 	 */
 	public void saveCars() throws IOException {
 		MainPersistence mainPersist = new MainPersistence();
@@ -521,10 +698,19 @@ public class MiRideApplication {
 		System.out.println("Data being saved...");
 	}
 	
-	/*
+	/**
+	 * Method is responsible for writing out error messages
+	 * if exception has been caught due to data reading errors.
 	 * 
+	 * @throws CorruptedFiles			If a corrupted files exception has
+	 * 									occurred
+	 * @throws InvalidId				If an invalid id exception has 
+	 * 									occurred
+	 * @throws IOException 				If an input or output exception has
+	 * 									occurred
+	 * @throws NullFile					If a null file exception has occurred
 	 */
-	public void loadData() throws IOException, InvalidId, CorruptedFiles, NullFile {
+	public void loadData() throws CorruptedFiles, InvalidId, IOException, NullFile {
 		try {
 			System.out.println("Accessing data from file...");
 			printDataExists();
@@ -542,35 +728,6 @@ public class MiRideApplication {
 			System.out.println("Refreshments list is invalid");
 		} catch (InvalidId id) {
 			System.out.println("regNo input is invalid");
-		}
-	}
-	
-	// For testing purposes
-	public void printToString(String type) {
-		if (type.equals("SD")) {
-			for (int i = 0; i < cars.length; i++) {
-				if (cars[i] != null) {
-					if (cars[i].getCarType().equals("SD")) {
-						System.out.println(cars[i].toString());
-					}
-				}
-			}
-		} else if (type.equals("SS")) {
-			for (int i = 0; i < cars.length; i++) {
-				if (cars[i] != null) {
-					if (cars[i].getCarType().equals("SS")) {
-						System.out.println(cars[i].toString());
-					}
-				}
-			}
-		}
-	}
-	
-	public void printCarList() {
-		for (int i = 0; i < cars.length; i++) {
-			if (cars[i] != null) {
-				System.out.println(cars[i].toString() + " " + i);
-			}
 		}
 	}
 }

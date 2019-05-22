@@ -6,25 +6,37 @@ import exceptions.*;
 import utilities.DateTime;
 import messages.ErrorMessages;
 
-/*
- * Class:		Menu
- * Description:	The class a menu and is used to interact with the user. 
- * Author:		Peter Bui(Originally Rodney Cocker) - s3786794
+/**
+ * Run is the class responsible for supplying a menu to the user,
+ * which draws upon different methods that the user requires.
+ * 
+ * @author Peter Bui : s3786794
+ * @version 1.0
  */
 public class Menu {
 	private Scanner console = new Scanner(System.in);
 	private MiRideApplication application = new MiRideApplication();
 	private ErrorMessages errorMessages = new ErrorMessages();
-	// Allows me to turn validation on/off for testing business logic in the
-	// classes.
-	// private boolean testingWithValidation = true;
 
-	/*
-	 * Runs the menu in a loop until the user decides to exit the system.
+	/**
+	 * Generates a menu that gets input from a user, validates the input
+	 * and then outputs the required method.
+	 * 
+	 * @throws CorruptedFiles		If a corrupted file exception has
+	 * 								occurred
+	 * @throws InvalidBooking		If an invalid booking exception 
+	 * 								has occurred
+	 * @throws InvalidDate			If an invalid booking date exception
+	 * 								has occurred
+	 * @throws InvalidId 			If an invalid id exception occurred
+	 * @throws InvalidRefreshments	If an invalid list of refreshments
+	 * 								exception has occurred
+	 * @throws IOException 			If an input or output exception has 
+	 * 								occurred
+	 * @throws NullFile				If a null file exception has occurred
 	 */
-	public void run() throws InvalidId, InvalidRefreshments, InvalidBooking, InvalidDate, 
-								NumberFormatException, InputMismatchException, FileNotFoundException, 
-								IOException, CorruptedFiles, NullFile {
+	public void run() throws CorruptedFiles, InvalidBooking, InvalidDate, InvalidId, 
+								InvalidRefreshments, IOException, NullFile {
 		final int MENU_ITEM_LENGTH = 2;
 		String input;
 		String choice = "";
@@ -114,10 +126,6 @@ public class Menu {
 					}
 					System.out.println("Exiting Program ... Goodbye!");
 					break;
-				case "TE":
-//					application.printToString("SD");
-//					application.printCarList();
-				break;
 				default:
 					System.out.println("Error, invalid option selected!");
 					System.out.println("Please try Again...");
@@ -127,10 +135,18 @@ public class Menu {
 		} while (choice != "EX");
 	}
 
-	/*
-	 * Creates cars for use in the system available or booking.
+	/**
+	 * Method is responsible for parsing user input in order to create
+	 * a new <Car> object, which is either a Standard Car or a Silver
+	 * Service Car.
+	 * 
+	 * @throws InputMismatchException 	If an input mismatch exception has 
+	 * 									occurred
+	 * @throws InvalidId 				If an invalid id exception occurred
+	 * @throws InvalidRefreshments		If an invalid list of refreshments
+	 * 									exception has occurred
 	 */
-	private void createCar() throws InvalidId, InvalidRefreshments, InputMismatchException {
+	private void createCar() throws InputMismatchException, InvalidId, InvalidRefreshments {
 		String id = "", make, model, driverName, refreshments, carType = "";
 		int numPassengers = 0;
 		double bookingFee = 0;
@@ -170,8 +186,15 @@ public class Menu {
 		}
 	}
 
-	/*
-	 * Book a car by finding available cars for a specified date.
+	/**
+	 * Method creates a new <Booking> object based by user input, 
+	 * which is accessed through a <Car> object already stored within
+	 * memory.
+	 * 
+	 * @throws InvalidBooking	If an invalid booking exception has 
+	 * 							occurred
+	 * @throws InvalidDate		If an invalid date exception has 
+	 * 							occurred
 	 */
 	private boolean book() throws InvalidBooking, InvalidDate {
 		System.out.println("Booking date(dd/mm/yyyy): ");
@@ -183,7 +206,6 @@ public class Menu {
 		int year = Integer.parseInt(dateCheckAvailable[2]);
 		
 		DateTime dateRequired = new DateTime(day, month, year);
-		
 		
 		String[] availableCars = application.book(dateRequired);
 		for (int i = 0; i < availableCars.length; i++) {
@@ -210,8 +232,10 @@ public class Menu {
 		return true;
 	}
 	
-	/*
-	 * Complete bookings found by either registration number or booking date.
+	/**
+	 * Method is responsible for resolving a <Booking>
+	 * object's requirements based on either an entered
+	 * date or a traveler's first and last name.
 	 */
 	private void completeBooking() {
 		System.out.print("Enter Registration or Booking Date:");
@@ -252,10 +276,31 @@ public class Menu {
 		
 	}
 	
-	/*
+	/**
+	 * Method is responsible for ensuring a user's input of the
+	 * registration number does not exist within memory, before
+	 * allowing the user's input to be parsed through another 
+	 * class.
 	 * 
+	 * @param carType		the type that a car is. Takes string input
+	 * @param id			registration number. Takes string input of 
+	 * 						chars and numbers
+	 * @param make			car manufacturer. Takes string input
+	 * @param model			version of car. Takes string input
+	 * @param driverName	name of driver. Takes string input
+	 * @param numPassengers number of passengers. Takes numeric input
+	 * @param bookingFee	booking fee of car. Takes numeric input
+	 * @param refreshments	list of refreshments. Takes string input
+	 * @throws InputMismatchException	If an input mismatch exception
+	 * 									has occurred
+	 * @throws InvalidId				If an invalid id exception has 
+	 * 									occurred
+	 * @throws InvalidRefreshments		If an invalid refreshments 
+	 * 									exception has occurred
 	 */
-	private void makeCar(String carType, String id, String make, String model, String driverName, int numPassengers, double bookingFee, String refreshments) throws InvalidId, InputMismatchException, InvalidRefreshments {
+	private void makeCar(String carType, String id, String make, String model, String driverName, 
+						int numPassengers, double bookingFee, String refreshments) 
+						throws InputMismatchException, InvalidId, InvalidRefreshments {
 		boolean result = application.checkIfCarExists(id);
 
 		if (!result) {
@@ -267,7 +312,8 @@ public class Menu {
 	}
 	
 	/*
-	 * 
+	 * Method is responsible for displaying a list 
+	 * of available cars to the user upon request.
 	 */
 	private void displayAvailable() {
 		String type = "", dateInput = "";
@@ -288,8 +334,10 @@ public class Menu {
 		System.out.println(application.displayAvailable(type, dateRequired));
 	}
 	
-	/*
-	 * 
+	/**
+	 * Method is responsible for displaying a list
+	 * of cars that the user wants, which is either
+	 * standard cars or silver service cars.
 	 */
 	private void displayAllCars() {
 		String type, order;
@@ -300,11 +348,13 @@ public class Menu {
 		System.out.print("\nEnter sort order(A/D): ");
 		order = console.nextLine().toUpperCase();
 		
-		System.out.println(application.displayAllBookings(type, order));
+		System.out.println(application.displayAllCars(type, order));
 	}
 
-	/*
-	 * Prints the menu.
+	/**
+	 * Method is responsible for printing a pretty print menu
+	 * for the user to read and request one of the following
+	 * functions.
 	 */
 	private void printMenu()
 	{
