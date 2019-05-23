@@ -69,10 +69,9 @@ public class MiRideApplication {
 	 * Method is responsible for checking which cars are available
 	 * based on the date that is required by the user.
 	 * 
-	 * @param dateRequired		date required. Takes in a custom
-	 * 							DateTime object
-	 * @return availableCars	returns an array of cars that are 
-	 * 							available for booking.
+	 * @param dateRequired		date required. Takes in a custom DateTime object
+	 * @return availableCars	returns an array of cars that are  available for 
+	 * 							booking.
 	 */
 	public String[] book(DateTime dateRequired) {
 		int numberOfAvailableCars = 0;
@@ -109,16 +108,12 @@ public class MiRideApplication {
 	 * @param firstName				user's first name. Takes string input
 	 * @param lastName				user's last name. Takes string input
 	 * @param required				date required. Takes DateTime input
-	 * @param numPassengers			number of passengers. Takes numeric 
-	 * 								input
-	 * @param registrationNumber	car registration number. Takes string 
-	 * 								input
-	 * @return message				Returns a string if booking object is 
-	 * 								successful or not.
-	 * @throws InvalidBooking		If an invalid booking exception has 
-	 * 								occurred
-	 * @throws InvalidDate			If an invalid date exception has
-	 * 								occurred
+	 * @param numPassengers			number of passengers. Takes numeric input
+	 * @param registrationNumber	car registration number. Takes string input
+	 * @return message				Returns a string if booking object is successful 
+	 * 								or not.
+	 * @throws InvalidBooking		If an invalid booking exception has occurred
+	 * @throws InvalidDate			If an invalid date exception has occurred
 	 */
 	public String book(String firstName, String lastName, DateTime required, int numPassengers, String registrationNumber) throws InvalidBooking, InvalidDate
 	{
@@ -161,12 +156,10 @@ public class MiRideApplication {
 	 * 
 	 * @param firstName				user's first name. Takes string input
 	 * @param lastName				user's last name. Takes string input
-	 * @param registrationNumber	car registration number. Takes string
-	 * 								input
+	 * @param registrationNumber	car registration number. Takes string input
 	 * @param kilometers			kilometers traveled. Takes numeric input
 	 * @return carNotFound			Returns string if car could not be found,
-	 * 								booking is completed, or booking does not
-	 * 								exist.
+	 * 								booking is completed, or booking does not exist.
 	 */
 	public String completeBooking(String firstName, String lastName, String registrationNumber, double kilometers) {
 		String carNotFound = "Car not found";
@@ -197,11 +190,9 @@ public class MiRideApplication {
 	 * 
 	 * @param firstName				user's first name. Takes string input
 	 * @param lastName				user's last name. Takes string input
-	 * @param registrationNumber	car registration number. Takes string
-	 * 								input
+	 * @param registrationNumber	car registration number. Takes string input
 	 * @return 						Returns boolean if car could not be found,
-	 * 								booking is completed, or booking does not
-	 * 								exist.
+	 * 								booking is completed, or booking does not exist.
 	 */
 	public boolean getBookingByName(String firstName, String lastName, String registrationNumber) {
 		Car car = null;
@@ -253,10 +244,9 @@ public class MiRideApplication {
 	 * on car type and date inputs.
 	 * 
 	 * @param type			car type. Takes in string input
-	 * @param dateInput		date required. Takes in custom 
-	 * 						DateTime input
-	 * @return 				Returns the details of all available
-	 * 						cars, or errors if car does not exist.
+	 * @param dateInput		date required. Takes in custom DateTime input
+	 * @return 				Returns the details of all available cars, or 
+	 * 						errors if car does not exist.
 	 */
 	public String displayAvailable(String type, DateTime dateInput) {
 		if (type.equals("SD")) {
@@ -293,12 +283,9 @@ public class MiRideApplication {
 	 * @return 						Returns true if cars could be seeded,
 	 * 								or false if there's no more memory 
 	 * 								left for cars to be seeded.
-	 * @throws InvalidBooking		If an invalid booking exception has
-	 * 								occurred
-	 * @throws InvalidDate			If an invalid date exception has
-	 * 								occurred
-	 * @throws InvalidId			If an invalid id exception has
-	 * 								occurred
+	 * @throws InvalidBooking		If an invalid booking exception has occurred
+	 * @throws InvalidDate			If an invalid date exception has occurred
+	 * @throws InvalidId			If an invalid id exception has occurred
 	 * @throws InvalidRefreshments	If an invalid refreshments exception 
 	 * 								has occurred
 	 */
@@ -319,12 +306,9 @@ public class MiRideApplication {
 	/**
 	 * Method is responsible for seeding regular cars into memory.
 	 * 
-	 * @throws InvalidBooking		If an invalid booking exception has
-	 * 								occurred
-	 * @throws InvalidDate			If an invalid date exception has
-	 * 								occurred
-	 * @throws InvalidId			If an invalid id exception has
-	 * 								occurred
+	 * @throws InvalidBooking		If an invalid booking exception has occurred
+	 * @throws InvalidDate			If an invalid date exception has occurred
+	 * @throws InvalidId			If an invalid id exception has occurred
 	 */
 	public void seedRegular() throws InvalidBooking, InvalidDate, InvalidId {
 		// 2 cars not booked
@@ -372,14 +356,10 @@ public class MiRideApplication {
 	/**
 	 * Method is responsible for seeding silver service cars into memory
 	 * 
-	 * @throws InvalidBooking		If an invalid booking exception has
-	 * 								occurred
-	 * @throws InvalidDate			If an invalid date exception has
-	 * 								occurred
-	 * @throws InvalidId			If an invalid id exception has
-	 * 								occurred
-	 * @throws InvalidRefreshments	If an invalid refreshments exception 
-	 * 								has occurred
+	 * @throws InvalidBooking		If an invalid booking exception has occurred
+	 * @throws InvalidDate			If an invalid date exception has occurred
+	 * @throws InvalidId			If an invalid id exception has occurred
+	 * @throws InvalidRefreshments	If an invalid refreshments exception has occurred
 	 */
 	public void seedSilver() throws InvalidBooking, InvalidDate, InvalidId, InvalidRefreshments{
 		// 2 silver cars not booked
@@ -435,10 +415,8 @@ public class MiRideApplication {
 	 * 
 	 * @param type		car type. Takes string input
 	 * @param order		car order. Takes string input
-	 * @return 			Returns string details of all
-	 * 					required car objects, or error
-	 * 					messages if car objects do not 
-	 * 					exist.
+	 * @return 			Returns string details of all required car objects, 
+	 * 					or error messages if car objects do not exist.
 	 */
 	public String displayAllCars(String type, String order) {
 		if(itemCount == 0) {
@@ -542,9 +520,8 @@ public class MiRideApplication {
 	 * exists in memory.
 	 * 
 	 * @param type		car type. Takes string input
-	 * @return 			Returns true if car type is 
-	 * 					found within memory, or false
-	 * 					if none of that car type could.
+	 * @return 			Returns true if car type is  found within memory, 
+	 * 					or false if none of that car type could.
 	 */
 	private boolean checkExist(String type) {
 		if (type.equals("SD")) {
@@ -588,11 +565,9 @@ public class MiRideApplication {
 	 * Method is responsible for checking if car exists 
 	 * within memory.
 	 * 
-	 * @param regNo		registration number. Takes in
-	 * 					string input
-	 * @return 			Returns true if car exists, or
-	 * 					false if car does not exist 
-	 * 					within memory.
+	 * @param regNo		registration number. Takes in string input
+	 * @return 			Returns true if car exists, or false if car 
+	 * 					does not exist within memory.
 	 */
 	public boolean checkIfCarExists(String regNo) {
 		Car car = null;
@@ -628,16 +603,11 @@ public class MiRideApplication {
 	 * Method is responsible for ensuring placing old <Car> objects
 	 * that is already read from an external file into memory.
 	 * 
-	 * @throws CorruptedFiles			If a corrupted files exception has
-	 * 									occurred
-	 * @throws InvalidId				If an invalid id exception has 
-	 * 									occurred
-	 * @throws InvalidRefreshments		If an invalid refreshments exception
-	 * 									has occurred
-	 * @throws InputMismatchException 	If an input mismatch exception has 
-	 * 									occurred
-	 * @throws IOException 				If an input or output exception has
-	 * 									occurred
+	 * @throws CorruptedFiles			If a corrupted files exception has occurred
+	 * @throws InvalidId				If an invalid id exception has occurred
+	 * @throws InvalidRefreshments		If an invalid refreshments exception has occurred
+	 * @throws InputMismatchException 	If an input mismatch exception has occurred
+	 * @throws IOException 				If an input or output exception has occurred
 	 * @throws NullFile					If a null file exception has occurred
 	 */
 	public void printDataExists() throws CorruptedFiles, InvalidId, InvalidRefreshments, 
@@ -702,12 +672,9 @@ public class MiRideApplication {
 	 * Method is responsible for writing out error messages
 	 * if exception has been caught due to data reading errors.
 	 * 
-	 * @throws CorruptedFiles			If a corrupted files exception has
-	 * 									occurred
-	 * @throws InvalidId				If an invalid id exception has 
-	 * 									occurred
-	 * @throws IOException 				If an input or output exception has
-	 * 									occurred
+	 * @throws CorruptedFiles			If a corrupted files exception has occurred
+	 * @throws InvalidId				If an invalid id exception has  occurred
+	 * @throws IOException 				If an input or output exception has occurred
 	 * @throws NullFile					If a null file exception has occurred
 	 */
 	public void loadData() throws CorruptedFiles, InvalidId, IOException, NullFile {

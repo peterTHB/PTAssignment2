@@ -34,16 +34,11 @@ public class Booking {
 	/**
 	 * Class constructor.
 	 * 
-	 * @param firstName			user's first name. Takes 
-	 * 							string input
-	 * @param lastName			user's last name. Takes
-	 * 							string input
-	 * @param required			date required. Takes custom
-	 * 							DateTime input
-	 * @param numPassengers		number of passengers. Takes
-	 * 							numeric input
-	 * @param car				car object. Takes custom Car
-	 * 							object 
+	 * @param firstName			user's first name. Takes string input
+	 * @param lastName			user's last name. Takes string input
+	 * @param required			date required. Takes custom DateTime input
+	 * @param numPassengers		number of passengers. Takes numeric input
+	 * @param car				car object. Takes custom Car object 
 	 */
 	public Booking(String firstName, String lastName, DateTime required, int numPassengers, Car car) {
 		generateId(car.getRegNo(), firstName, lastName, required);
@@ -198,8 +193,7 @@ public class Booking {
 	 * Method is responsible if date parameter fits
 	 * requirements for a valid date
 	 * 
-	 * @param date		date required. Takes custom 
-	 * 					DateTime input
+	 * @param date		date required. Takes custom DateTime input
 	 */
 	private void validateAndSetDate(DateTime date) {
 		if(DateUtilities.dateIsNotInPast(date) && DateUtilities.dateIsNotMoreThan7Days(date)) {

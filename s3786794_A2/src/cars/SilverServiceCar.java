@@ -22,21 +22,16 @@ public class SilverServiceCar extends Car {
 	/**
 	 * Class constructor.
 	 * 
-	 * @param regNo						registration number. Takes 
-	 * 									string input
+	 * @param regNo						registration number. Takes string input
 	 * @param make						car make. Takes string input
 	 * @param model						car model. Takes string input
 	 * @param driverName				driver's name. Takes string input
-	 * @param passengerCapacity			passenger capacity. Takes numeric
-	 * 									input
-	 * @param bookingFee				
-	 * @param refreshments
-	 * @throws InvalidId				If an invalid id exception has
-	 * 									occurred
-	 * @throws InputMismatchException	If an input mismatch exception has
-	 * 									occurred
-	 * @throws InputMismatchException	If an input mismatch exception has
-	 * 									occurred
+	 * @param passengerCapacity			passenger capacity. Takes numeric input
+	 * @param bookingFee				booking fee. Takes numeric input
+	 * @param refreshments				list of refreshments. Takes string array
+	 * @throws InvalidId				If an invalid id exception has occurred
+	 * @throws InputMismatchException	If an input mismatch exception has occurred
+	 * @throws InputMismatchException	If an input mismatch exception has occurred
 	 */
 	public SilverServiceCar(String regNo, String make, String model, String driverName, 
 							int passengerCapacity, double bookingFee, String[] refreshments) throws InvalidId, InvalidRefreshments, InputMismatchException {
@@ -57,10 +52,9 @@ public class SilverServiceCar extends Car {
 	 * Method is responsible for splitting a refreshment
 	 * string into separate strings.
 	 * 
-	 * @param stringSplit		refreshment lists. Takes
-	 * 							string input
-	 * @return					Returns a string array
-	 * 							as a list of refreshments
+	 * @param stringSplit		refreshment lists. Takes string input
+	 * @return					Returns a string array as a list of 
+	 * 							refreshments
 	 */
 	public String[] stringSplit(String stringSplit) {
 		String[] refreshList = stringSplit.split(",");
@@ -126,11 +120,9 @@ public class SilverServiceCar extends Car {
 	 * Method is responsible for ensuring the bookingFee
 	 * parameter is 3 or greater.
 	 * 
-	 * @param bookingFee		booking fee. Takes numeric
-	 * 							input
-	 * @return 					Returns true if bookingFee
-	 * 							is 3 or above, otherwise
-	 * 							false.
+	 * @param bookingFee		booking fee. Takes numeric input
+	 * @return 					Returns true if bookingFee is 3 or 
+	 * 							above, otherwise false.
 	 */
 	private boolean validBookingFee(double bookingFee) {
 		if (bookingFee >= 3.00) {
@@ -145,10 +137,9 @@ public class SilverServiceCar extends Car {
 	 * parameter is not null, so that a silver service car
 	 * object could be fully created.
 	 * 
-	 * @param refreshments		list of refreshments. Takes
-	 * 							string array
-	 * @return					Returns true if string array
-	 * 							is not empty, otherwise false.
+	 * @param refreshments		list of refreshments. Takes string array
+	 * @return					Returns true if string array is not empty, 
+	 * 							otherwise false.
 	 */
 	private boolean checkRefreshments(String[] refreshments) {
 		if (refreshments != null) {
@@ -163,11 +154,9 @@ public class SilverServiceCar extends Car {
 	 * duplicated refreshments within the refreshments
 	 * parameters.
 	 * 
-	 * @param refreshments		list of refreshments. Takes
-	 * 							string array
-	 * @return					Returns true if there are
-	 * 							duplicated items, otherwise
-	 * 							false.
+	 * @param refreshments		list of refreshments. Takes string array
+	 * @return					Returns true if there are duplicated items, 
+	 * 							otherwise false.
 	 */
 	private boolean refreshDupCheck(String[] refreshments) {
 		for (int i = 0; i < refreshments.length; i++) {
@@ -185,11 +174,9 @@ public class SilverServiceCar extends Car {
 	 * Method is responsible if refreshments list has less
 	 * than 3 items or more than 5 items.
 	 * 
-	 * @param refreshments		list of refreshments. Takes
-	 * 							string array
-	 * @return					Returns true if refreshment 
-	 * 							list fits requirements, 
-	 * 							otherwise false.
+	 * @param refreshments		list of refreshments. Takes string array
+	 * @return					Returns true if refreshment list fits 
+	 * 							requirements, otherwise false.
 	 */
 	private boolean refreshLimitCheck(String[] refreshments) {
 		if (refreshments.length < 3 || refreshments.length > 5) {
@@ -217,7 +204,6 @@ public class SilverServiceCar extends Car {
 				}
 			}
 		}
-		
 		return sb.toString();
 	}
 	

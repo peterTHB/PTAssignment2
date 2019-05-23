@@ -45,17 +45,13 @@ public class Car {
 	/**
 	 * Class constructor.
 	 * 
-	 * @param regNo						registration number. Takes 
-	 * 									string input
+	 * @param regNo						registration number. Takes string input
 	 * @param make						car make. Takes string input
 	 * @param model						car model. Takes string input
 	 * @param driverName				driver's name. Takes string input
-	 * @param passengerCapacity			passenger capacity. Takes numeric
-	 * 									input
-	 * @throws InvalidId				If an invalid id exception has
-	 * 									occurred
-	 * @throws InputMismatchException	If an input mismatch exception has
-	 * 									occurred
+	 * @param passengerCapacity			passenger capacity. Takes numeric input
+	 * @throws InvalidId				If an invalid id exception has occurred
+	 * @throws InputMismatchException	If an input mismatch exception has occurred
 	 */
 	public Car(String regNo, String make, String model, String driverName, int passengerCapacity) throws InvalidId, InputMismatchException {
 		
@@ -107,23 +103,16 @@ public class Car {
 	 * Method is responsible for allowing a <Booking> object
 	 * to be associated with this car object.
 	 * 
-	 * @param firstName			user's first name. Takes string
-	 * 							input
-	 * @param lastName			user's last name. Takes string
-	 * 							input
-	 * @param required			date required. Takes custom 
-	 * 							DateTime input
-	 * @param numPassengers		number of passengers. Takes 
-	 * 							numeric input
-	 * @return					Returns true if booking can be 
-	 * 							placed in memory with association 
-	 * 							to this car object, or false if 
-	 * 							booking parameters do not fit 
+	 * @param firstName			user's first name. Takes string input
+	 * @param lastName			user's last name. Takes string input
+	 * @param required			date required. Takes custom DateTime input
+	 * @param numPassengers		number of passengers. Takes numeric input
+	 * @return					Returns true if booking can be  placed in
+	 * 							memory with association to this car object, 
+	 * 							or false if booking parameters do not fit 
 	 * 							requirements.
-	 * @throws InvalidBooking	If an invalid booking exception has 
-	 * 							occurred
-	 * @throws InvalidDate		If an invalid date exception has 
-	 * 							occurred
+	 * @throws InvalidBooking	If an invalid booking exception has occurred
+	 * @throws InvalidDate		If an invalid date exception has occurred
 	 */
 	public boolean book(String firstName, String lastName, DateTime required, int numPassengers) 
 						throws InvalidBooking, InvalidDate {
@@ -156,14 +145,11 @@ public class Car {
 	 * 
 	 * @param firstName			user's first name. Takes string input
 	 * @param lastName			user's last name. Takes string input
-	 * @param dateOfBooking		date required. Takes custom DateTime
-	 * 							input
-	 * @param kilometers		kilometers traveled. Takes numeric
-	 * 							input
-	 * @return					Returns string if booking could be 
-	 * 							completed, otherwise returns an error
-	 * 							message that booking could not be
-	 * 							completed.
+	 * @param dateOfBooking		date required. Takes custom DateTime input
+	 * @param kilometers		kilometers traveled. Takes numeric input
+	 * @return					Returns string if booking could be completed, 
+	 * 							otherwise returns an error message that booking 
+	 * 							could not be completed.
 	 */
 	public String completeBooking(String firstName, String lastName, DateTime dateOfBooking, double kilometers) {
 		int bookingIndex;
@@ -187,11 +173,9 @@ public class Car {
 	 * Method is responsible if car is booked on a specific date
 	 * or not.
 	 * 
-	 * @param dateRequired		date required. Takes custom
-	 * 							DateTime input
-	 * @return 					Returns true if car is already 
-	 * 							booked on that date, or false if 
-	 * 							car is not booked on that date 
+	 * @param dateRequired		date required. Takes custom DateTime input
+	 * @return 					Returns true if car is already booked on that 
+	 * 							date, or false if car is not booked on that date 
 	 * 							at all.
 	 */
 	public boolean isCarBookedOnDate(DateTime dateRequired) {
@@ -210,16 +194,12 @@ public class Car {
 	 * Method is responsible for generating a booking ID 
 	 * based upon the parameters.
 	 * 
-	 * @param firstName			user's first name. Takes 
-	 * 							string input
-	 * @param lastName			user's last name. Takes
-	 * 							string input
-	 * @param dateOfBooking		date required. Takes custom
-	 * 							DateTime input
-	 * @return					Returns a generated booking ID
-	 * 							if successful, otherwise returns
-	 * 							an error message if parameters do
-	 * 							not match requirements.
+	 * @param firstName			user's first name. Takes string input
+	 * @param lastName			user's last name. Takes string input
+	 * @param dateOfBooking		date required. Takes custom DateTime input
+	 * @return					Returns a generated booking ID if successful, 
+	 * 							otherwise returns an error message if parameters 
+	 * 							do not match requirements.
 	 */
 	public String getBookingID(String firstName, String lastName, DateTime dateOfBooking) {
 		System.out.println();
@@ -437,12 +417,9 @@ public class Car {
 	 * Method is responsible if this car has any 
 	 * associated bookings in memory.
 	 * 
-	 * @param bookings		list of bookings. Takes
-	 * 						Booking array object
-	 * @return 				Returns true if this car
-	 * 						has bookings, or false if 
-	 * 						this car does not have any
-	 * 						in memory.
+	 * @param bookings		list of bookings. Takes Booking array object
+	 * @return 				Returns true if this car has bookings, or false 
+	 * 						if this car does not have any in memory.
 	 */
 	protected boolean hasBookings(Booking[] bookings) {
 		boolean found = false;
@@ -460,11 +437,9 @@ public class Car {
 	 * bookings.
 	 * 
 	 * @param bookingIndex		booking index. Takes numeric input
-	 * @param kilometers		kilometers traveled. Takes numeric
-	 * 							input
-	 * @return					Returns a string if booking was 
-	 * 							successfully completed, or returns
-	 * 							an error message 
+	 * @param kilometers		kilometers traveled. Takes numeric input
+	 * @return					Returns a string if booking was  successfully 
+	 * 							completed, or returns an error message 
 	 */
 	protected String completeBooking(int bookingIndex, double kilometers) {
 		Booking booking = currentBookings[bookingIndex];
@@ -565,11 +540,9 @@ public class Car {
 	 * Method is responsible for checking if integer parameter 
 	 * meets requirements for a new <Car> object.
 	 * 
-	 * @param numPassengers		number of passengers. takes
-	 * 							numeric input
-	 * @return					Returns true if parameters
-	 * 							meets requirements, otherwise
-	 * 							false.
+	 * @param numPassengers		number of passengers. takes numeric input
+	 * @return					Returns true if parameters meets requirements, 
+	 * 							otherwise false.
 	 */
 	protected boolean numberOfPassengersIsValid(int numPassengers) {
 		if (numPassengers >= MINIMUM_PASSENGER_CAPACITY && numPassengers < MAXIUM_PASSENGER_CAPACITY
@@ -583,8 +556,7 @@ public class Car {
 	 * Method is responsible for checking if date parameter 
 	 * meets requirements for a new <Car> object. 
 	 * 
-	 * @param date			date required. Takes custom DateTime
-	 * 						input
+	 * @param date			date required. Takes custom DateTime input
 	 * @return				Returns true if parameter meets requirements,
 	 * 						otherwise false.
 	 * @throws InvalidDate	If an invalid date exception has occurred
@@ -644,18 +616,14 @@ public class Car {
 	 * Method is responsible for checking this car object's details
 	 * matches requirements.
 	 * 
-	 * @param regNo						registration number. Takes
-	 * 									string input
+	 * @param regNo						registration number. Takes string input
 	 * @param make						car make. Takes string input
 	 * @param model						car model. Takes string input
-	 * @param driverName				driver's name. Takes string 
-	 * 									input
-	 * @return							Returns true if parameters 
-	 * 									specified matches requirements,
-	 * 									otherwise throws new input
-	 * 									mismatch exception.
-	 * @throws InputMismatchException	If an input mismatch exception
-	 * 									has occurred
+	 * @param driverName				driver's name. Takes string input
+	 * @return							Returns true if parameters  specified 
+	 * 									matches requirements, otherwise throws 
+	 * 									new input mismatch exception.
+	 * @throws InputMismatchException	If an input mismatch exception has occurred
 	 */
 	protected boolean checkInputMatch(String regNo, String make, String model, String driverName) throws InputMismatchException {
 		boolean checkReg1 = regNo.substring(0, 3).matches("[a-zA-Z]+");

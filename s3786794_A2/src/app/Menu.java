@@ -22,17 +22,12 @@ public class Menu {
 	 * Generates a menu that gets input from a user, validates the input
 	 * and then outputs the required method.
 	 * 
-	 * @throws CorruptedFiles		If a corrupted file exception has
-	 * 								occurred
-	 * @throws InvalidBooking		If an invalid booking exception 
-	 * 								has occurred
-	 * @throws InvalidDate			If an invalid booking date exception
-	 * 								has occurred
+	 * @throws CorruptedFiles		If a corrupted file exception has occurred
+	 * @throws InvalidBooking		If an invalid booking exception has occurred
+	 * @throws InvalidDate			If an invalid booking date exception has occurred
 	 * @throws InvalidId 			If an invalid id exception occurred
-	 * @throws InvalidRefreshments	If an invalid list of refreshments
-	 * 								exception has occurred
-	 * @throws IOException 			If an input or output exception has 
-	 * 								occurred
+	 * @throws InvalidRefreshments	If an invalid list of refreshments exception has occurred
+	 * @throws IOException 			If an input or output exception has occurred
 	 * @throws NullFile				If a null file exception has occurred
 	 */
 	public void run() throws CorruptedFiles, InvalidBooking, InvalidDate, InvalidId, 
@@ -140,11 +135,10 @@ public class Menu {
 	 * a new <Car> object, which is either a Standard Car or a Silver
 	 * Service Car.
 	 * 
-	 * @throws InputMismatchException 	If an input mismatch exception has 
-	 * 									occurred
+	 * @throws InputMismatchException 	If an input mismatch exception has occurred
 	 * @throws InvalidId 				If an invalid id exception occurred
-	 * @throws InvalidRefreshments		If an invalid list of refreshments
-	 * 									exception has occurred
+	 * @throws InvalidRefreshments		If an invalid list of refreshments exception 
+	 * 									has occurred
 	 */
 	private void createCar() throws InputMismatchException, InvalidId, InvalidRefreshments {
 		String id = "", make, model, driverName, refreshments, carType = "";
@@ -191,10 +185,8 @@ public class Menu {
 	 * which is accessed through a <Car> object already stored within
 	 * memory.
 	 * 
-	 * @throws InvalidBooking	If an invalid booking exception has 
-	 * 							occurred
-	 * @throws InvalidDate		If an invalid date exception has 
-	 * 							occurred
+	 * @throws InvalidBooking	If an invalid booking exception has occurred
+	 * @throws InvalidDate		If an invalid date exception has occurred
 	 */
 	private boolean book() throws InvalidBooking, InvalidDate {
 		System.out.println("Booking date(dd/mm/yyyy): ");
@@ -282,21 +274,18 @@ public class Menu {
 	 * allowing the user's input to be parsed through another 
 	 * class.
 	 * 
-	 * @param carType		the type that a car is. Takes string input
-	 * @param id			registration number. Takes string input of 
-	 * 						chars and numbers
-	 * @param make			car manufacturer. Takes string input
-	 * @param model			version of car. Takes string input
-	 * @param driverName	name of driver. Takes string input
-	 * @param numPassengers number of passengers. Takes numeric input
-	 * @param bookingFee	booking fee of car. Takes numeric input
-	 * @param refreshments	list of refreshments. Takes string input
-	 * @throws InputMismatchException	If an input mismatch exception
-	 * 									has occurred
-	 * @throws InvalidId				If an invalid id exception has 
-	 * 									occurred
-	 * @throws InvalidRefreshments		If an invalid refreshments 
-	 * 									exception has occurred
+	 * @param carType					the type that a car is. Takes string input
+	 * @param id						registration number. Takes string input of 
+	 * 									chars and numbers
+	 * @param make						car manufacturer. Takes string input
+	 * @param model						version of car. Takes string input
+	 * @param driverName				name of driver. Takes string input
+	 * @param numPassengers 			number of passengers. Takes numeric input
+	 * @param bookingFee				booking fee of car. Takes numeric input
+	 * @param refreshments				list of refreshments. Takes string input
+	 * @throws InputMismatchException	If an input mismatch exception has occurred
+	 * @throws InvalidId				If an invalid id exception has occurred
+	 * @throws InvalidRefreshments		If an invalid refreshments exception has occurred
 	 */
 	private void makeCar(String carType, String id, String make, String model, String driverName, 
 						int numPassengers, double bookingFee, String refreshments) 

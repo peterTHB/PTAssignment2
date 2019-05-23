@@ -58,24 +58,16 @@ public class MainPersistence {
 	 * Method is responsible for reading data from an external 
 	 * file into the system to create new <Car> objects. 
 	 * 
-	 * @param fileName					file name. Takes string 
-	 * 									input
-	 * @return							Returns a list of <Car>
-	 * 									objects from an external
-	 * 									file while the file still
+	 * @param fileName					file name. Takes string input
+	 * @return							Returns a list of <Car> objects from 
+	 * 									an external file while the file still
 	 * 									has lines to be read.
-	 * @throws CorruptedFiles			If a corrupted files exception
-	 * 									has occurred
-	 * @throws InputMismatchException	If an input mismatch exception
-	 * 									has occurred
-	 * @throws InvalidId				If an invalid id exception has
-	 * 									occurred
-	 * @throws InvalidRefreshments		If an invalid refreshments
-	 * 									exception has occurred	
-	 * @throws IOException				If an input or output exception
-	 * 									has occurred
-	 * @throws NullFile					If a null file exception has 
-	 * 									occurred
+	 * @throws CorruptedFiles			If a corrupted files exception has occurred
+	 * @throws InputMismatchException	If an input mismatch exception has occurred
+	 * @throws InvalidId				If an invalid id exception has occurred
+	 * @throws InvalidRefreshments		If an invalid refreshments exception has occurred	
+	 * @throws IOException				If an input or output exception has occurred
+	 * @throws NullFile					If a null file exception has occurred
 	 */
 	public Car[] readData(String fileName) throws CorruptedFiles, InputMismatchException, InvalidId, 
 											InvalidRefreshments, IOException, NullFile {
@@ -105,10 +97,8 @@ public class MainPersistence {
 	 * has the correct amount of items to be read into the system
 	 * to create a fully functioning Car object.
 	 * 
-	 * @param splitCar			list of car details. Takes string 
-	 * 							array
-	 * @throws CorruptedFiles	If an corrupted files exception 
-	 * 							has occurred
+	 * @param splitCar			list of car details. Takes string array
+	 * @throws CorruptedFiles	If an corrupted files exception has occurred
 	 */
 	public void checkFile(String[] splitCar) throws CorruptedFiles {
 		if (splitCar.length < 7) {
@@ -121,18 +111,13 @@ public class MainPersistence {
 	 * details into their respective components so that a new <Car>
 	 * object could be created.
 	 * 
-	 * @param splitCar 					list of car details. Takes
-	 * 									string array
-	 * @return							Returns a fully created <Car>
-	 * 									object of either the parent Car
-	 * 									or the child SilverServiceCar
-	 * 									if successful.
-	 * @throws InputMismatchException	If an input mismatch exception
-	 * 									has occurred
-	 * @throws InvalidId				If an invalid id exception has 
-	 * 									occurred
-	 * @throws InvalidRefreshments		If an invalid refreshments 
-	 * 									exception has occurred
+	 * @param splitCar 					list of car details. Takes string array
+	 * @return							Returns a fully created <Car> object of 
+	 * 									either the parent Car or the child 
+	 * 									SilverServiceCar if successful.
+	 * @throws InputMismatchException	If an input mismatch exception has occurred
+	 * @throws InvalidId				If an invalid id exception has occurred
+	 * @throws InvalidRefreshments		If an invalid refreshments exception has occurred
 	 */
 	private Car provideCars(String[] splitCar) throws InputMismatchException, InvalidId, InvalidRefreshments {
 		Car car;
