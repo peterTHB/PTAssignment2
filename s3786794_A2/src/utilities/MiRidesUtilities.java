@@ -3,6 +3,9 @@ package utilities;
 public class MiRidesUtilities {
 	private final static int ID_LENGTH = 6;
 	
+	/*
+	 * Checks if registration number is valid
+	 */
 	public static String isRegNoValid(String regNo) {
 		int regNoLength = regNo.length();
 		if(regNoLength != ID_LENGTH) {
@@ -19,6 +22,9 @@ public class MiRidesUtilities {
 		return regNo;
 	}
 
+	/*
+	 * Checks if passenger capacity is between 1 and 10
+	 */
 	public static String isPassengerCapacityValid(int passengerCapacity)
 	{
 		if(passengerCapacity > 0 && passengerCapacity < 10) {
@@ -28,6 +34,9 @@ public class MiRidesUtilities {
 		}
 	}
 	
+	/*
+	 * Checks if booking fee for SilverServiceCars is valid
+	 */
 	public static String isValidBookingFee(double bookingFee) {
 		if (bookingFee >= 3.00) {
 			return "OK";

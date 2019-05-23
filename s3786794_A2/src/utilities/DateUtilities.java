@@ -2,6 +2,9 @@ package utilities;
 
 public class DateUtilities {
 
+	/*
+	 * Checks if date input is not in the past
+	 */
 	public static boolean dateIsNotInPast(DateTime date) {
 		final int OFFSET_FOR_DAYS_IN_MILLISECONDS = 1;
 		boolean notInPast = false;
@@ -16,6 +19,9 @@ public class DateUtilities {
 		return notInPast;
 	}
 	
+	/*
+	 * Checks if date inputs are the same
+	 */
 	public static boolean datesAreTheSame(DateTime date1, DateTime date2) {
 		if(date1.getEightDigitDate().equals(date2.getEightDigitDate())) {
 			return true;
@@ -23,6 +29,9 @@ public class DateUtilities {
 		return false;
 	}
 	
+	/*
+	 * Checks if date is more than 7 days
+	 */
 	public static boolean dateIsNotMoreThan7Days(DateTime date) {
 		boolean within7Days = false;
 		DateTime nextWeek = new DateTime(7);
@@ -34,6 +43,9 @@ public class DateUtilities {
 		return within7Days;
 	}
 	
+	/*
+	 * Checks if date is more than 3 days
+	 */
 	public static boolean dateIsNotMoreThan3Days(DateTime date) {
 		boolean within3Days = false;
 		DateTime next3Days = new DateTime(3);
