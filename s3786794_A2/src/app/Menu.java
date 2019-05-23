@@ -132,7 +132,7 @@ public class Menu {
 
 	/**
 	 * Method is responsible for parsing user input in order to create
-	 * a new <Car> object, which is either a Standard Car or a Silver
+	 * a new Car object, which is either a Standard Car or a Silver
 	 * Service Car.
 	 * 
 	 * @throws InputMismatchException 	If an input mismatch exception has occurred
@@ -181,8 +181,8 @@ public class Menu {
 	}
 
 	/**
-	 * Method creates a new <Booking> object based by user input, 
-	 * which is accessed through a <Car> object already stored within
+	 * Method creates a new Booking object based by user input, 
+	 * which is accessed through a Car object already stored within
 	 * memory.
 	 * 
 	 * @throws InvalidBooking	If an invalid booking exception has occurred
@@ -225,9 +225,27 @@ public class Menu {
 	}
 	
 	/**
-	 * Method is responsible for resolving a <Booking>
+	 * Method is responsible for resolving a Booking
 	 * object's requirements based on either an entered
 	 * date or a traveler's first and last name.
+	 * 
+	 * ALGORITHM - Complete booking
+	 * BEGIN
+	 * 		CHECKS if there is a date or registration number input
+	 * 		IF there is a date input	
+	 * 			ASKS for name
+	 * 			ASKS for kilometers traveled
+	 * 			FORMATS date 
+	 * 			SENDS to another method
+	 * 			COMPLETES booking if successful
+	 * 		IF there is a registration number input	
+	 * 			ASKS for name
+	 * 			ASKS for kilometers traveled
+	 * 			SENDS to another method
+	 * 			COMPLETES booking if successful
+	 *		IF there is not booking located
+	 *			RETURNS no booking found
+	 * ENDS
 	 */
 	private void completeBooking() {
 		System.out.print("Enter Registration or Booking Date:");

@@ -100,7 +100,7 @@ public class Car {
 	 */
 	
 	/**
-	 * Method is responsible for allowing a <Booking> object
+	 * Method is responsible for allowing a Booking object
 	 * to be associated with this car object.
 	 * 
 	 * @param firstName			user's first name. Takes string input
@@ -219,7 +219,7 @@ public class Car {
 	
 	/**
 	 * Method is responsible for returning a formatted
-	 * string of this car's details, current bookings
+	 * string of this Car object's details, current bookings
 	 * and past bookings.
 	 * 
 	 * @return 		Returns a formatted string of details
@@ -279,7 +279,7 @@ public class Car {
 	
 	/**
 	 * Method is responsible for building the first
-	 * part of this car's computer readable string.
+	 * part of this Car object's computer readable string.
 	 * 
 	 * @return 		Returns formatted string of this
 	 * 				car's details.
@@ -306,8 +306,8 @@ public class Car {
 	}
 	
 	/**
-	 * Method is responsible for returning this car's
-	 * details as a formatted string.
+	 * Method is responsible for returning this car
+	 * object's details as a formatted string.
 	 * 
 	 * @return		Returns this car's details as a 
 	 * 				formatted string.
@@ -334,7 +334,18 @@ public class Car {
 	
 	/**
 	 * Method is responsible for returning a formatted
-	 * string of current bookings this car has.
+	 * string of current bookings this Car object has.
+	 * 
+	 * ALGORITHM - Print current bookings
+	 * BEGIN
+	 * 		CHECKS if car has any current bookings
+ * 			IF there is a current booking
+ * 				RETURNS current booking details
+ * 			IF there is not a current booking
+ * 				SKIP over slot in memory
+	 * 		IF there are not current bookings
+	 * 			RETURNS no current bookings
+	 * ENDS
 	 * 
 	 * @return		Returns a formatted string of this
 	 * 				car's associated current bookings.
@@ -356,10 +367,10 @@ public class Car {
 	
 	/**
 	 * Method is responsible for returning a formatted
-	 * string of past bookings this car has.
+	 * string of past bookings this Car object has.
 	 * 
 	 * @return		Returns a formatted string of this
-	 * 				car's associated past bookings.
+	 * 				Car object's associated past bookings.
 	 */
 	protected String printPastBook() {
 		StringBuilder sb = new StringBuilder();
@@ -414,8 +425,8 @@ public class Car {
 	}
 
 	/**
-	 * Method is responsible if this car has any 
-	 * associated bookings in memory.
+	 * Method is responsible if this Car object has 
+	 * any associated bookings in memory.
 	 * 
 	 * @param bookings		list of bookings. Takes Booking array object
 	 * @return 				Returns true if this car has bookings, or false 
@@ -433,7 +444,7 @@ public class Car {
 
 	/**
 	 * Method is responsible for finishing a booking associated
-	 * with this car, and storing the finished booking into past
+	 * with this Car object, and storing the finished booking into past
 	 * bookings.
 	 * 
 	 * @param bookingIndex		booking index. Takes numeric input
@@ -464,8 +475,8 @@ public class Car {
 	}
 
 	/**
-	 * Methods is responsible for getting a specific <Booking> object by its
-	 * date as required by the user from this car's associated bookings. 
+	 * Methods is responsible for getting a specific Booking object by its
+	 * date as required by the user from this Car object's associated bookings. 
 	 * 
 	 * @param firstName			user's first name. Takes string input
 	 * @param lastName			user's last name. Takes string input
@@ -496,12 +507,11 @@ public class Car {
 	 * booking was not found.
 	 */
 	/**
-	 * Methods is responsible for getting a specific <Booking> object
-	 * as required by the user's name only from this car's associated bookings. 
+	 * Methods is responsible for getting a specific Booking object as required 
+	 * by the user's name only from this Car object's associated bookings. 
 	 * 
 	 * @param firstName			user's first name. Takes string input
 	 * @param lastName			user's last name. Takes string input
-	 * @param dateOfBooking		date required. Takes custom DateTime input
 	 * @return					Returns an integer index that shows the 
 	 * 							position of the booking in memory, or returns
 	 * 							-1 if booking could not be found.
@@ -538,7 +548,7 @@ public class Car {
 
 	/**
 	 * Method is responsible for checking if integer parameter 
-	 * meets requirements for a new <Car> object.
+	 * meets requirements for a new Car object.
 	 * 
 	 * @param numPassengers		number of passengers. takes numeric input
 	 * @return					Returns true if parameters meets requirements, 
@@ -554,7 +564,7 @@ public class Car {
 
 	/**
 	 * Method is responsible for checking if date parameter 
-	 * meets requirements for a new <Car> object. 
+	 * meets requirements for a new Car object. 
 	 * 
 	 * @param date			date required. Takes custom DateTime input
 	 * @return				Returns true if parameter meets requirements,
@@ -570,8 +580,8 @@ public class Car {
 	}
 	
 	/**
-	 * Method is responsible if car can still be booked based
-	 * on memory available.
+	 * Method is responsible if this Car object can still be 
+	 * booked based on memory available.
 	 * 
 	 * @return		Returns true if car is available, 
 	 * 				otherwise false.
@@ -592,8 +602,8 @@ public class Car {
 	}
 
 	/**
-	 * Method is responsible if car is not booked on a specific
-	 * date as requested by the user.
+	 * Method is responsible if this Car object is not booked 
+	 * on a specific date as requested by the user.
 	 * 
 	 * @param date		date required. Takes custom DateTime input
 	 * @return			Returns true if car is not booked based on
@@ -613,7 +623,7 @@ public class Car {
 	}
 	
 	/**
-	 * Method is responsible for checking this car object's details
+	 * Method is responsible for checking this Car object's details
 	 * matches requirements.
 	 * 
 	 * @param regNo						registration number. Takes string input

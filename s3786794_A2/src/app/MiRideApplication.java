@@ -16,7 +16,7 @@ import utilities.MiRidesUtilities;
 /**
  * MiRideApplication is the class responsible for managing all
  * the data that is stored within the system.
- * Most importantly, this class stores <Car> and <Booking> objects
+ * Most importantly, this class stores Car and Booking objects
  * to be utilized by the program and the user's input.
  * 
  * @author Peter Bui : s3786794
@@ -30,7 +30,7 @@ public class MiRideApplication {
 	Car[] sortCars;
 	
 	/**
-	 * Method is responsible for fully creating a <Car> object 
+	 * Method is responsible for fully creating a Car object 
 	 * to be used by the user within the program.
 	 * 
 	 * @param carType					the type that a car is. Takes string input
@@ -103,7 +103,7 @@ public class MiRideApplication {
 	
 	/**
 	 * Method is responsible for creating a string that shows a
-	 * <Booking> object has been successfully created.
+	 * Booking object has been successfully created.
 	 * 
 	 * @param firstName				user's first name. Takes string input
 	 * @param lastName				user's last name. Takes string input
@@ -135,7 +135,16 @@ public class MiRideApplication {
 	}
 	
 	/**
+	 * Method is responsible for ensuring a Booking object has been
+	 * completed by user's name, booking date when traveled and kilometers
+	 * traveled.
 	 * 
+	 * @param firstName				user's first name. Takes string input
+	 * @param lastName				user's last name. Takes string input
+	 * @param registrationNumber	car registration number. Takes string input
+	 * @param kilometers			kilometers traveled. Takes numeric input
+	 * @return 						Returns string if booking is completed, 
+	 * 								or booking does not exist.
 	 */
 	public String completeBooking(String firstName, String lastName, DateTime dateOfBooking, double kilometers) {
 		// Search all cars for bookings on a particular date.
@@ -150,7 +159,7 @@ public class MiRideApplication {
 	}
 	
 	/**
-	 * Method is responsible for ensuring a <Booking> object has been
+	 * Method is responsible for ensuring a Booking object has been
 	 * completed by user's name, registration number and kilometers
 	 * traveled.
 	 * 
@@ -158,7 +167,7 @@ public class MiRideApplication {
 	 * @param lastName				user's last name. Takes string input
 	 * @param registrationNumber	car registration number. Takes string input
 	 * @param kilometers			kilometers traveled. Takes numeric input
-	 * @return carNotFound			Returns string if car could not be found,
+	 * @return 						Returns string if car could not be found,
 	 * 								booking is completed, or booking does not exist.
 	 */
 	public String completeBooking(String firstName, String lastName, String registrationNumber, double kilometers) {
@@ -184,7 +193,7 @@ public class MiRideApplication {
 	}
 	
 	/**
-	 * Method is responsible for getting a <Booking> object from memory 
+	 * Method is responsible for getting a Booking object from memory 
 	 * given the user's input of their full name and provided registration 
 	 * number.
 	 * 
@@ -216,7 +225,11 @@ public class MiRideApplication {
 	}
 	
 	/**
+	 * Method is responsible for displaying a specific Car object
+	 * based upon the user's specifications.
 	 * 
+	 * @param regNo		registration number. Takes string input
+	 * @return			Returns a string of a Car object's details.
 	 */
 	public String displaySpecificCar(String regNo) {
 		for(int i = 0; i < cars.length; i++) {
@@ -229,19 +242,24 @@ public class MiRideApplication {
 		return "Error: The car could not be located.";
 	}
 	
-	/*
-	 * Displays which cars are available
-	 * Checks for type of car
-	 * 		Checks for availability
-	 * 			If yes, returns getDetails
-	 * 			If not, don't do anything
-	 * 		If no available cars, return error message
-	 * Wrong input returns error message
-	 */
-	
 	/**
 	 * Method is responsible for displaying available cars based 
 	 * on car type and date inputs.
+	 * 
+	 * ALGORITHM - Sorting cars by availability
+	 * BEGIN
+	 * 		CHECKS for car type
+	 * 		IF either car type
+	 * 			CHECKS if there are any cars
+	 * 				CHECKS if car is available
+	 * 					RETURNS car details
+	 * 				IF there are no cars available
+	 * 					RETURNS no cars available
+	 * 			IF there are no cars
+	 * 				RETURNS there are no cars
+	 * 		IF not either type
+	 * 			RETURN invalid input
+	 * END
 	 * 
 	 * @param type			car type. Takes in string input
 	 * @param dateInput		date required. Takes in custom DateTime input
@@ -363,7 +381,7 @@ public class MiRideApplication {
 	 */
 	public void seedSilver() throws InvalidBooking, InvalidDate, InvalidId, InvalidRefreshments{
 		// 2 silver cars not booked
-		String[] refreshment1 = "Cadbury,Lays,Toothpaste".split(",");
+		String[] refreshment1 = "Cadbury,Lays,Toothpaste,Candy,Ramen".split(",");
 		Car mazda = new SilverServiceCar("MAZ385", "Mazda", "CX-9", "Jason Voorhees", 4, 3.5, refreshment1);
 		cars[itemCount] = mazda;
 		itemCount++;
@@ -600,7 +618,7 @@ public class MiRideApplication {
 	}
 	
 	/**
-	 * Method is responsible for ensuring placing old <Car> objects
+	 * Method is responsible for ensuring placing old Car objects
 	 * that is already read from an external file into memory.
 	 * 
 	 * @throws CorruptedFiles			If a corrupted files exception has occurred
@@ -655,7 +673,7 @@ public class MiRideApplication {
 	}
 	
 	/**
-	 * Method is responsible for sending all <Car> objects
+	 * Method is responsible for sending all Car objects
 	 * to another class and saving them for future uses of
 	 * the program.
 	 * 

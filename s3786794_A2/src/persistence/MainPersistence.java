@@ -24,14 +24,14 @@ import java.util.InputMismatchException;
  */
 public class MainPersistence {
 	/**
-	 * Method is responsible for saving <Car> objects to an external file,
+	 * Method is responsible for saving Car objects to an external file,
 	 * writing to the file if it exists, or creating a new file if file 
 	 * does not exist. 
 	 * A backup file is also created to ensure that if the main files does
 	 * not exist, the backup file is used instead.
 	 * 
-	 * @param cars
-	 * @throws IOException
+	 * @param cars				cars in memory. Takes car array
+	 * @throws IOException		If an input or output exception has occurred
 	 */
 	public void saveCars(Car[] cars) throws IOException {
 		PrintWriter wrMain = new PrintWriter(new BufferedWriter(new FileWriter("MainData.txt")));
@@ -56,10 +56,10 @@ public class MainPersistence {
 	
 	/**
 	 * Method is responsible for reading data from an external 
-	 * file into the system to create new <Car> objects. 
+	 * file into the system to create new Car objects. 
 	 * 
 	 * @param fileName					file name. Takes string input
-	 * @return							Returns a list of <Car> objects from 
+	 * @return							Returns a list of Car objects from 
 	 * 									an external file while the file still
 	 * 									has lines to be read.
 	 * @throws CorruptedFiles			If a corrupted files exception has occurred
@@ -108,11 +108,11 @@ public class MainPersistence {
 	
 	/**
 	 * Method is responsible for splitting a string array of car
-	 * details into their respective components so that a new <Car>
+	 * details into their respective components so that a new Car
 	 * object could be created.
 	 * 
 	 * @param splitCar 					list of car details. Takes string array
-	 * @return							Returns a fully created <Car> object of 
+	 * @return							Returns a fully created Car object of 
 	 * 									either the parent Car or the child 
 	 * 									SilverServiceCar if successful.
 	 * @throws InputMismatchException	If an input mismatch exception has occurred
@@ -129,25 +129,55 @@ public class MainPersistence {
 		int passengerNum = Integer.parseInt(splitCar[4]);
 		double tripFee = Double.parseDouble(splitCar[6]);
 		
-		String[] refreshment = new String[5];
-		int refreshCount = 0;
-		
 		if (splitCar.length < 8) {
 			car = new Car(regNo, make, model, driverName, passengerNum);
 		} else {
-			for (int i = 7; i < splitCar.length; i++) {
-				if (splitCar[i] != null) {
-					String[] splitRefresh = splitCar[i].split(" ");
-					if (splitRefresh.length == 3) {
-						refreshment[refreshCount] = splitRefresh[2];
-					} else if (splitRefresh.length > 3) {
-						refreshment[refreshCount] = splitRefresh[2] + " " + splitRefresh[3];
-					}
-					refreshCount++;
-				}
-			}
+			String[] refreshment = splitRefresh(splitCar);
 			car = new SilverServiceCar(regNo, make, model, driverName, passengerNum, tripFee, refreshment);
 		}
 		return car;
+	}
+	
+	/**
+	 * Method is responsible for splitting a refreshment list
+	 * that is read from an external file to be used in the 
+	 * creation of a SilverServiceCar object
+	 * 
+	 * ALGORITHM - Splitting refreshment list
+	 * BEGIN
+	 * 		DEFINE new values
+	 * 		CHECKS if string input is valid
+	 * 		IF string input is valid
+	 * 			STORES value into other memory
+	 * 			CHECKS if value has white spaces
+	 * 			IF has white spaces
+	 * 				SPLITS string accordingly
+	 * 				STORES value into new memory
+	 * 			IF it does not
+	 * 				STORES value into new memory
+	 * 			INCREASE counter
+	 * 		RETURNS list of values
+	 * ENDS
+	 * 
+	 * @param splitCar		cat details split. Takes string input
+	 * @return				Returns an array of refreshments.
+	 */
+	private String[] splitRefresh(String[] splitCar) {
+		String[] refreshment = new String[5];
+		int refreshCount = 0;
+		
+		for (int i = 7; i < splitCar.length; i++) {
+			if (splitCar[i] != null) {
+				String[] splitRefresh = splitCar[i].split(" ");
+				if (splitRefresh.length == 3) {
+					refreshment[refreshCount] = splitRefresh[2];
+				} else if (splitRefresh.length > 3) {
+					refreshment[refreshCount] = splitRefresh[2] + " " + splitRefresh[3];
+				}
+				refreshCount++;
+			}
+		}
+		
+		return refreshment;
 	}
 }

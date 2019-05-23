@@ -1,0 +1,12 @@
+SIM194:Honda:Accord Euro:Henry Cavill:5:YES:1.5
+LEX666:Lexus:M1:Angela Landsbury:3:YES:1.5
+BMW256:Mini:Minor:Barbara Streisand:4:YES:1.5
+AUD765:Mazda:RX7:Matt Bomer:6:YES:1.5
+TOY765:Toyota:Corola:Tina Turner:7:YES:1.5
+ROV465:Honda:Rover:Jonathon Ryss Meyers:7:YES:1.5
+MAZ385:Mazda:CX-9:Jason Voorhees:4:YES:3.5:Item 1 Cadbury:Item 2 Lays:Item 3 Toothpaste:Item 4 Candy:Item 5 Ramen
+CHR945:Chrysler:300 SRT:Royal Chaos:5:YES:3.8:Item 1 Pepsi:Item 2 7Up:Item 3 Lollipop
+MIT345:Mitsubishi:Triton:Pat Nguyen:5:YES:4.6:Item 1 Coke:Item 2 Scheweppes:Item 3 Chupa Chups
+FOR756:Ford:Ranger:Magic Mike:6:YES:3.2:Item 1 Dr.Pepper:Item 2 Smiths:Item 3 Donuts
+HOL396:Holden:Commodore:Nath Walker:3:YES:4.5:Item 1 Champagne:Item 2 Wine:Item 3 Beer
+KIA047:Kia:Cerato:Pike Johann:4:YES:5.0:Item 1 Mints:Item 2 Soda Water:Item 3 Water

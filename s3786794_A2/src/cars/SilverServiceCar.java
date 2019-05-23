@@ -29,12 +29,13 @@ public class SilverServiceCar extends Car {
 	 * @param passengerCapacity			passenger capacity. Takes numeric input
 	 * @param bookingFee				booking fee. Takes numeric input
 	 * @param refreshments				list of refreshments. Takes string array
+	 * @throws InputMismatchException	If an input mismatch exception has occurred
 	 * @throws InvalidId				If an invalid id exception has occurred
-	 * @throws InputMismatchException	If an input mismatch exception has occurred
-	 * @throws InputMismatchException	If an input mismatch exception has occurred
+	 * @throws InvalidRefreshments 		If an invalid refreshment exception has occurred
 	 */
 	public SilverServiceCar(String regNo, String make, String model, String driverName, 
-							int passengerCapacity, double bookingFee, String[] refreshments) throws InvalidId, InvalidRefreshments, InputMismatchException {
+							int passengerCapacity, double bookingFee, String[] refreshments) 
+							throws InputMismatchException, InvalidId, InvalidRefreshments {
 		super(regNo, make, model, driverName, passengerCapacity);
 		
 		this.bookingFee = bookingFee;
@@ -134,7 +135,7 @@ public class SilverServiceCar extends Car {
 	
 	/**
 	 * Method is responsible for ensuring the refreshments
-	 * parameter is not null, so that a silver service car
+	 * parameter is not null, so that a SilverServiceCar
 	 * object could be fully created.
 	 * 
 	 * @param refreshments		list of refreshments. Takes string array
@@ -153,6 +154,20 @@ public class SilverServiceCar extends Car {
 	 * Method is responsible for checking if there is any
 	 * duplicated refreshments within the refreshments
 	 * parameters.
+	 * 
+	 * ALGORITHM - Checking for duplicates
+	 * BEGIN
+	 * 		CHECKS for first refreshment
+	 * 			CHECKS for next refreshment
+	 * 				COMPARES both refreshments
+	 * 				IF both are the same
+	 * 					RETURN true
+	 * 				CONTINUES for further refreshments
+	 *			SWITCH for next refreshment
+	 *				REPEAT for next refreshments
+	 *		IF there are no same refreshments
+	 *			RETURNS false
+	 * ENDS
 	 * 
 	 * @param refreshments		list of refreshments. Takes string array
 	 * @return					Returns true if there are duplicated items, 
@@ -188,7 +203,7 @@ public class SilverServiceCar extends Car {
 	
 	/**
 	 * Method is responsible for returning a formatted string
-	 * of the list of refreshment this child <Car> object has.
+	 * of the list of refreshment this child Car object has.
 	 * 
 	 * @return		Returns a string of a formatted list of 
 	 * 				refreshments.

@@ -51,7 +51,7 @@ public class Booking {
 	
 	/**
 	 * Method is responsible for associating user's parameters with
-	 * objects' parameters
+	 * this Booking object's parameters
 	 * 
 	 * @param kilometersTravelled	kilometers traveled. Takes numeric input
 	 * @param tripFee				trip fee. Takes numeric input
@@ -64,11 +64,11 @@ public class Booking {
 	}
 	
 	/**
-	 * Method is responsible for returning all of this <Booking> 
+	 * Method is responsible for returning all of this
 	 * object's parameters.
 	 * 
 	 * @return 		Returns a formatted string of details of
-	 * 				this booking object.
+	 * 				this Booking object.
 	 */
 	public String getDetails() {
 		StringBuilder sb = new StringBuilder();
@@ -96,10 +96,10 @@ public class Booking {
 	
 	/**
 	 * Method is responsible for providing a computer readable
-	 * version of this <Booking> object's parameters.
+	 * version of this Booking object's parameters.
 	 * 
 	 * @return		Returns a formatted string of details
-	 * 				of this booking object.
+	 * 				of this Booking object.
 	 */
 	@Override
 	public String toString() {
@@ -139,7 +139,7 @@ public class Booking {
 
 	/**
 	 * Method is responsible for making a new record marker
-	 * to differentiate between different booking objects.
+	 * to differentiate between different Booking objects.
 	 * 
 	 * @return 		Returns a formatted string of underscores.
 	 */
