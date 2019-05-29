@@ -1,5 +1,13 @@
 package utilities;
 
+/**
+ * DateUtilities is the class responsible for for error checking
+ * DateTime input that is parsed by the user and within the system
+ * itself.
+ * 
+ * @author Peter Bui : s3786794
+ * @version 1.0
+ */
 public class DateUtilities {
 
 	/*

@@ -7,6 +7,13 @@ import java.util.InputMismatchException;
 import app.Menu;
 import exceptions.*;
 
+/**
+ * Driver is the class responsible for running the program
+ * and outputting data to the user.
+ * 
+ * @author Peter Bui : s3786794
+ * @version 1.0
+ */
 public class Driver {
 
 	public static void main(String[] args) throws InvalidId, InvalidRefreshments, InvalidBooking, 

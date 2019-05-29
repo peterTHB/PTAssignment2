@@ -1,5 +1,12 @@
 package utilities;
 
+/**
+ * MiRidesUtilities is the class responsible for doing partial
+ * error checking of data of the objects within the MiRidesSystem.
+ * 
+ * @author Peter Bui : s3786794
+ * @version 1.0
+ */
 public class MiRidesUtilities {
 	private final static int ID_LENGTH = 6;
 	

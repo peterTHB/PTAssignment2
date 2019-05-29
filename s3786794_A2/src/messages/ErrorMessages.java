@@ -1,5 +1,12 @@
 package messages;
 
+/**
+ * ErrorMessages is the class responsible for outputting
+ * a set of error messages to the user for custom exceptions
+ * 
+ * @author Peter Bui : s3786794
+ * @version 1.0
+ */
 public class ErrorMessages {
 	/*
 	 * Provides a list of error messages for custom exceptions

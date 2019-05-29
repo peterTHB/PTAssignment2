@@ -1,12 +1,19 @@
 package utilities;
 
+/**
+ * DateTime is the class responsible for converting user input
+ * into usable DateTime data for the system to process and for
+ * the user to be able to read it.
+ * 
+ * @author Peter Bui : s3786794
+ * @version 1.0
+ */
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.sql.Date;
 
 public class DateTime
 {
-
 	private long advance;
 	private long time;
 
